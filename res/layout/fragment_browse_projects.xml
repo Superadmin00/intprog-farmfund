@@ -9,8 +9,6 @@
         android:id="@+id/searchLayout"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
         android:paddingStart="24dp"
         android:paddingEnd="16dp">
 

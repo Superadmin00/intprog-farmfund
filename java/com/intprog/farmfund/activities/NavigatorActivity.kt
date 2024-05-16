@@ -8,7 +8,6 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.viewpager2.widget.ViewPager2
 import com.intprog.farmfund.R
-import com.intprog.farmfund.adapters.BrowseProjectsAdapter
 import com.intprog.farmfund.adapters.NavigationPagerAdapter
 import com.intprog.farmfund.databinding.ActivityNavigatorBinding
 import com.intprog.farmfund.fragments.BrowseProjectsFragment
@@ -24,6 +23,9 @@ class NavigatorActivity : AppCompatActivity() {
 
     data class NavigationButton(val button: ImageButton, val fragmentClass: Class<*>, val defaultIcon: Int, val selectedIcon: Int)
 
+    // Add a list of titles for each fragment
+    private val pageTitles = listOf("Browse Projects", "Favorite Projects", "Voucher Center", "Profile Page")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNavigatorBinding.inflate(layoutInflater)
@@ -31,9 +33,6 @@ class NavigatorActivity : AppCompatActivity() {
 
         val pagerAdapter = NavigationPagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
-
-        var profilePicAdapter = BrowseProjectsAdapter(this)
-        // Set the adapter to your RecyclerView
 
         navigationButtons = listOf(
             NavigationButton(binding.gotoBrowseProjects, BrowseProjectsFragment::class.java, R.drawable.ic_home, R.drawable.ic_home_selected),
@@ -48,7 +47,13 @@ class NavigatorActivity : AppCompatActivity() {
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+                // Set the title when the page is selected
+                binding.pageTitle.text = pageTitles[position]
                 updateImageButtons()
+
+                if (binding.viewPager.currentItem == 3) { // Assuming ProfilePageFragment is at index 3
+                    binding.navigatorActivityContainer.setBackgroundResource(R.drawable.bg_gradient)
+                }
             }
         })
 
@@ -100,9 +105,5 @@ class NavigatorActivity : AppCompatActivity() {
             // Reset the flag after 2 seconds
             Handler(Looper.getMainLooper()).postDelayed({ doubleBackToExitPressedOnce = false }, 3000)
         }
-    }
-
-    fun navigateToProfilePage() {
-        binding.viewPager.currentItem = 3 //Navigate to ProfilePageFragment
     }
 }
