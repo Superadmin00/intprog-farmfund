@@ -57,7 +57,6 @@ class FavoriteProjectsFragment : Fragment(), FavoriteUpdateListener {
 
     override fun onResume() {
         super.onResume()
-        swipeRefreshLayout.isRefreshing = true
         fetchProjects()
     }
     override fun onFavoriteUpdated() {
