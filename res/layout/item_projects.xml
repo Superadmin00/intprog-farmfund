@@ -21,16 +21,6 @@
             android:scaleType="centerCrop"
             android:src="@drawable/img_default_projectimage" />
 
-        <ImageButton
-            android:id="@+id/addToFavoritesBTN"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@color/transparent"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_heart_unfilled" />
-
         <TextView
             android:id="@+id/projectTitle"
             android:layout_width="match_parent"
@@ -60,5 +50,15 @@
             android:text="See more... "
             android:textSize="20sp" />
     </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/addToFavoritesBTN"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/transparent"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_heart_unfilled" />
 
 </com.google.android.material.card.MaterialCardView>
