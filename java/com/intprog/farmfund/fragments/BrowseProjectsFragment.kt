@@ -97,7 +97,6 @@ class BrowseProjectsFragment : Fragment() {
     }
     override fun onResume() {
         super.onResume()
-        swipeRefreshLayout.isRefreshing = true
         fetchProjects()
     }
     private fun fetchProjects() {
