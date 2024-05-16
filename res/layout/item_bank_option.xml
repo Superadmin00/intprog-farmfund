@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_margin="4dp"
+    android:padding="8dp"
+    android:background="@color/white"
+    android:elevation="5dp">
+
+    <ImageView
+        android:id="@+id/bankLogo"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="6dp"
+        android:src="@drawable/ic_launcher_background"/>
+
+
+    <TextView
+        android:id="@+id/bankDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/bankLogo"
+        android:fontFamily="@font/poppins_bold"
+        android:text="**** **** **** 2024"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/black"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/bankExpiry"
+        android:layout_width="wrap_content"
+        android:textColor="#c5c5c5"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bankDetails"
+        android:layout_toRightOf="@+id/bankLogo"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Expires 04/20"
+        android:textSize="12sp" />
+
+    <CheckBox
+        android:id="@+id/bankCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"/>
+
+</RelativeLayout>

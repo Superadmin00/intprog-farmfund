@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/transacContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/transacIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:id="@+id/transacTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@+id/transacIcon"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Organic Farming Initiative"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/transacType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/transacTitle"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@+id/transacIcon"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Withdrawal"
+            android:textColor="@color/darkgrey"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/transacDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="16dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="5/24/2024"
+            android:textColor="@color/darkgrey"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/transacTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/transacDate"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="16dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="5:36 AM"
+            android:textColor="@color/darkgrey"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

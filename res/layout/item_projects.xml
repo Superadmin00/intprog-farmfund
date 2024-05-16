@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="5dp"
+    app:cardUseCompatPadding="true"
+    app:rippleColor="@color/green">
+
+    <RelativeLayout
+        android:id="@+id/projectItemCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/projectImage1"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img_default_projectimage" />
+
+        <ImageButton
+            android:id="@+id/addToFavoritesBTN"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/transparent"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_heart_unfilled" />
+
+        <TextView
+            android:id="@+id/projectTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/projectImage1"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@id/seeMoreText"
+            android:clickable="false"
+            android:fontFamily="@font/poppins_bold"
+            android:maxWidth="250dp"
+            android:padding="3dp"
+            android:text="Project Number 1"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/seeMoreText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/projectImage1"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="10dp"
+            android:clickable="false"
+            android:fontFamily="@font/poppins_bold"
+            android:text="See more... "
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

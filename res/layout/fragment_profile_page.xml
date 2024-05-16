@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_gradient">
+
+    <RelativeLayout
+        android:id="@+id/profileDetailsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/white"
+        android:padding="15dp">
+
+        <RelativeLayout
+            android:id="@+id/profileDetails"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/profImage"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/ic_default_pfp"
+                app:backgroundTint="@color/green"/>
+
+            <TextView
+                android:id="@+id/profName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/profImage"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Guest User"
+                android:textColor="@color/green"
+                android:textSize="17sp"/>
+
+            <TextView
+                android:id="@+id/profNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profName"
+                android:layout_toEndOf="@+id/profImage"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="(+63) 9XX XXX XXXX"
+                android:textColor="@color/darkgrey"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/profEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profNumber"
+                android:layout_toEndOf="@+id/profImage"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="guestuser@mail.com"
+                android:textColor="@color/darkgrey"
+                android:textSize="13sp"/>
+
+            <TextView
+                android:id="@+id/profFundPoints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="0.0"
+                android:textColor="@color/green"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/nameinfo5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profFundPoints"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="30dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="FundPoints"
+                android:textColor="@color/darkgrey"
+                android:textSize="12sp"/>
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/editProfileBTN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profileDetails"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/btn_gradient_rounded"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Edit Profile"
+            android:textColor="@color/white"
+            app:backgroundTint="@null"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/gotoFavProjectsBTN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profileDetailsLayout"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/bg_rounded_corners"
+        android:backgroundTint="@color/white"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/greenheart"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/ic_heart"
+            android:backgroundTint="@color/green"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/greenheart"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Favorite Projects"
+            android:textSize="15sp"/>
+
+        <ImageButton
+            android:id="@+id/nextimage1"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:backgroundTint="@color/green"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_arrow"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/gotoTransacHistoryBTN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gotoFavProjectsBTN"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/bg_rounded_corners"
+        android:backgroundTint="@color/white"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/greentime"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/ic_transac_history"
+            android:backgroundTint="@color/green"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/greentime"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Transaction History"
+            android:textSize="15sp"/>
+
+        <ImageButton
+            android:id="@+id/nextimage2"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:backgroundTint="@color/green"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_arrow"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/gotoPayMethodBTN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gotoTransacHistoryBTN"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/bg_rounded_corners"
+        android:backgroundTint="@color/white"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/greencard"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/ic_pay_method"
+            android:backgroundTint="@color/green"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/greencard"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Payment Method"
+            android:textSize="15sp"/>
+
+        <ImageButton
+            android:id="@+id/nextimage3"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:backgroundTint="@color/green"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_arrow"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/gotoSettingsBTN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gotoPayMethodBTN"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/bg_rounded_corners"
+        android:backgroundTint="@color/white"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/greensettings"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/ic_settings"
+            android:backgroundTint="@color/green"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/greensettings"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Settings"
+            android:textSize="15sp"/>
+
+        <ImageButton
+            android:id="@+id/nextimage5"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:backgroundTint="@color/green"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_arrow"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/gotoLogoutBTN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/gotoSettingsBTN"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_rounded_corners"
+        android:backgroundTint="@color/white"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/redlogout"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/ic_logout"
+            android:backgroundTint="@color/red"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/redlogout"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Logout"
+            android:textSize="17sp"/>
+    </RelativeLayout>
+</RelativeLayout>

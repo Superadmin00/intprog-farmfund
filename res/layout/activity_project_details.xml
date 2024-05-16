@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activities.ProjectDetailsActivity">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_header_gradient_roundedbottom"
+        android:padding="15dp">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:background="@color/transparent"
+            android:padding="10dp"
+            android:rotationY="180"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_arrow" />
+
+        <RelativeLayout
+            android:id="@+id/headerSubContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/img_logo" />
+
+            <TextView
+                android:id="@+id/pageTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/logo"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Propose Project"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/projectContents"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/dynamicBTNsContainer"
+        android:layout_below="@id/header">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/projectImagesPager"
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:contentDescription="Image Pager" />
+
+            <TextView
+                android:id="@+id/projectTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/projectImagesPager"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Organic Farming Initiative"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/donorNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/projectTitle"
+                android:fontFamily="@font/poppins_bold"
+                android:text="30+ Donated"
+                android:textAlignment="center"
+                android:textColor="#666f80"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/personIcon1"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_below="@+id/projectTitle"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/donorNumber"
+                android:background="@drawable/bg_circleshape"
+                android:backgroundTint="@color/black"
+                android:src="@drawable/ic_default_pfp" />
+
+            <TextView
+                android:id="@+id/morePersons"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_below="@+id/projectTitle"
+                android:layout_marginStart="-12dp"
+                android:layout_toEndOf="@+id/personIcon1"
+                android:background="@drawable/bg_circleshape"
+                android:backgroundTint="@color/darkgrey"
+                android:text="+9"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/projectDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/donorNumber"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/poppins_semibold"
+                android:justificationMode="inter_word"
+                android:text="Support local farmers in adopting sustainable and organic farming practices. Funds will be used to provide training, organic seeds, and equipment to enhance crop yield without harming the environment. "
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/projectMilestone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/projectDescription"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:justificationMode="inter_word"
+                android:text="Support local farmers in adopting sustainable and organic farming practices. Funds will be used to provide training, organic seeds, and equipment to enhance crop yield without harming the environment. "
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/projectProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/projectMilestone"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                app:cardCornerRadius="15dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Project Progress"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/daysLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="5 days left"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/textView2"
+                        android:max="100"
+                        android:progress="80"
+                        android:progressTint="#24C635" />
+
+                    <TextView
+                        android:id="@+id/progressNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/daysLeft"
+                        android:layout_marginStart="5dp"
+                        android:layout_toEndOf="@id/progressBar"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="100%"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:id="@+id/projectDonations"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/progressBar"
+                        android:layout_marginStart="10dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="₱4321"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/progressBar"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_toEndOf="@id/projectDonations"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="raised"
+                        android:textAlignment="center"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </RelativeLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/dynamicBTNsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/updateProjBTN"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_gradient_rounded"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Update"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:backgroundTint="@null"
+            android:visibility="gone"/>
+
+        <Space android:id="@+id/spaceBetween"
+            android:layout_width="8dp"
+            android:layout_height="0dp"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/projdetailsDynamicBTN"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btn_gradient_rounded"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Donate"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:backgroundTint="@null" />
+    </LinearLayout>
+</RelativeLayout>

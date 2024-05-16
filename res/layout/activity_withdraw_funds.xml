@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activities.WithdrawFundsActivity">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_header_gradient_roundedbottom"
+        android:padding="15dp">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:background="@color/transparent"
+            android:padding="10dp"
+            android:rotationY="180"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_arrow" />
+
+        <RelativeLayout
+            android:id="@+id/headerSubContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/img_logo" />
+
+            <TextView
+                android:id="@+id/pageTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/logo"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Withdraw Funds"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/projectDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="15dp"
+        app:cardElevation="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp">
+
+            <ImageView
+                android:id="@+id/projFirstImageDonate"
+                android:layout_width="140dp"
+                android:layout_height="80dp"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/img_default_projectimage" />
+
+            <TextView
+                android:id="@+id/projTitleWithdraw"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/projFirstImageDonate"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_margin="4dp"
+                android:text="Organic Farming Initiative"
+                android:textColor="@color/black"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/withdrawableFunds"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="4dp"
+                android:layout_toEndOf="@+id/projFirstImageDonate"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Withdrawable Funds: ₱5000"
+                android:textSize="13sp" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/withdrawHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/projectDetail"
+        android:layout_marginStart="16sp"
+        android:layout_marginEnd="16sp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Select Withdrawal Option"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/bankRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/withdrawHeader"
+        android:layout_above="@id/withdrawButton"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <Button
+        android:id="@+id/withdrawButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/white"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn_gradient_rounded"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Withdraw Funds"
+        android:textSize="20sp"
+        app:backgroundTint="@null"/>
+</RelativeLayout>

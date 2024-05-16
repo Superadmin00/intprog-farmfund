@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:id="@+id/mainLayout"
+    tools:context=".activities.DonateToProjectActivity">
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_header_gradient_roundedbottom"
+        android:padding="15dp">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="60dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:background="@color/transparent"
+            android:padding="10dp"
+            android:rotationY="180"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_arrow" />
+
+        <RelativeLayout
+            android:id="@+id/headerSubContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/img_logo" />
+
+            <TextView
+                android:id="@+id/pageTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/logo"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Donate To Project"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header"
+        android:layout_above="@id/confirmPaymentBTN">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/projectDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="5dp"
+                app:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/projFirstImageDonate"
+                        android:layout_width="150dp"
+                        android:layout_height="80dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="@drawable/img_default_projectimage" />
+
+                    <TextView
+                        android:id="@+id/projTitleDonate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/projFirstImageDonate"
+                        android:fontFamily="@font/poppins_bold"
+                        android:text="Organic Farming Initiative"
+                        android:textColor="@color/black"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:id="@+id/projFundGoalDonate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toEndOf="@+id/projFirstImageDonate"
+                        android:fontFamily="@font/poppins_semibold"
+                        android:text="P40,000.00"
+                        android:textSize="13sp" />
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <RelativeLayout
+                android:id="@+id/paymentLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/projectDetail"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="-1dp"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp">
+
+                <TextView
+                    android:id="@+id/selectAmountLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Select Amount"
+                    android:textColor="@color/black"
+                    android:textSize="21sp" />
+
+                <GridLayout
+                    android:id="@+id/gridAmountsLayout"
+                    android:layout_width="300dp"
+                    android:layout_height="200dp"
+                    android:layout_below="@id/selectAmountLabel"
+                    android:layout_centerHorizontal="true"
+                    android:columnCount="2"
+                    android:rowCount="2">
+
+                    <CheckBox
+                        android:id="@+id/box50"
+                        style="@style/DonationAmountsCheckboxes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:text="50" />
+
+                    <CheckBox
+                        android:id="@+id/box100"
+                        style="@style/DonationAmountsCheckboxes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:text="100" />
+
+                    <CheckBox
+                        android:id="@+id/box500"
+                        style="@style/DonationAmountsCheckboxes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:text="500" />
+
+                    <CheckBox
+                        android:id="@+id/box1000"
+                        style="@style/DonationAmountsCheckboxes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:text="1000" />
+                </GridLayout>
+
+                <RelativeLayout
+                    android:id="@+id/gradientLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/gridAmountsLayout">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="15dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/btn_gradient_rounded" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:background="@color/white"
+                        android:fontFamily="@font/poppins_bold"
+                        android:paddingStart="3dp"
+                        android:paddingEnd="3dp"
+                        android:text="or"
+                        android:textSize="20sp" />
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/customAmountEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/gradientLine"
+                    android:background="@drawable/bg_rounded_corners"
+                    android:backgroundTint="@color/grey"
+                    android:fontFamily="@font/poppins_bold"
+                    android:gravity="center"
+                    android:hint="Enter Amount Manually"
+                    android:inputType="numberDecimal"
+                    android:padding="8dp"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/selectPayLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/customAmountEditText"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Select Payment Method"
+                    android:textColor="@color/black"
+                    android:textSize="21sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/paymethodRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/selectPayLabel" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+    <Button
+        android:id="@+id/confirmPaymentBTN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/btn_gradient_rounded"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Confirm Payment"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:backgroundTint="@null"/>
+</RelativeLayout>
