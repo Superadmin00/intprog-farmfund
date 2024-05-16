@@ -9,11 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.intprog.farmfund.R
 import com.intprog.farmfund.dataclasses.BankInfo
 
-// BankInfoAdapter class
-class BankInfoAdapter(private val bankList: List<BankInfo>) : RecyclerView.Adapter<BankInfoViewHolder>() {
+class BankInfoAdapter(private val bankList: List<BankInfo>) :
+    RecyclerView.Adapter<BankInfoViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BankInfoViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_bank_option, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_bank_option, parent, false)
         return BankInfoViewHolder(view)
     }
 

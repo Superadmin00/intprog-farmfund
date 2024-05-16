@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.intprog.farmfund.R
 import com.intprog.farmfund.activities.HolderLoginRegisterActivity
+import com.intprog.farmfund.activities.TransactionHistoryActivity
 import com.intprog.farmfund.activities.WelcomeActivity
 import com.intprog.farmfund.databinding.FragmentProfilePageBinding
 
@@ -80,6 +82,7 @@ class ProfilePageFragment : Fragment() {
                 startActivity(intent)
             }
 
+            binding.gotoMyProjectsBTN.visibility = View.GONE //Hide gotoMyProjectsBTN
             binding.gotoLogoutBTN.visibility = View.GONE //Hide the gotoLogoutBTN
             binding.gotoPayMethodBTN.visibility = View.GONE //Hide the gotoPayMethodBTN
 
@@ -88,10 +91,33 @@ class ProfilePageFragment : Fragment() {
                 RelativeLayout.LayoutParams.MATCH_PARENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT
             )
+
+            // Convert 20dp to pixels
+            val marginStartEnd = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 20f, resources.displayMetrics
+            ).toInt()
+
+            // Set margins
+            layoutParams.setMargins(marginStartEnd, 0, marginStartEnd, 0)
+
             layoutParams.addRule(RelativeLayout.BELOW, R.id.gotoTransacHistoryBTN)
 
             // Set the LayoutParams on the button
             binding.gotoSettingsBTN.layoutParams = layoutParams
+
+        }
+
+        binding.gotoFavProjectsBTN.setOnClickListener {
+            //Code to navigate to FavoriteProjectsFragment
+        }
+
+        binding.gotoTransacHistoryBTN.setOnClickListener {
+            val intent = Intent(activity, TransactionHistoryActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.gotoPayMethodBTN.setOnClickListener {
+            //Code to go to Payment Methods Activity
         }
 
         binding.gotoLogoutBTN.setOnClickListener {

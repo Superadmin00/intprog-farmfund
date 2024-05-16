@@ -13,7 +13,8 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="15dp"
-        android:background="@color/white"
+        android:background="@drawable/bg_rounded_corners"
+        android:backgroundTint="@color/white"
         android:padding="15dp">
 
         <RelativeLayout
@@ -181,10 +182,51 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/gotoPayMethodBTN"
+        android:id="@+id/gotoMyProjectsBTN"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/gotoTransacHistoryBTN"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/bg_rounded_corners"
+        android:backgroundTint="@color/white"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/myprojects"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/ic_myprojects"
+            android:backgroundTint="@color/green"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@+id/myprojects"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Payment Method"
+            android:textSize="15sp"/>
+
+        <ImageButton
+            android:id="@+id/nextimage3"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:backgroundTint="@color/green"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_arrow"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/gotoPayMethodBTN"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gotoMyProjectsBTN"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="5dp"
@@ -212,7 +254,7 @@
             android:textSize="15sp"/>
 
         <ImageButton
-            android:id="@+id/nextimage3"
+            android:id="@+id/nextimage4"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:backgroundTint="@color/green"
