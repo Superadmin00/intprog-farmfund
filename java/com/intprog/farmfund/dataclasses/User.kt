@@ -7,5 +7,6 @@ data class User (
     var name: String,
     var fundPoints: Double,
     var verified: Boolean,
-    var status: String
+    var status: String,
+    val favoriteProjects: ArrayList<Long> = ArrayList()
 )

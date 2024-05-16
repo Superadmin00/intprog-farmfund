@@ -5,12 +5,67 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/favoritesRecyclerView"
+    <RelativeLayout
+        android:id="@+id/searchLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+
+        <RelativeLayout
+            android:id="@+id/searchContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="50dp"
+            android:background="@drawable/bg_circleshape"
+            android:backgroundTint="@color/grey"
+            android:padding="4dp">
+
+            <ImageButton
+                android:id="@+id/searchIcon"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/bg_circleshape"
+                android:backgroundTint="@color/green"
+                android:padding="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_search" />
+
+            <EditText
+                android:id="@+id/searchBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@+id/searchIcon"
+                android:background="@null"
+                android:fontFamily="@font/poppins_semibold"
+                android:hint="Search..."
+                android:textColor="#929292"
+                android:textColorHint="#929292"
+                android:textSize="15sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"
-        android:paddingBottom="78dp"
-        android:clipToPadding="false"/>
+        android:layout_below="@id/searchLayout"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/projectsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:clipToPadding="false"
+            android:paddingBottom="78dp" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </RelativeLayout>
