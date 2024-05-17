@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.intprog.farmfund.R
+import com.intprog.farmfund.activities.EditProfileActivity
 import com.intprog.farmfund.activities.HolderLoginRegisterActivity
 import com.intprog.farmfund.activities.TransactionHistoryActivity
 import com.intprog.farmfund.activities.WelcomeActivity
@@ -104,6 +105,13 @@ class ProfilePageFragment : Fragment() {
 
             // Set the LayoutParams on the button
             binding.gotoSettingsBTN.layoutParams = layoutParams
+
+        } else {
+            // If user is authenticated, set the click listener for editProfileBTN to navigate to EditProfileActivity
+            binding.editProfileBTN.setOnClickListener {
+                val intent = Intent(activity, EditProfileActivity::class.java)
+                startActivity(intent)
+            }
 
         }
 

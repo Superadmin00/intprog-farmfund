@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
     app:cardCornerRadius="20dp"
     app:cardElevation="5dp"
-    app:cardUseCompatPadding="true"
     app:rippleColor="@color/green">
 
     <RelativeLayout
@@ -27,8 +29,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/projectImage1"
             android:layout_centerVertical="true"
-            android:layout_margin="10dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_toStartOf="@id/seeMoreText"
             android:clickable="false"
             android:fontFamily="@font/poppins_bold"
@@ -44,11 +48,15 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/projectImage1"
             android:layout_alignParentEnd="true"
-            android:layout_margin="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:clickable="false"
             android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/grey"
             android:text="See more... "
-            android:textSize="20sp" />
+            android:textSize="15sp" />
     </RelativeLayout>
 
     <ImageButton

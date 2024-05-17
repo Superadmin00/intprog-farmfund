@@ -25,12 +25,12 @@ class TransactionHistoryActivity : AppCompatActivity() {
         // Dummy data pa goyyyyyyyyyyyyyyyyyyyyyyy
         val transactions = listOf(
             Transaction(R.drawable.ic_deposit, "Transaction 1", "Deposit", "05/25/2024", "03:12 PM"),
-            Transaction(R.drawable.ic_deposit, "Transaction 2", "Withdraw", "05/25/2024", "03:12 PM"),
+            Transaction(R.drawable.ic_withdraw, "Transaction 2", "Withdraw", "05/25/2024", "03:12 PM"),
             Transaction(R.drawable.ic_deposit, "Transaction 3", "Deposit", "05/25/2024", "03:12 PM"),
-            Transaction(R.drawable.ic_deposit, "Transaction 4", "Donate", "05/25/2024", "03:12 PM"),
+            Transaction(R.drawable.ic_donate, "Transaction 4", "Donate", "05/25/2024", "03:12 PM"),
             Transaction(R.drawable.ic_deposit, "Transaction 5", "Deposit", "05/25/2024", "03:12 PM"),
-            Transaction(R.drawable.ic_deposit, "Transaction 6", "Withdraw", "05/25/2024", "03:12 PM"),
-            Transaction(R.drawable.ic_deposit, "Transaction 7", "Donate", "05/25/2024", "03:12 PM")
+            Transaction(R.drawable.ic_withdraw, "Transaction 6", "Withdraw", "05/25/2024", "03:12 PM"),
+            Transaction(R.drawable.ic_donate, "Transaction 7", "Donate", "05/25/2024", "03:12 PM")
         )
 
         // Set layout manager for transactionsRecyclerView

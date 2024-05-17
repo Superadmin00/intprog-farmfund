@@ -125,7 +125,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/donorNumber"
-                android:layout_centerHorizontal="true"
                 android:fontFamily="@font/poppins_semibold"
                 android:justificationMode="inter_word"
                 android:text="Support local farmers in adopting sustainable and organic farming practices. Funds will be used to provide training, organic seeds, and equipment to enhance crop yield without harming the environment. "
@@ -137,7 +136,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/projectDescription"
-                android:layout_centerHorizontal="true"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:justificationMode="inter_word"
@@ -155,6 +153,7 @@
                 app:cardCornerRadius="15dp">
 
                 <RelativeLayout
+                    android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="10dp">
