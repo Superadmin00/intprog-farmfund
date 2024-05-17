@@ -30,14 +30,14 @@ class VouchersCenterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val vouchers = listOf(
-            Voucher(1, 20, R.drawable.ic_globe_logo, "Globe Prepaid Load Credits"),
-            Voucher(2, 50, R.drawable.ic_globe_logo, "Globe Prepaid Load Credits"),
-            Voucher(3, 100, R.drawable.ic_globe_logo, "Globe Prepaid Load Credits"),
-            Voucher(4, 200, R.drawable.ic_globe_logo, "Globe Prepaid Load Credits"),
-            Voucher(5, 20, R.drawable.ic_globe_logo, "SMART Prepaid Load Credits"),
-            Voucher(6, 50, R.drawable.ic_globe_logo, "SMART Prepaid Load Credits"),
-            Voucher(7, 100, R.drawable.ic_globe_logo, "SMART Prepaid Load Credits"),
-            Voucher(8, 200, R.drawable.img_valo, "SMART Prepaid Load Credits")
+            Voucher(1, 100, R.drawable.ic_globe_logo, "Globe Prepaid Load Credits"),
+            Voucher(2, 250, R.drawable.ic_globe_logo, "Globe Prepaid Load Credits"),
+            Voucher(3, 500, R.drawable.ic_globe_logo, "Globe Prepaid Load Credits"),
+            Voucher(4, 100, R.drawable.ic_smart, "SMART Prepaid Load Credits"),
+            Voucher(5, 250, R.drawable.ic_smart, "SMART Prepaid Load Credits"),
+            Voucher(6, 500, R.drawable.ic_smart, "SMART Prepaid Load Credits"),
+            Voucher(7, 1000, R.drawable.img_valo, "Valorant Points | Game Credits"),
+            Voucher(8, 2500, R.drawable.img_valo, "Valorant Points | Game Credits")
         )
         binding.vouchersRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.vouchersRecyclerView.adapter = VoucherAdapter(vouchers)

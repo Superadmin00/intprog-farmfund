@@ -12,33 +12,35 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RelativeLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.intprog.farmfund.R
 import com.intprog.farmfund.activities.EditProfileActivity
 import com.intprog.farmfund.activities.HolderLoginRegisterActivity
 import com.intprog.farmfund.activities.SettingsActivity
 import com.intprog.farmfund.activities.TransactionHistoryActivity
-import com.intprog.farmfund.activities.WelcomeActivity
 import com.intprog.farmfund.databinding.FragmentProfilePageBinding
 
 class ProfilePageFragment : Fragment() {
 
     private var _binding: FragmentProfilePageBinding? = null
-
-    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
+    private lateinit var storageReference: StorageReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         _binding = FragmentProfilePageBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
+        storageReference = FirebaseStorage.getInstance().reference
         val user = auth.currentUser
 
         user?.let { currentUser ->
@@ -68,6 +70,7 @@ class ProfilePageFragment : Fragment() {
                     // Handle any errors
                 }
         }
+        loadProfileImage()
         return binding.root
     }
 
@@ -150,5 +153,26 @@ class ProfilePageFragment : Fragment() {
                 Toast.makeText(context, "Logout Successful.", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun loadProfileImage() {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        userId?.let { uid ->
+            val profileImageRef = storageReference.child("profile_images/$uid.jpg")
+            profileImageRef.downloadUrl.addOnSuccessListener { uri ->
+                Glide.with(requireContext())
+                    .load(uri)
+                    .placeholder(R.drawable.ic_default_pfp) // Placeholder image while loading
+                    .error(R.drawable.ic_default_pfp) // Error image if loading fails
+                    .into(binding.imagePlaceholder)
+            }.addOnFailureListener {
+                // Handle any errors
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

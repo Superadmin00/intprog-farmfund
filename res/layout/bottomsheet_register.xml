@@ -203,7 +203,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/enterConfirmPasswordLayout"
             android:layout_marginTop="8dp"
-            android:background="@drawable/btn_gradient_rounded"
+            android:background="@drawable/btn_solid_rounded"
             android:fontFamily="@font/poppins_bold"
             android:text="Register"
             android:textColor="@color/white"

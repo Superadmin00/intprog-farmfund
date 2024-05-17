@@ -171,7 +171,7 @@
                 android:layout_marginStart="5dp"
                 android:fontFamily="@font/poppins_bold"
                 android:text="Forgot Password?"
-                android:textColor="#21ad42"
+                android:textColor="@color/green"
                 android:textSize="15sp" />
         </LinearLayout>
 

@@ -74,17 +74,30 @@
             android:layout_alignParentTop="true"/>
 
         <RelativeLayout
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:id="@+id/editImageContainer"
             android:layout_height="wrap_content"
             android:layout_below="@id/containerHeader"
             android:gravity="center"
             android:layout_width="match_parent">
-            <ImageView
-                android:id="@+id/imagePlaceholder"
-                android:layout_height="100dp"
-                android:layout_width="100dp"
-                android:background="@drawable/ic_default_pfp"/>
+
+            <androidx.cardview.widget.CardView
+                app:cardBackgroundColor="#00000000"
+                app:cardElevation="0dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                app:cardCornerRadius="75dp">
+
+                <ImageView
+                    android:id="@+id/imagePlaceholder"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:onClick="onImagePlaceholderClick"/>
+            </androidx.cardview.widget.CardView>
         </RelativeLayout>
+
 
         <RelativeLayout
             android:id="@+id/editNameContainer"
@@ -112,7 +125,7 @@
                 android:layout_toLeftOf="@+id/editNameIcon"
                 android:fontFamily="@font/poppins_semibold"
                 android:background="@android:color/transparent"
-                android:text="Sample Name"
+                android:hint="Name"
                 android:textColor="#c5c5c5"
                 android:singleLine="true"
                 android:textSize="13sp" />
@@ -155,7 +168,7 @@
                 android:layout_toLeftOf="@+id/editEmailIcon"
                 android:fontFamily="@font/poppins_semibold"
                 android:background="@android:color/transparent"
-                android:text="sample@gmail.com"
+                android:hint="Email"
                 android:textColor="#c5c5c5"
                 android:singleLine="true"
                 android:textSize="13sp" />
@@ -198,7 +211,7 @@
                 android:layout_toLeftOf="@+id/editNumberIcon"
                 android:fontFamily="@font/poppins_semibold"
                 android:background="@android:color/transparent"
-                android:text="null"
+                android:hint="Phone Number"
                 android:textColor="#c5c5c5"
                 android:singleLine="true"
                 android:textSize="13sp" />

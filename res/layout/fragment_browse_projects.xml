@@ -29,9 +29,8 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:src="@drawable/ic_search"
+                android:background="@color/grey"
                 android:scaleType="fitCenter"
-                android:background="@drawable/bg_circleshape"
-                android:backgroundTint="@color/green"
                 android:padding="5dp"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
@@ -40,14 +39,14 @@
 
             <EditText
                 android:id="@+id/searchBar"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/poppins_semibold"
-                android:layout_marginStart="8dp"
                 android:layout_toEndOf="@+id/searchIcon"
                 android:textColor="#929292"
                 android:textColorHint="#929292"
+                android:layout_marginRight="16dp"
                 android:hint="Search..."
                 android:textSize="15sp"
                 android:background="@null"/>
