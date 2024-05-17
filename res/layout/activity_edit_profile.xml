@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".activities.EditProfileActivity">
 
     <RelativeLayout
@@ -46,47 +47,184 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="Edit Profile"
                 android:textColor="@color/white"
-                android:textSize="25sp" />
+                android:textSize="23sp" />
         </RelativeLayout>
     </RelativeLayout>
 
-    <ScrollView
+    <RelativeLayout
+        android:id="@+id/editAccountFieldsContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/header">
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_gradient_rounded_nolines"
+        android:padding="16dp">
+        <TextView
+            android:id="@+id/containerHeader"
             android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Account Information"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"/>
+
+        <RelativeLayout
+            android:id="@+id/editImageContainer"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/containerHeader"
+            android:gravity="center"
+            android:layout_width="match_parent">
+            <ImageView
+                android:id="@+id/imagePlaceholder"
+                android:layout_height="100dp"
+                android:layout_width="100dp"
+                android:background="@drawable/ic_default_pfp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/editNameContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editImageContainer"
             android:padding="8dp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/firstNameLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColorHint="@color/darkgrey"
-                android:layout_margin="4dp"
-                app:boxCornerRadiusBottomEnd="10dp"
-                app:boxCornerRadiusBottomStart="10dp"
-                app:boxCornerRadiusTopEnd="10dp"
-                app:boxCornerRadiusTopStart="10dp"
-                app:boxStrokeColor="@color/green"
-                app:boxStrokeWidth="2dp"
-                app:boxStrokeWidthFocused="3dp"
-                app:hintTextColor="@color/green">
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Full Name"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/firstNameEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:hint="Email"
-                    android:singleLine="true"
-                    android:textSize="15sp" />
-            </com.google.android.material.textfield.TextInputLayout>
+            <EditText
+                android:id="@+id/fullnamePlaceholder"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:layout_toLeftOf="@+id/editNameIcon"
+                android:fontFamily="@font/poppins_semibold"
+                android:background="@android:color/transparent"
+                android:text="Sample Name"
+                android:textColor="#c5c5c5"
+                android:textSize="13sp" />
 
+            <ImageButton
+                android:id="@+id/editNameIcon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentEnd="true"
+                android:scaleType="fitXY"
+                android:background="@color/transparent"
+                android:layout_centerVertical="true"
+                android:src="@drawable/edit_icon_selector"
+                android:onClick="toggleEditMode" />
         </RelativeLayout>
-    </ScrollView>
 
+        <RelativeLayout
+            android:id="@+id/editEmailContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editNameContainer"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Email"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+
+            <EditText
+                android:id="@+id/emailPlaceholder"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:layout_toLeftOf="@+id/editEmailIcon"
+                android:fontFamily="@font/poppins_semibold"
+                android:background="@android:color/transparent"
+                android:text="sample@gmail.com"
+                android:textColor="#c5c5c5"
+                android:textSize="13sp" />
+
+            <ImageButton
+                android:id="@+id/editEmailIcon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="fitXY"
+                android:background="@color/transparent"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/edit_icon_selector"
+                android:onClick="toggleEditMode" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/editNumberContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editEmailContainer"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Phone No."
+                android:textColor="@color/white"
+                android:textSize="17sp" />
+
+            <EditText
+                android:id="@+id/numberPlaceholder"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:layout_toLeftOf="@+id/editNumberIcon"
+                android:fontFamily="@font/poppins_semibold"
+                android:background="@android:color/transparent"
+                android:text="null"
+                android:textColor="#c5c5c5"
+                android:textSize="13sp" />
+
+            <ImageButton
+                android:id="@+id/editNumberIcon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="fitXY"
+                android:background="@color/transparent"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/edit_icon_selector"
+                android:onClick="toggleEditMode"/>
+        </RelativeLayout>
+    </RelativeLayout>
+    <Button
+
+        android:id="@+id/saveUpdatesButton"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_gradient_rounded"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="SAVE"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:backgroundTint="@null"/>
 </RelativeLayout>
