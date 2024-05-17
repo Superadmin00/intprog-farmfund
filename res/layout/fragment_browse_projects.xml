@@ -39,13 +39,14 @@
 
             <EditText
                 android:id="@+id/searchBar"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/poppins_semibold"
                 android:layout_toEndOf="@+id/searchIcon"
                 android:textColor="#929292"
                 android:textColorHint="#929292"
+                android:layout_marginRight="16dp"
                 android:hint="Search..."
                 android:textSize="15sp"
                 android:background="@null"/>

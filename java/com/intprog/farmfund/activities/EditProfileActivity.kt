@@ -1,18 +1,27 @@
 package com.intprog.farmfund.activities
 
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.InputType
-import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.intprog.farmfund.R
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.reflect.KMutableProperty0
 
 class EditProfileActivity : AppCompatActivity() {
 
@@ -23,12 +32,16 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var editEmailIcon: ImageButton
     private lateinit var editNumberIcon: ImageButton
     private lateinit var saveUpdatesButton: Button
+    private lateinit var imagePlaceholder: ImageView
     private var isFullNameEditable = false
     private var isEmailEditable = false
     private var isPhoneNumEditable = false
     private var originalFullName: String? = null
     private var originalEmail: String? = null
     private var originalPhoneNum: String? = null
+    private var photoURI: Uri? = null
+    private val REQUEST_IMAGE_CAPTURE = 1
+    private val REQUEST_IMAGE_PICK = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +55,7 @@ class EditProfileActivity : AppCompatActivity() {
         editEmailIcon = findViewById(R.id.editEmailIcon)
         editNumberIcon = findViewById(R.id.editNumberIcon)
         saveUpdatesButton = findViewById(R.id.saveUpdatesButton)
+        imagePlaceholder = findViewById(R.id.imagePlaceholder)
 
         // Initially disable edit texts and set input type to none
         fullNameEditText.isEnabled = false
@@ -51,48 +65,19 @@ class EditProfileActivity : AppCompatActivity() {
 
         // Set click listener for edit icons
         editFullNameIcon.setOnClickListener {
-            if (!isFullNameEditable) {
-                it.isSelected = !it.isSelected
-                fullNameEditText.isEnabled = true
-                fullNameEditText.inputType = InputType.TYPE_CLASS_TEXT
-                isFullNameEditable = true
-                Toast.makeText(this, "Full Name is now editable", Toast.LENGTH_SHORT).show()
-            } else {
-                fullNameEditText.isEnabled = false
-                fullNameEditText.inputType = InputType.TYPE_NULL
-                isFullNameEditable = false
-                Toast.makeText(this, "Done editing full name", Toast.LENGTH_SHORT).show()
-            }
+            toggleEditText(fullNameEditText, it as ImageButton, ::isFullNameEditable)
         }
 
         editEmailIcon.setOnClickListener {
-            if (!isEmailEditable) {
-                it.isSelected = !it.isSelected
-                emailEditText.isEnabled = true
-                emailEditText.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS  // Set input type to email
-                isEmailEditable = true
-                Toast.makeText(this, "Email is now editable", Toast.LENGTH_SHORT).show()
-            } else {
-                emailEditText.isEnabled = false
-                emailEditText.inputType = InputType.TYPE_NULL
-                isEmailEditable = false
-                Toast.makeText(this, "Done editing email", Toast.LENGTH_SHORT).show()
-            }
+            toggleEditText(emailEditText, it as ImageButton, ::isEmailEditable, InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS)
         }
 
         editNumberIcon.setOnClickListener {
-            if (!isPhoneNumEditable) {
-                it.isSelected = !it.isSelected
-                phoneNumEditText.isEnabled = true
-                phoneNumEditText.inputType = InputType.TYPE_CLASS_NUMBER
-                isPhoneNumEditable = true
-                Toast.makeText(this, "Phone Number is now editable", Toast.LENGTH_SHORT).show()
-            } else {
-                phoneNumEditText.isEnabled = false
-                phoneNumEditText.inputType = InputType.TYPE_NULL
-                isPhoneNumEditable = false
-                Toast.makeText(this, "Done editing phone number", Toast.LENGTH_SHORT).show()
-            }
+            toggleEditText(phoneNumEditText, it as ImageButton, ::isPhoneNumEditable, InputType.TYPE_CLASS_NUMBER)
+        }
+
+        imagePlaceholder.setOnClickListener {
+            showImagePickerOptions()
         }
 
         // Get Firebase references
@@ -109,13 +94,22 @@ class EditProfileActivity : AppCompatActivity() {
                 .addOnSuccessListener { querySnapshot ->
                     for (document in querySnapshot.documents) {
                         val userData = document.data
-                        val userName = userData?.get("name") as? String  // Use as? for null safety
+                        val userName = userData?.get("name") as? String
                         val userEmail = userData?.get("email") as? String
                         val userPhoneNumber = userData?.get("phoneNum") as? String
+                        val userImageURL = userData?.get("userImageURL") as? String
 
                         fullNameEditText.text = userName?.let { Editable.Factory.getInstance().newEditable(it) } ?: Editable.Factory.getInstance().newEditable("")
                         emailEditText.text = userEmail
                         phoneNumEditText.text = userPhoneNumber ?: "Not Set"
+                        userImageURL?.let { url ->
+                            Glide.with(this).load(url).placeholder(R.drawable.ic_default_pfp).into(imagePlaceholder)
+                        } ?: imagePlaceholder.setImageResource(R.drawable.ic_default_pfp)
+
+                        // Save original values
+                        originalFullName = userName
+                        originalEmail = userEmail
+                        originalPhoneNum = userPhoneNumber
                     }
                 }
                 .addOnFailureListener { exception ->
@@ -162,7 +156,10 @@ class EditProfileActivity : AppCompatActivity() {
                             document.reference.update(updates)
                                 .addOnSuccessListener {
                                     Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show()
-                                    // ... (Update original values and reset edit text states)
+                                    // Update original values and reset edit text states
+                                    originalFullName = updatedFullName
+                                    originalEmail = updatedEmail
+                                    originalPhoneNum = updatedPhoneNum
                                 }
                                 .addOnFailureListener { exception ->
                                     Toast.makeText(this, "Error updating profile: $exception", Toast.LENGTH_SHORT).show()
@@ -179,20 +176,100 @@ class EditProfileActivity : AppCompatActivity() {
             }
         }
     }
-    fun toggleEditMode(view: View) {
-        val editText = findViewById<EditText>(R.id.fullnamePlaceholder) // Replace with your EditText ID
-        val editIcon = view as ImageButton
 
-        if (editText.isEnabled) {
-            // Editing mode enabled, switch to non-editable and change icon
+    private fun toggleEditText(editText: TextView, icon: ImageButton, flag: KMutableProperty0<Boolean>, inputType: Int = InputType.TYPE_CLASS_TEXT) {
+        if (!flag.get()) {
+            icon.isSelected = !icon.isSelected
+            editText.isEnabled = true
+            editText.inputType = inputType
+            flag.set(true)
+            Toast.makeText(this, "${editText.hint} is now editable", Toast.LENGTH_SHORT).show()
+        } else {
             editText.isEnabled = false
             editText.inputType = InputType.TYPE_NULL
-            editIcon.setImageResource(R.drawable.ic_edit)
-        } else {
-            // Editing mode disabled, switch to editable and change icon
-            editText.isEnabled = true
-            editText.inputType = InputType.TYPE_TEXT_VARIATION_PERSON_NAME
-            editIcon.setImageResource(R.drawable.ic_check)
+            flag.set(false)
+            Toast.makeText(this, "Done editing ${editText.hint}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showImagePickerOptions() {
+        val options = arrayOf("Choose from Gallery")
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Select Profile Picture")
+        builder.setItems(options) { dialog, which ->
+            when (which) {
+                0 -> pickImageFromGallery()
+            }
+        }
+        builder.show()
+    }
+
+    private fun pickImageFromGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, REQUEST_IMAGE_PICK)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            when (requestCode) {
+                REQUEST_IMAGE_CAPTURE -> {
+                    photoURI?.let {
+                        uploadImageToFirebase(it)
+                    }
+                }
+                REQUEST_IMAGE_PICK -> {
+                    data?.data?.let {
+                        photoURI = it
+                        uploadImageToFirebase(it)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun uploadImageToFirebase(fileUri: Uri) {
+        val storageReference = FirebaseStorage.getInstance().reference
+        val user = FirebaseAuth.getInstance().currentUser
+        val userId = user?.uid
+
+        userId?.let {
+            val fileReference = storageReference.child("profile_images/$it.jpg")
+            fileReference.putFile(fileUri)
+                .addOnSuccessListener {
+                    fileReference.downloadUrl.addOnSuccessListener { uri ->
+                        val imageUrl = uri.toString()
+                        saveImageUrlToFirestore(imageUrl)
+                    }
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
+    private fun saveImageUrlToFirestore(imageUrl: String) {
+        val user = FirebaseAuth.getInstance().currentUser
+        user?.let {
+            val userId = it.uid
+            val db = FirebaseFirestore.getInstance()
+
+            db.collection("users").whereEqualTo("userId", userId).get()
+                .addOnSuccessListener { querySnapshot ->
+                    for (document in querySnapshot.documents) {
+                        document.reference.update("userImageURL", imageUrl)
+                            .addOnSuccessListener {
+                                Toast.makeText(this, "Profile picture updated", Toast.LENGTH_SHORT).show()
+                                Glide.with(this).load(imageUrl).into(imagePlaceholder)
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this, "Failed to update profile picture URL", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                }
+                .addOnFailureListener {
+                    Toast.makeText(this, "Failed to find user document", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 }

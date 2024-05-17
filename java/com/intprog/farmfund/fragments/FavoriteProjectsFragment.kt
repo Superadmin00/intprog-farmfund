@@ -39,7 +39,6 @@ class FavoriteProjectsFragment : Fragment(), FavoriteUpdateListener {
         val view = inflater.inflate(R.layout.fragment_favorite_projects, container, false)
         auth = FirebaseAuth.getInstance()
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
-
         swipeRefreshLayout.isRefreshing = true
         fetchProjects()
 

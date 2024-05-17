@@ -157,7 +157,7 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                                 name = name,
                                 fundPoints = 0.0,
                                 verified = false,
-                                status = "Active"
+                                status = "Active",
                             )
                             db.collection("users")
                                 .add(newUser)

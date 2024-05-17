@@ -77,7 +77,7 @@
             android:fontFamily="@font/poppins_semibold"
             android:text="Or use e-mail or mobile number"
             android:textColor="@color/darkgrey"
-            android:textSize="15sp" />
+            android:textSize="12sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailNumberInputLayout"
@@ -145,7 +145,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/passwordTextInputLayout"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="8dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
             tools:ignore="UseSwitchCompatOrMaterialXml">
@@ -180,8 +180,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rememberMeLayout"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/btn_solid_rounded"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/btn_gradient_rounded"
             android:fontFamily="@font/poppins_bold"
             android:gravity="center"
             android:text="Login"
@@ -195,7 +195,7 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/loginBTN"
             android:gravity="center_horizontal"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:orientation="horizontal">
 
             <TextView
@@ -204,7 +204,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="Don't have an account?"
                 android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/registerHyperLinkText"
@@ -214,7 +214,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="Register"
                 android:textColor="@color/green"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -230,7 +230,6 @@
                 android:layout_width="250dp"
                 android:layout_height="2dp"
                 android:layout_centerInParent="true"
-                android:layout_centerVertical="true"
                 android:background="@color/black"
                 android:fontFamily="@font/poppins_bold"
                 android:text="."
@@ -263,7 +262,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="Continue as"
                 android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/guestHyperLinkText"
@@ -273,7 +272,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="Guest"
                 android:textColor="@color/green"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 

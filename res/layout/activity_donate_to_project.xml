@@ -74,6 +74,7 @@
                 app:cardUseCompatPadding="true">
 
                 <RelativeLayout
+                    android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -125,7 +126,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Select Amount"
                     android:textColor="@color/black"
-                    android:textSize="21sp" />
+                    android:textSize="20sp" />
 
                 <GridLayout
                     android:id="@+id/gridAmountsLayout"
@@ -175,6 +176,7 @@
 
                 <RelativeLayout
                     android:id="@+id/gradientLine"
+                    android:layout_margin="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/gridAmountsLayout">
@@ -195,7 +197,7 @@
                         android:paddingStart="3dp"
                         android:paddingEnd="3dp"
                         android:text="or"
-                        android:textSize="20sp" />
+                        android:textSize="13sp" />
                 </RelativeLayout>
 
                 <EditText
@@ -209,8 +211,8 @@
                     android:gravity="center"
                     android:hint="Enter Amount Manually"
                     android:inputType="numberDecimal"
-                    android:padding="8dp"
-                    android:textSize="22sp" />
+                    android:padding="16dp"
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/selectPayLabel"
@@ -221,7 +223,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Select Payment Method"
                     android:textColor="@color/black"
-                    android:textSize="21sp" />
+                    android:textSize="20sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/paymethodRecyclerView"
