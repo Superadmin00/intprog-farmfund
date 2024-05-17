@@ -171,7 +171,7 @@
                 android:layout_marginStart="5dp"
                 android:fontFamily="@font/poppins_bold"
                 android:text="Forgot Password?"
-                android:textColor="#21ad42"
+                android:textColor="@color/green"
                 android:textSize="15sp" />
         </LinearLayout>
 
@@ -181,7 +181,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/rememberMeLayout"
             android:layout_marginTop="15dp"
-            android:background="@drawable/btn_gradient_rounded"
+            android:background="@drawable/btn_solid_rounded"
             android:fontFamily="@font/poppins_bold"
             android:gravity="center"
             android:text="Login"
