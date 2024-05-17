@@ -37,7 +37,7 @@ class VouchersCenterFragment : Fragment() {
             Voucher(5, 20, R.drawable.ic_globe_logo, "SMART Prepaid Load Credits"),
             Voucher(6, 50, R.drawable.ic_globe_logo, "SMART Prepaid Load Credits"),
             Voucher(7, 100, R.drawable.ic_globe_logo, "SMART Prepaid Load Credits"),
-            Voucher(8, 200, R.drawable.ic_globe_logo, "SMART Prepaid Load Credits")
+            Voucher(8, 200, R.drawable.img_valo, "SMART Prepaid Load Credits")
         )
         binding.vouchersRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.vouchersRecyclerView.adapter = VoucherAdapter(vouchers)

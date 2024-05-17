@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.intprog.farmfund.R
 import com.intprog.farmfund.activities.EditProfileActivity
 import com.intprog.farmfund.activities.HolderLoginRegisterActivity
+import com.intprog.farmfund.activities.SettingsActivity
 import com.intprog.farmfund.activities.TransactionHistoryActivity
 import com.intprog.farmfund.activities.WelcomeActivity
 import com.intprog.farmfund.databinding.FragmentProfilePageBinding
@@ -116,11 +117,15 @@ class ProfilePageFragment : Fragment() {
         }
 
         binding.gotoFavProjectsBTN.setOnClickListener {
-            //Code to navigate to FavoriteProjectsFragment
         }
 
         binding.gotoTransacHistoryBTN.setOnClickListener {
             val intent = Intent(activity, TransactionHistoryActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.gotoSettingsBTN.setOnClickListener {
+            val intent = Intent(activity, SettingsActivity::class.java)
             startActivity(intent)
         }
 

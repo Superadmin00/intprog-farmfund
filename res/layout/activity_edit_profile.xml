@@ -114,6 +114,7 @@
                 android:background="@android:color/transparent"
                 android:text="Sample Name"
                 android:textColor="#c5c5c5"
+                android:singleLine="true"
                 android:textSize="13sp" />
 
             <ImageButton
@@ -156,6 +157,7 @@
                 android:background="@android:color/transparent"
                 android:text="sample@gmail.com"
                 android:textColor="#c5c5c5"
+                android:singleLine="true"
                 android:textSize="13sp" />
 
             <ImageButton
@@ -198,6 +200,7 @@
                 android:background="@android:color/transparent"
                 android:text="null"
                 android:textColor="#c5c5c5"
+                android:singleLine="true"
                 android:textSize="13sp" />
 
             <ImageButton
