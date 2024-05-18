@@ -11,60 +11,37 @@ import com.intprog.farmfund.R
 import com.intprog.farmfund.dataclasses.Voucher
 
 class VoucherAdapter(private val vouchers: List<Voucher>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    // Define constants for the two types of items in RecyclerView
-    companion object {
-        private const val TYPE_FUND_DETAILS = 0
-        private const val TYPE_VOUCHER = 1
-    }
-
-    // ViewHolder for the fund details item
-    inner class FundDetailsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    RecyclerView.Adapter<VoucherAdapter.VoucherViewHolder>() {
 
     // ViewHolder for the voucher item
-    inner class VoucherViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
-    // Determine the type of the current item
-    override fun getItemViewType(position: Int): Int {
-        return if (position == 0) TYPE_FUND_DETAILS else TYPE_VOUCHER
+    inner class VoucherViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val voucherCost: TextView = itemView.findViewById(R.id.voucherCost)
+        val voucherBrandLogo: ImageView = itemView.findViewById(R.id.voucherBrandLogo)
+        val voucherTitle: TextView = itemView.findViewById(R.id.voucherTitle)
+        val voucherDescription: TextView = itemView.findViewById(R.id.voucherDescription)
+        val voucherCheckBox: CheckBox = itemView.findViewById(R.id.voucherCheckBox)
     }
 
-    // Inflate the appropriate layout based on the item type
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        return if (viewType == TYPE_FUND_DETAILS) {
-            val view = layoutInflater.inflate(R.layout.item_fundpoints_details, parent, false)
-            FundDetailsViewHolder(view)
-        } else {
-            val view = layoutInflater.inflate(R.layout.item_voucher, parent, false)
-            VoucherViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VoucherViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_voucher, parent, false)
+        return VoucherViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: VoucherViewHolder, position: Int) {
+        // Get the voucher data for this position
+        val voucher = vouchers[position]
+
+        // Bind the voucher data to the item
+        holder.voucherCost.text = "${voucher.voucherPoints}\nPoints"
+        holder.voucherBrandLogo.setImageResource(voucher.voucherLogo)
+        holder.voucherTitle.text = "${voucher.voucherPoints} Points"
+        holder.voucherDescription.text = voucher.voucherType
+
+        // Update the isChecked property of the voucher when the checkbox is checked/unchecked
+        holder.voucherCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            voucher.isChecked = isChecked
         }
     }
 
-    // Bind data to the item based on its type
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is VoucherViewHolder) {
-            // Get the voucher data for this position
-            val voucher = vouchers[position - 1] // Subtract 1 because the first position is occupied by FundDetailsViewHolder
-
-            // Bind the voucher data to the item
-            holder.itemView.apply {
-                findViewById<TextView>(R.id.voucherCost).text = "${voucher.voucherPoints}\nPoints"
-                findViewById<ImageView>(R.id.voucherBrandLogo).setImageResource(voucher.voucherLogo)
-                findViewById<TextView>(R.id.voucherTitle).text = "${voucher.voucherPoints} Points"
-                findViewById<TextView>(R.id.voucherDescription).text = voucher.voucherType
-
-                // Update the isChecked property of the voucher when the checkbox is checked/unchecked
-                val voucherCheckBox: CheckBox = findViewById(R.id.voucherCheckBox)
-                voucherCheckBox.setOnCheckedChangeListener { _, isChecked ->
-                    voucher.isChecked = isChecked
-                }
-            }
-        }
-        // No need to bind data if holder is FundDetailsViewHolder
-    }
-
-    // The total item count is the size of the vouchers list plus 1 for the FundDetailsViewHolder
-    override fun getItemCount() = vouchers.size + 1
+    override fun getItemCount() = vouchers.size
 }

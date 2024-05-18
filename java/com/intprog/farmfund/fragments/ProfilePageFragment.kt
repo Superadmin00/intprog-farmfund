@@ -66,7 +66,7 @@ class ProfilePageFragment : Fragment() {
                         val userData = document.data
                         val userName = userData?.get("name") as? String
                         val userEmail = userData?.get("email") as? String
-                        val userFundPoints = userData?.get("fundPoints") as? Double
+                        val userFundPoints = userData?.get("fundPoints") as? Number
                         val userPhoneNumber = userData?.get("phoneNum") as? String
 
                         Log.d("FirestoreData", "Name: $userName")
@@ -76,13 +76,14 @@ class ProfilePageFragment : Fragment() {
 
                         binding.profName.text = userName
                         binding.profEmail.text = userEmail
-                        binding.profFundPoints.text = userFundPoints?.toString() ?: "0.00"
+                        binding.profFundPoints.text = userFundPoints?.toDouble()?.toString() ?: "0.00"
                         binding.profNumber.text = userPhoneNumber ?: "(Not set)"
                     }
                     swipeRefreshLayout.isRefreshing = false
                 }
                 .addOnFailureListener { exception ->
                     swipeRefreshLayout.isRefreshing = false
+                    Log.e("FirestoreError", "Error retrieving user data", exception)
                     // Handle any errors
                 }
         }
