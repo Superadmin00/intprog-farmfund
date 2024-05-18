@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 import com.intprog.farmfund.databinding.BottomsheetRegisterBinding
 import com.intprog.farmfund.dataclasses.User
+import com.intprog.farmfund.objects.LoadingDialog
 
 class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
@@ -144,6 +145,8 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 binding.enterConfirmPasswordLayout.error = "Passwords don't match."
                 return@setOnClickListener
             } else {
+                LoadingDialog.show(requireContext(), false)
+
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(requireActivity()) { task ->
                         if (task.isSuccessful) {
@@ -175,6 +178,8 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                                         putString("password", password)
                                     }
                                 }
+                            //Close Loading dialog
+                            LoadingDialog.dismiss()
                             dismiss()
                             loginBottomSheetDialogFragment.show(
                                 parentFragmentManager,

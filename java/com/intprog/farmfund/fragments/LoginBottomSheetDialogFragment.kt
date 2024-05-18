@@ -142,15 +142,15 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 binding.emailNumberInputLayout.error = null
             }
 
+            //show loading dialog
             LoadingDialog.show(requireContext(), false)
 
             auth = FirebaseAuth.getInstance()
             auth.signInWithEmailAndPassword(emailOrNumber, password)
                 .addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
-
+                        //Close Loading dialog
                         LoadingDialog.dismiss()
-
                         user = auth.currentUser
                         Toast.makeText(context, "Login Successful.", Toast.LENGTH_SHORT).show()
                         val intent = Intent(context, NavigatorActivity::class.java)
