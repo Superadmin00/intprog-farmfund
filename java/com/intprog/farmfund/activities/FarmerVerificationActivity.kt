@@ -3,12 +3,15 @@ package com.intprog.farmfund.activities
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Rect
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewTreeObserver
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.Firebase
@@ -79,7 +82,13 @@ class FarmerVerificationActivity : AppCompatActivity() {
                 val builder = AlertDialog.Builder(this)
                 builder.setView(dialogView)
                 val alertDialog = builder.create()
+                alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 alertDialog.show()
+
+                val gotoHome: Button = alertDialog.findViewById(R.id.gotoHome)
+                gotoHome.setOnClickListener {
+                    alertDialog.dismiss()
+                }
 
                 // Dismiss the dialog and navigate to NavigatorActivity when the dialog is clicked
                 alertDialog.setOnDismissListener {
