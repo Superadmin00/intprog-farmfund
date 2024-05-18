@@ -54,7 +54,7 @@
         <TextView android:id="@+id/voucherDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/grey"
+            android:textColor="@color/darkgrey"
             android:text="For only 50 FundPoints, get 50 Globe Prepaid credits."
             android:fontFamily="@font/poppins_semibold"
             android:textSize="11sp"
