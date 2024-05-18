@@ -31,6 +31,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.intprog.farmfund.R
 import com.intprog.farmfund.activities.NavigatorActivity
 import com.intprog.farmfund.databinding.BottomsheetLoginBinding // This binding class corresponds to the bottomsheet_login.xml layout file
+import com.intprog.farmfund.objects.LoadingDialog
 
 class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
@@ -141,26 +142,15 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 binding.emailNumberInputLayout.error = null
             }
 
-            val loadingDialog = Dialog(requireActivity(), R.style.SemiTransparentDialog)
-            val loadingView = layoutInflater.inflate(R.layout.dialog_loading, null)
-            loadingDialog.setContentView(loadingView)
-            loadingDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-            val loadingImageView: ImageView = loadingDialog.findViewById(R.id.loadingImageView)
-            Glide.with(this).load(R.drawable.ic_loading).into(loadingImageView)
-
-            loadingDialog.setCancelable(false) // Prevents cancellation with the back button[^2^][3]
-            loadingDialog.setCanceledOnTouchOutside(false) // Prevents cancellation with a touch outside the dialog[^2^][3]
-
-            // To show the dialog
-            loadingDialog.show()
+            LoadingDialog.show(requireContext(), false)
 
             auth = FirebaseAuth.getInstance()
             auth.signInWithEmailAndPassword(emailOrNumber, password)
                 .addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
-                        // To dismiss the dialog when the task is done
-                        loadingDialog.dismiss()
+
+                        LoadingDialog.dismiss()
+
                         user = auth.currentUser
                         Toast.makeText(context, "Login Successful.", Toast.LENGTH_SHORT).show()
                         val intent = Intent(context, NavigatorActivity::class.java)
