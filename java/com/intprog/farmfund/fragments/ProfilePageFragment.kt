@@ -14,6 +14,7 @@ import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -32,6 +33,7 @@ class ProfilePageFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
     private lateinit var storageReference: StorageReference
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,6 +43,18 @@ class ProfilePageFragment : Fragment() {
         _binding = FragmentProfilePageBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
+        swipeRefreshLayout = binding.swipeRefreshLayout
+
+        loadUserProfile()
+
+        swipeRefreshLayout.setOnRefreshListener {
+            loadUserProfile()
+        }
+
+        return binding.root
+    }
+
+    private fun loadUserProfile() {
         val user = auth.currentUser
 
         user?.let { currentUser ->
@@ -65,13 +79,14 @@ class ProfilePageFragment : Fragment() {
                         binding.profFundPoints.text = userFundPoints?.toString() ?: "0.00"
                         binding.profNumber.text = userPhoneNumber ?: "(Not set)"
                     }
+                    swipeRefreshLayout.isRefreshing = false
                 }
                 .addOnFailureListener { exception ->
+                    swipeRefreshLayout.isRefreshing = false
                     // Handle any errors
                 }
         }
         loadProfileImage()
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -40,6 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/pageTitle"
             android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/black"
             android:text="Basic Info"
             android:textSize="16sp" />
 
@@ -186,6 +187,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/birthDateDialogLayout"
+            android:textColor="@color/black"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/poppins_bold"
             android:text="Address"
@@ -329,6 +331,7 @@
             android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins_bold"
             android:text="Contact Information"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <LinearLayout
@@ -407,6 +410,7 @@
             android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins_bold"
             android:text="Capture A Selfie"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <RelativeLayout

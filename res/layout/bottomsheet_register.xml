@@ -152,6 +152,7 @@
             app:boxStrokeWidth="2dp"
             app:boxStrokeWidthFocused="2dp"
             app:hintTextColor="@color/green"
+            android:textColorHint="@color/darkgrey"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -203,12 +204,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/enterConfirmPasswordLayout"
             android:layout_marginTop="8dp"
-            android:background="@drawable/btn_solid_rounded"
+            android:background="@drawable/btn_gradient_rounded"
             android:fontFamily="@font/poppins_bold"
             android:text="Register"
             android:textColor="@color/white"
             android:textSize="25sp"
-            app:backgroundTint="@null" />
+            app:backgroundTint="@null"/>
 
         <LinearLayout
             android:id="@+id/toLogin"

@@ -37,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/pageTitle"
             android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/black"
             android:text="Farm Location"
             android:textSize="16sp" />
 
@@ -74,6 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_below="@id/farmLocationLayout"
+            android:textColor="@color/black"
             android:fontFamily="@font/poppins_bold"
             android:text="Farm Details"
             android:textSize="16sp" />
@@ -132,7 +134,6 @@
             android:fontFamily="@font/poppins_bold"
             android:textColor="@color/red"
             android:textSize="13sp"
-            android:layout_marginStart="10dp"
             android:layout_below="@id/farmTypeSpinner"
             android:visibility="invisible"/>
 
