@@ -40,6 +40,7 @@
             android:layout_below="@id/pageTitle"
             android:fontFamily="@font/poppins_bold"
             android:text="Barangay Certification"
+            android:textColor="@color/black"
             android:textSize="14sp" />
 
         <RelativeLayout android:id="@+id/barangayCertUploadBTN"
@@ -90,6 +91,7 @@
             android:fontFamily="@font/poppins_bold"
             android:layout_marginTop="28dp"
             android:text="Any Government Issued ID"
+            android:textColor="@color/black"
             android:textSize="14sp" />
 
         <RelativeLayout android:id="@+id/validIDUploadBTN"
@@ -139,6 +141,7 @@
             android:fontFamily="@font/poppins_bold"
             android:layout_marginTop="28dp"
             android:text="Proof of Land Ownership\nor Lease Agreement"
+            android:textColor="@color/black"
             android:textSize="14sp" />
 
         <RelativeLayout android:id="@+id/landOwnershipLeaseBTN"
@@ -188,6 +191,7 @@
             android:fontFamily="@font/poppins_bold"
             android:layout_marginTop="28dp"
             android:text="(Optional)\nRegistry System for Basic Sectors\nin Agriculture (RSBSA) Enrollment Form"
+            android:textColor="@color/black"
             android:textSize="14sp" />
 
         <RelativeLayout android:id="@+id/rsbsaBTN"
