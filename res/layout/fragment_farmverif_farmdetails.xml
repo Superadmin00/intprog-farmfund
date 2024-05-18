@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/personalInfoContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView android:id="@+id/stepCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Step 2 of 3"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/pageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/stepCounter"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Farm Information"
+            android:textColor="@color/green"
+            android:textSize="25sp" />
+
+
+        <TextView
+            android:id="@+id/farmLocLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pageTitle"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Farm Location"
+            android:textSize="16sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/farmLocationLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/farmLocLabel"
+            android:layout_marginBottom="4dp"
+            android:textColorHint="@color/darkgrey"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxStrokeColor="@color/green"
+            app:boxStrokeWidth="2dp"
+            app:boxStrokeWidthFocused="3dp"
+            app:hintTextColor="@color/green">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/farmLocationInputField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:hint="Farm Address"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/nameHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_below="@id/farmLocationLayout"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Farm Details"
+            android:textSize="16sp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/farmAreaLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nameHeader"
+            android:layout_marginBottom="4dp"
+            android:textColorHint="@color/darkgrey"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            app:boxStrokeColor="@color/green"
+            app:boxStrokeWidth="2dp"
+            app:boxStrokeWidthFocused="3dp"
+            app:hintTextColor="@color/green">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/farmAreaInputField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:hint="Farm Area (square kilometers)"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="13sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/farmTypeLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/farmAreaLayout"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginTop="8dp"
+            android:text="Farm Type"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/farmTypeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/farmTypeLabel"
+            android:background="@drawable/bg_rounded_corners"
+            android:backgroundTint="@color/grey" />
+
+        <TextView android:id="@+id/errorText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="^ Farm Type is required!"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/red"
+            android:textSize="13sp"
+            android:layout_marginStart="10dp"
+            android:layout_below="@id/farmTypeSpinner"
+            android:visibility="invisible"/>
+
+        <TextView
+            android:id="@+id/farmImagesLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/farmTypeSpinner"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginTop="24dp"
+            android:text="Farm Images"
+            android:textColor="@color/darkgrey"
+            android:textSize="13sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/uploadFarmImagesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:padding="5dp"
+            android:layout_toStartOf="@id/imageViewUploadBTN"
+            android:layout_below="@id/farmImagesLabel"
+            android:background="@drawable/bg_rounded_corners"/>
+
+        <TextView android:id="@+id/errorText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please upload at least 1 farm image!"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/red"
+            android:layout_below="@id/uploadFarmImagesRecyclerView"
+            android:visibility="invisible"/>
+
+        <ImageButton android:id="@+id/imageViewUploadBTN"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@id/farmImagesLabel"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_rounded_corners"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_image_upload" />
+    </RelativeLayout>
+</ScrollView>

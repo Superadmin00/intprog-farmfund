@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/personalInfoContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="40dp"
+        android:clipToPadding="false">
+
+        <TextView android:id="@+id/stepCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Step 3 of 3"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/pageTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/stepCounter"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Farmer Documents"
+            android:textColor="@color/green"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/barangayCertLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pageTitle"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Barangay Certification"
+            android:textSize="14sp" />
+
+        <RelativeLayout android:id="@+id/barangayCertUploadBTN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/barangayCertLabel"
+            android:background="@drawable/bg_rounded_corners"
+            android:backgroundTint="@color/green">
+
+            <ImageView
+                android:id="@+id/barangayCertImage"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:scaleType="centerCrop"/>
+
+            <ImageButton android:id="@+id/uploadBTN1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/bg_rounded_corners"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_image_upload"
+                android:clickable="false"/>
+        </RelativeLayout>
+
+        <TextView android:id="@+id/errorText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="^ This image is required!"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/red"
+            android:layout_below="@id/barangayCertUploadBTN"
+            android:visibility="invisible"/>
+
+
+        <TextView
+            android:id="@+id/validIDLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/barangayCertUploadBTN"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginTop="28dp"
+            android:text="Any Government Issued ID"
+            android:textSize="14sp" />
+
+        <RelativeLayout android:id="@+id/validIDUploadBTN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/validIDLabel"
+            android:background="@drawable/bg_rounded_corners"
+            android:backgroundTint="@color/green">
+
+            <ImageView
+                android:id="@+id/validIDImage"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:scaleType="centerCrop"/>
+
+            <ImageButton android:id="@+id/uploadBTN2"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/bg_rounded_corners"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_image_upload"
+                android:clickable="false"/>
+        </RelativeLayout>
+
+        <TextView android:id="@+id/errorText2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="^ This image is required!"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/red"
+            android:layout_below="@id/validIDUploadBTN"
+            android:visibility="invisible"/>
+
+        <TextView
+            android:id="@+id/landOwnershipLeaseLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/validIDUploadBTN"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginTop="28dp"
+            android:text="Proof of Land Ownership\nor Lease Agreement"
+            android:textSize="14sp" />
+
+        <RelativeLayout android:id="@+id/landOwnershipLeaseBTN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/landOwnershipLeaseLabel"
+            android:background="@drawable/bg_rounded_corners"
+            android:backgroundTint="@color/green">
+
+            <ImageView
+                android:id="@+id/landOwnershipLeaseImage"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:scaleType="centerCrop" />
+
+            <ImageButton android:id="@+id/uploadBTN3"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/bg_rounded_corners"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_image_upload"
+                android:clickable="false"/>
+        </RelativeLayout>
+
+        <TextView android:id="@+id/errorText3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="^ This image is required!"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/red"
+            android:layout_below="@id/landOwnershipLeaseBTN"
+            android:visibility="invisible"/>
+
+        <TextView
+            android:id="@+id/rsbsaLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/landOwnershipLeaseBTN"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginTop="28dp"
+            android:text="(Optional)\nRegistry System for Basic Sectors\nin Agriculture (RSBSA) Enrollment Form"
+            android:textSize="14sp" />
+
+        <RelativeLayout android:id="@+id/rsbsaBTN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rsbsaLabel"
+            android:background="@drawable/bg_rounded_corners"
+            android:backgroundTint="@color/green">
+
+            <ImageView
+                android:id="@+id/rsbsaImage"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:scaleType="centerCrop" />
+
+            <ImageButton android:id="@+id/uploadBTN4"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/bg_rounded_corners"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_image_upload" />
+        </RelativeLayout>
+
+        <TextView android:id="@+id/errorText4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="^ This image is required!"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/red"
+            android:layout_below="@id/rsbsaBTN"
+            android:visibility="invisible"
+            android:clickable="false"/>
+
+    </RelativeLayout>
+</ScrollView>

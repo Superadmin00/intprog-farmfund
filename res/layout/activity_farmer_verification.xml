@@ -29,7 +29,8 @@
             android:id="@+id/headerSubContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
 
             <ImageView
                 android:id="@+id/logo"
@@ -51,301 +52,63 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <ScrollView
+    <FrameLayout
+        android:id="@+id/farmerVerificationContainer"
+        android:layout_below="@id/header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/header">
+        android:layout_height="match_parent" />
 
-        <RelativeLayout
+    <LinearLayout android:id="@+id/farmerVerificationButtonsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp">
+
+        <Button
+            android:id="@+id/previousBTN"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_rounded_corners"
+            app:backgroundTint="@color/lightgreen"
+            android:fontFamily="@font/poppins_bold"
+            android:text="&lt;&lt; Previous"
+            android:textColor="@color/blue"
+            android:textSize="20sp"
+            android:visibility="gone"/>
 
-            <RelativeLayout
-                android:id="@+id/farmDetailsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp">
+        <Space android:id="@+id/spaceBetween"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
 
-                <TextView
-                    android:id="@+id/farmDetailsHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Farm Details"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
+        <Button
+            android:id="@+id/nextBTN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_rounded_corners"
+            app:backgroundTint="@color/blue"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Next &gt;&gt;"
+            android:textColor="@color/lightgreen"
+            android:textSize="20sp"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/farmNameInput"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/farmDetailsHeader"
-                    android:layout_margin="4dp"
-                    android:textColorHint="@color/darkgrey"
-                    app:boxCornerRadiusBottomEnd="10dp"
-                    app:boxCornerRadiusBottomStart="10dp"
-                    app:boxCornerRadiusTopEnd="10dp"
-                    app:boxCornerRadiusTopStart="10dp"
-                    app:boxStrokeColor="@color/green"
-                    app:boxStrokeWidth="2dp"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:hintTextColor="@color/green">
+        <Button
+            android:id="@+id/submitBTN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_rounded_corners"
+            app:backgroundTint="@color/blue"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Submit"
+            android:textColor="@color/lightgreen"
+            android:textSize="20sp"
+            android:visibility="gone"/>
+    </LinearLayout>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/farmNameEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_bold"
-                        android:hint="Farm Name"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="12sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <RelativeLayout
-                    android:id="@+id/farmTypeLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/farmNameInput"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:background="@drawable/bg_edittext"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="16dp"
-                    android:paddingRight="8dp"
-                    android:paddingBottom="16dp">
-
-                    <Spinner
-                        android:id="@+id/farmTypeSpinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"/>
-                </RelativeLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/cropTypeInput"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/farmTypeLayout"
-                    android:layout_margin="4dp"
-                    android:textColorHint="@color/darkgrey"
-                    app:boxCornerRadiusBottomEnd="10dp"
-                    app:boxCornerRadiusBottomStart="10dp"
-                    app:boxCornerRadiusTopEnd="10dp"
-                    app:boxCornerRadiusTopStart="10dp"
-                    app:boxStrokeColor="@color/green"
-                    app:boxStrokeWidth="2dp"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:hintTextColor="@color/green">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/cropTypeEdiText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_bold"
-                        android:hint="Type of Crop/Livestock"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="12sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/farmLocationInput"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/cropTypeInput"
-                    android:layout_margin="4dp"
-                    android:textColorHint="@color/darkgrey"
-                    app:boxCornerRadiusBottomEnd="10dp"
-                    app:boxCornerRadiusBottomStart="10dp"
-                    app:boxCornerRadiusTopEnd="10dp"
-                    app:boxCornerRadiusTopStart="10dp"
-                    app:boxStrokeColor="@color/green"
-                    app:boxStrokeWidth="2dp"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:hintTextColor="@color/green">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/farmLocationEditText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_bold"
-                        android:hint="Farm Location"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="12sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/farmDocumentsLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/farmDetailsLayout"
-                android:padding="16dp">
-
-                <TextView
-                    android:id="@+id/farmDocumentsHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="Documentation"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/documentsImageUploadHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/farmDocumentsHeader"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginTop="8sp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="Upload Document Image" />
-
-                <RelativeLayout
-                    android:id="@+id/farmDocsUploadLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/documentsImageUploadHeader"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:background="@drawable/bg_edittext"
-                    android:padding="12sp">
-
-                    <ImageButton
-                        android:id="@+id/imageView1"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:scaleType="fitCenter"
-                        android:background="@drawable/ic_image_upload" />
-
-                    <ImageView
-                        android:id="@+id/upImage1"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_toEndOf="@+id/imageView1" />
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/farmImagesUploadHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/farmDocsUploadLayout"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="Upload Farm Images"/>
-
-                <RelativeLayout
-                    android:id="@+id/farmImagesUploadLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/farmImagesUploadHeader"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:background="@drawable/bg_edittext"
-                    android:padding="12sp">
-
-                    <ImageButton
-                        android:id="@+id/imageView2"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:background="@drawable/ic_image_upload" />
-
-                    <ImageView
-                        android:id="@+id/upImage2"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_toEndOf="@+id/imageView2" />
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/idSpinnerHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/farmImagesUploadLayout"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="8sp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="Government Issued ID" />
-
-                <RelativeLayout
-                    android:id="@+id/idSpinnerLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/idSpinnerHeader"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:background="@drawable/bg_edittext"
-                    android:paddingLeft="8dp"
-                    android:paddingTop="16dp"
-                    android:paddingRight="8dp"
-                    android:paddingBottom="16dp">
-
-                    <Spinner
-                        android:id="@+id/idSpinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true" />
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/idImageUploadHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/idSpinnerLayout"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="8sp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="Upload ID Image" />
-
-                <RelativeLayout
-                    android:id="@+id/idImageUploadLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/idImageUploadHeader"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:background="@drawable/bg_edittext"
-                    android:padding="12sp">
-
-                    <ImageButton
-                        android:id="@+id/imageView3"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:background="@drawable/ic_image_upload" />
-
-                    <ImageView
-                        android:id="@+id/upImage3"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginStart="20dp"
-                        android:layout_toEndOf="@+id/imageView3" />
-                </RelativeLayout>
-            </RelativeLayout>
-            <Button
-                android:id="@+id/verifyButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/farmDocumentsLayout"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/btn_gradient_rounded"
-                android:fontFamily="@font/poppins_bold"
-                android:text="Verify"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                app:backgroundTint="@null" />
-        </RelativeLayout>
-    </ScrollView>
 </RelativeLayout>

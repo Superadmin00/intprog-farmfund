@@ -1,5 +1,6 @@
 package com.intprog.farmfund.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -7,6 +8,7 @@ import android.os.Looper
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.viewpager2.widget.ViewPager2
+import com.google.firebase.auth.FirebaseAuth
 import com.intprog.farmfund.R
 import com.intprog.farmfund.adapters.NavigationPagerAdapter
 import com.intprog.farmfund.databinding.ActivityNavigatorBinding
@@ -20,11 +22,18 @@ class NavigatorActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNavigatorBinding
     private lateinit var navigationButtons: List<NavigationButton>
     private var doubleBackToExitPressedOnce = false
+    private lateinit var auth: FirebaseAuth
 
-    data class NavigationButton(val button: ImageButton, val fragmentClass: Class<*>, val defaultIcon: Int, val selectedIcon: Int)
+    data class NavigationButton(
+        val button: ImageButton,
+        val fragmentClass: Class<*>,
+        val defaultIcon: Int,
+        val selectedIcon: Int
+    )
 
     // Add a list of titles for each fragment
-    private val pageTitles = listOf("Browse Projects", "Favorite Projects", "Voucher Center", "Profile Page")
+    private val pageTitles =
+        listOf("Browse Projects", "Favorite Projects", "Voucher Center", "Profile Page")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,10 +44,30 @@ class NavigatorActivity : AppCompatActivity() {
         binding.viewPager.adapter = pagerAdapter
 
         navigationButtons = listOf(
-            NavigationButton(binding.gotoBrowseProjects, BrowseProjectsFragment::class.java, R.drawable.ic_home, R.drawable.ic_home_selected),
-            NavigationButton(binding.gotoFavorites, FavoriteProjectsFragment::class.java, R.drawable.ic_heart, R.drawable.ic_heart_selected),
-            NavigationButton(binding.gotoVouchers, VouchersCenterFragment::class.java, R.drawable.ic_voucher, R.drawable.ic_voucher_selected),
-            NavigationButton(binding.gotoProfile, ProfilePageFragment::class.java, R.drawable.ic_person, R.drawable.ic_person_selected)
+            NavigationButton(
+                binding.gotoBrowseProjects,
+                BrowseProjectsFragment::class.java,
+                R.drawable.ic_home,
+                R.drawable.ic_home_selected
+            ),
+            NavigationButton(
+                binding.gotoFavorites,
+                FavoriteProjectsFragment::class.java,
+                R.drawable.ic_heart,
+                R.drawable.ic_heart_selected
+            ),
+            NavigationButton(
+                binding.gotoVouchers,
+                VouchersCenterFragment::class.java,
+                R.drawable.ic_voucher,
+                R.drawable.ic_voucher_selected
+            ),
+            NavigationButton(
+                binding.gotoProfile,
+                ProfilePageFragment::class.java,
+                R.drawable.ic_person,
+                R.drawable.ic_person_selected
+            )
         )
 
         // Set the default fragment
@@ -56,6 +85,21 @@ class NavigatorActivity : AppCompatActivity() {
                 }
             }
         })
+
+        auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
+
+        //Get the token ID of logged in user
+        //if user? is null, this line won't get executed
+        user?.getIdToken(true)?.addOnCompleteListener { task -> // addOnCompleteListener will add a listener that will be called when the token refresh operation is complete.
+            if (!task.isSuccessful) { //check if token ID refresh operation was successful, if not refreshed, code below ill be executed
+                val intent = Intent(this, HolderLoginRegisterActivity::class.java)
+                intent.putExtra("dialogToShow", "login")
+                Toast.makeText(applicationContext, "Session expired, you are logged out.", Toast.LENGTH_SHORT).show()
+                startActivity(intent)
+                finish()
+            }
+        }
 
         binding.gotoBrowseProjects.setOnClickListener {
             binding.viewPager.currentItem = 0
@@ -103,7 +147,10 @@ class NavigatorActivity : AppCompatActivity() {
             Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show()
 
             // Reset the flag after 2 seconds
-            Handler(Looper.getMainLooper()).postDelayed({ doubleBackToExitPressedOnce = false }, 3000)
+            Handler(Looper.getMainLooper()).postDelayed(
+                { doubleBackToExitPressedOnce = false },
+                3000
+            )
         }
     }
 }
