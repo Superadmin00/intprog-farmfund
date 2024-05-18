@@ -10,4 +10,5 @@
     <color name="grey">#CDD1D0</color>
     <color name="darkgrey">#808181</color>
     <color name="red">#FF1100</color>
+    <color name="semitransparent">#CC000000</color>
 </resources>

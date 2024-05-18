@@ -1,5 +1,7 @@
 package com.intprog.farmfund.fragments
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -10,18 +12,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.intprog.farmfund.R
 import com.intprog.farmfund.activities.NavigatorActivity
 import com.intprog.farmfund.databinding.BottomsheetLoginBinding // This binding class corresponds to the bottomsheet_login.xml layout file
 
@@ -102,7 +109,7 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
         binding.emailNumEditText.setText(emailNum)
         binding.passwordEditText.setText(passW)
 
-        var user:FirebaseUser?
+        var user: FirebaseUser?
         binding.loginBTN.setOnClickListener {
             val emailOrNumber = binding.emailNumEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
@@ -134,10 +141,26 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 binding.emailNumberInputLayout.error = null
             }
 
+            val loadingDialog = Dialog(requireActivity(), R.style.SemiTransparentDialog)
+            val loadingView = layoutInflater.inflate(R.layout.dialog_loading, null)
+            loadingDialog.setContentView(loadingView)
+            loadingDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            val loadingImageView: ImageView = loadingDialog.findViewById(R.id.loadingImageView)
+            Glide.with(this).load(R.drawable.ic_loading).into(loadingImageView)
+
+            loadingDialog.setCancelable(false) // Prevents cancellation with the back button[^2^][3]
+            loadingDialog.setCanceledOnTouchOutside(false) // Prevents cancellation with a touch outside the dialog[^2^][3]
+
+            // To show the dialog
+            loadingDialog.show()
+
             auth = FirebaseAuth.getInstance()
             auth.signInWithEmailAndPassword(emailOrNumber, password)
                 .addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
+                        // To dismiss the dialog when the task is done
+                        loadingDialog.dismiss()
                         user = auth.currentUser
                         Toast.makeText(context, "Login Successful.", Toast.LENGTH_SHORT).show()
                         val intent = Intent(context, NavigatorActivity::class.java)

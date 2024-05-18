@@ -13,4 +13,7 @@
         <item name="strokeWidth">5dp</item>
         <item name="strokeColor">@color/green</item>
     </style>
+    <style name="SemiTransparentDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@color/semitransparent</item>
+    </style>
 </resources>
