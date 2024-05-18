@@ -2,4 +2,6 @@
     <string name="app_name">FarmFund</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ok">OK</string>
+    <string name="permission_write_external_storage_rationale">This app needs to be able to save images to your device.</string>
 </resources>

@@ -9,4 +9,8 @@
         <item name="android:layout_margin">5dp</item>
         <item name="android:textSize">20sp</item>
     </style>
+    <style name="greenBorders" parent="">
+        <item name="strokeWidth">5dp</item>
+        <item name="strokeColor">@color/green</item>
+    </style>
 </resources>

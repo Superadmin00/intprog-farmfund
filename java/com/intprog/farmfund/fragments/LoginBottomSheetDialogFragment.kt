@@ -21,7 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
-import com.intprog.farmfund.activities.HolderLoginRegisterActivity
+import com.google.firebase.auth.FirebaseUser
 import com.intprog.farmfund.activities.NavigatorActivity
 import com.intprog.farmfund.databinding.BottomsheetLoginBinding // This binding class corresponds to the bottomsheet_login.xml layout file
 
@@ -45,7 +45,6 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        auth = FirebaseAuth.getInstance()
         binding.toRegisterLayout.setOnClickListener {
             dismiss()
         }
@@ -95,7 +94,7 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
             startActivity(intent)
         }
 
-        // Get the email and password from the arguments
+        // Get the email and password from the intent arguments
         val emailNum = arguments?.getString("email")
         val passW = arguments?.getString("password")
 
@@ -103,6 +102,7 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
         binding.emailNumEditText.setText(emailNum)
         binding.passwordEditText.setText(passW)
 
+        var user:FirebaseUser?
         binding.loginBTN.setOnClickListener {
             val emailOrNumber = binding.emailNumEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
@@ -133,10 +133,12 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
             } else {
                 binding.emailNumberInputLayout.error = null
             }
+
+            auth = FirebaseAuth.getInstance()
             auth.signInWithEmailAndPassword(emailOrNumber, password)
                 .addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
-                        val user = auth.currentUser
+                        user = auth.currentUser
                         Toast.makeText(context, "Login Successful.", Toast.LENGTH_SHORT).show()
                         val intent = Intent(context, NavigatorActivity::class.java)
                         startActivity(intent)
@@ -149,6 +151,7 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
                     }
                 }
         }
+
         //Code to adjust the screen when inputting/typing
         view.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
@@ -185,7 +188,7 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private fun addTextWatcher(editText: TextInputEditText, layout: TextInputLayout) {
         // Ensure that the space for the error message is always reserved
-        layout.isErrorEnabled = true
+        layout.isErrorEnabled = false
 
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -195,6 +198,7 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 // Clear the error message without affecting the layout spacing
                 if (s.isNotEmpty()) {
                     layout.error = null
+                    layout.isErrorEnabled = false
                 }
             }
 

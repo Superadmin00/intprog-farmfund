@@ -65,7 +65,7 @@ class ProposeProjectActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.imageViewUpload.setOnClickListener {
+        binding.imageViewUploadBTN.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             startActivityForResult(intent, PICK_IMAGE_REQUEST_CODE)

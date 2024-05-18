@@ -148,7 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:padding="5dp"
-                android:layout_toStartOf="@id/imageViewUpload"
+                android:layout_toStartOf="@id/imageViewUploadBTN"
                 android:layout_below="@id/projectMilestoneTextLayout"
                 android:background="@drawable/bg_rounded_corners"
                 android:backgroundTint="@color/grey"/>
@@ -162,7 +162,7 @@
                 android:layout_below="@id/uploadedImagesRecyclerView"
                 android:visibility="invisible"/>
 
-            <ImageButton android:id="@+id/imageViewUpload"
+            <ImageButton android:id="@+id/imageViewUploadBTN"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_below="@id/projectMilestoneTextLayout"

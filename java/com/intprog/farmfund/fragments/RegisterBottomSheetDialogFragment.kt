@@ -32,8 +32,6 @@ import com.intprog.farmfund.dataclasses.User
 class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private var _binding: BottomsheetRegisterBinding? = null
-
-    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     private lateinit var auth: FirebaseAuth
@@ -157,19 +155,19 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                                 name = name,
                                 fundPoints = 0.0,
                                 verified = false,
-                                status = "Active",
+                                status = "Active"
                             )
-                            db.collection("users")
-                                .add(newUser)
-                                .addOnSuccessListener { documentReference ->
-                                    Log.d(
-                                        ContentValues.TAG,
-                                        "DocumentSnapshot added with ID: ${documentReference.id}"
-                                    )
-                                }
-                                .addOnFailureListener { e ->
-                                    Log.w(ContentValues.TAG, "Error adding document", e)
-                                }
+                            user?.uid?.let { uid ->
+                                db.collection("users")
+                                    .document(uid)
+                                    .set(newUser)
+                                    .addOnSuccessListener {
+                                        Log.d(ContentValues.TAG, "DocumentSnapshot added with ID: $uid")
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.w(ContentValues.TAG, "Error adding document", e)
+                                    }
+                            }
                             val loginBottomSheetDialogFragment =
                                 LoginBottomSheetDialogFragment().apply {
                                     arguments = Bundle().apply {
@@ -182,8 +180,7 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                                 parentFragmentManager,
                                 loginBottomSheetDialogFragment.tag
                             )
-                            Toast.makeText(context, "Registration Successful.", Toast.LENGTH_SHORT)
-                                .show()
+                            Toast.makeText(context, "Registration Successful.", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(
                                 context,
@@ -233,7 +230,7 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private fun addTextWatcher(editText: TextInputEditText, layout: TextInputLayout) {
         // Ensure that the space for the error message is always reserved
-        layout.isErrorEnabled = true
+        layout.isErrorEnabled = false
 
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
@@ -243,6 +240,7 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 // Clear the error message without affecting the layout spacing
                 if (s.isNotEmpty()) {
                     layout.error = null
+                    layout.isErrorEnabled = false
                 }
             }
 

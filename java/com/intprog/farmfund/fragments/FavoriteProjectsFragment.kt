@@ -62,7 +62,7 @@ class FavoriteProjectsFragment : Fragment(), FavoriteUpdateListener {
         swipeRefreshLayout.isRefreshing = true
         fetchProjects()
     }
-    fun fetchProjects() {
+    private fun fetchProjects() {
         val user = auth.currentUser
 
         if (user != null) {
@@ -74,27 +74,32 @@ class FavoriteProjectsFragment : Fragment(), FavoriteUpdateListener {
                     val documentSnapshot = querySnapshot.documents[0]
                     val userData = documentSnapshot.data
                     val favorites = userData?.get("favorites") as? List<Long> ?: emptyList()
-                    db.collection("projects")
-                        .whereIn("projId", favorites)
-                        .orderBy("timestamp", Query.Direction.DESCENDING)
-                        .get()
-                        .addOnSuccessListener { documents ->
-                            val projects = mutableListOf<Project>()
-                            for (document in documents) {
-                                val project = document.toObject(Project::class.java)
-                                projects.add(project)
+
+                    if (favorites.isNotEmpty()) { // Add this check
+                        db.collection("projects")
+                            .whereIn("projId", favorites)
+                            .orderBy("timestamp", Query.Direction.DESCENDING)
+                            .get()
+                            .addOnSuccessListener { documents ->
+                                val projects = mutableListOf<Project>()
+                                for (document in documents) {
+                                    val project = document.toObject(Project::class.java)
+                                    projects.add(project)
+                                }
+                                setProjects(projects)
+                                Log.d("FavoriteProjectsFragment", "Project favorites: $projects")
+                                swipeRefreshLayout.isRefreshing = false
                             }
-                            setProjects(projects)
-                            Log.d("FavoriteProjectsFragment", "Project favorites: $projects")
-                            swipeRefreshLayout.isRefreshing = false
-                        }
-                        .addOnFailureListener { exception ->
-                            swipeRefreshLayout.isRefreshing = false
-                        }
+                            .addOnFailureListener {
+                                swipeRefreshLayout.isRefreshing = false
+                            }
+                    } else {
+                        swipeRefreshLayout.isRefreshing = false
+                    }
                 } else {
                     swipeRefreshLayout.isRefreshing = false
                 }
-            }.addOnFailureListener { exception ->
+            }.addOnFailureListener {
                 swipeRefreshLayout.isRefreshing = false
             }
         } else {
