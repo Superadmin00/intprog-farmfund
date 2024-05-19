@@ -26,7 +26,6 @@ import com.intprog.farmfund.activities.HolderLoginRegisterActivity
 import com.intprog.farmfund.activities.SettingsActivity
 import com.intprog.farmfund.activities.TransactionHistoryActivity
 import com.intprog.farmfund.databinding.FragmentProfilePageBinding
-import com.intprog.farmfund.objects.LoadingDialog
 
 class ProfilePageFragment : Fragment() {
 
@@ -163,15 +162,12 @@ class ProfilePageFragment : Fragment() {
             val logoutButton = logoutDialog.findViewById<Button>(R.id.logoutButton)
             logoutButton.setOnClickListener {
 
-                //Show Loading dialog
-                LoadingDialog.show(requireContext(), false)
                 auth.signOut()
                 val intent = Intent(activity, HolderLoginRegisterActivity::class.java)
                 intent.putExtra("dialogToShow", "login")
-                LoadingDialog.dismiss()
                 startActivity(intent)
-                activity?.finish()
                 Toast.makeText(context, "Logout Successful.", Toast.LENGTH_SHORT).show()
+                activity?.finish()
             }
         }
     }
