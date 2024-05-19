@@ -24,6 +24,9 @@ object LoadingDialog {
             val loadingImageView: ImageView = findViewById(R.id.loadingImageView)
             Glide.with(context).load(R.drawable.ic_loading).into(loadingImageView)
 
+            val loadingLogo : ImageView = findViewById(R.id.loadingLogo)
+            Glide.with(context).load(R.drawable.img_logo).into(loadingLogo)
+
             setCancelable(cancelable)
             setCanceledOnTouchOutside(cancelable)
 
