@@ -78,7 +78,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_circleshape"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_voucher" />
+            android:src="@drawable/ic_ticket" />
 
         <ImageButton
             android:id="@+id/gotoProfile"
