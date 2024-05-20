@@ -29,6 +29,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.intprog.farmfund.R
+import com.intprog.farmfund.activities.ForgotPasswordActivity
 import com.intprog.farmfund.activities.NavigatorActivity
 import com.intprog.farmfund.databinding.BottomsheetLoginBinding // This binding class corresponds to the bottomsheet_login.xml layout file
 import com.intprog.farmfund.objects.LoadingDialog
@@ -99,6 +100,11 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
         //Proceed as a Guest User
         binding.toGuestLayout.setOnClickListener {
             val intent = Intent(activity, NavigatorActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.forgot.setOnClickListener {
+            val intent = Intent(activity, ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
 
