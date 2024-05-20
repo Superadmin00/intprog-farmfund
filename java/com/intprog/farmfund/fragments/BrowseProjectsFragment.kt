@@ -5,11 +5,15 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +33,7 @@ class BrowseProjectsFragment : Fragment() {
     private val db = FirebaseFirestore.getInstance()
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var auth: FirebaseAuth
+    private var projects: MutableList<Project> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,8 +43,8 @@ class BrowseProjectsFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         val user = auth.currentUser
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
+        val search = view.findViewById<EditText>(R.id.searchBar)
 
-        // This will show the refresh indicator while fetchingProjects()
         swipeRefreshLayout.isRefreshing = true
         fetchProjects()
 
@@ -49,6 +54,10 @@ class BrowseProjectsFragment : Fragment() {
         projectsRecyclerView.adapter = adapter
 
         val addProjectButton = view.findViewById<ImageButton>(R.id.addProjectButton)
+
+        swipeRefreshLayout.setOnRefreshListener {
+            fetchProjects()
+        }
 
         addProjectButton.setOnClickListener {
             if (user == null) {
@@ -89,22 +98,29 @@ class BrowseProjectsFragment : Fragment() {
             }
         }
 
-        swipeRefreshLayout.setOnRefreshListener {
-            fetchProjects()
-        }
-
+        search.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                filterProjects(s.toString())
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
         return view
     }
+
     override fun onResume() {
         super.onResume()
         fetchProjects()
     }
+
     private fun fetchProjects() {
         db.collection("projects")
             .orderBy("timestamp", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { documents ->
-                val projects = mutableListOf<Project>()
+                projects.clear()
                 for (document in documents) {
                     val project = document.toObject(Project::class.java)
                     projects.add(project)
@@ -117,9 +133,28 @@ class BrowseProjectsFragment : Fragment() {
             }
     }
 
-    // Call this method when you have the projects data
-    fun setProjects(projects: List<Project>) {
-        adapter.projects = projects
+    private fun setProjects(projects: List<Project>) {
+        this.projects = projects.toMutableList()
+        filterProjects("")
+    }
+
+    private fun filterProjects(query: String) {
+        val filteredProjects = if (query.isEmpty()) {
+            projects
+        } else {
+            projects.filter { project ->
+                project.projTitle.contains(query, true)
+            }
+        }
+
+        if (filteredProjects.isEmpty()) {
+            // Show "No projects found" text
+            view?.findViewById<TextView>(R.id.noProjectsText)?.visibility = View.VISIBLE
+        } else {
+            view?.findViewById<TextView>(R.id.noProjectsText)?.visibility = View.GONE
+        }
+
+        adapter.projects = filteredProjects
         adapter.notifyDataSetChanged()
     }
 }
