@@ -23,6 +23,7 @@ import com.google.firebase.storage.StorageReference
 import com.intprog.farmfund.R
 import com.intprog.farmfund.activities.EditProfileActivity
 import com.intprog.farmfund.activities.HolderLoginRegisterActivity
+import com.intprog.farmfund.activities.MyProjectsActivity
 import com.intprog.farmfund.activities.SettingsActivity
 import com.intprog.farmfund.activities.TransactionHistoryActivity
 import com.intprog.farmfund.databinding.FragmentProfilePageBinding
@@ -135,11 +136,13 @@ class ProfilePageFragment : Fragment() {
 
         }
 
-        binding.gotoFavProjectsBTN.setOnClickListener {
-        }
-
         binding.gotoTransacHistoryBTN.setOnClickListener {
             val intent = Intent(activity, TransactionHistoryActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.gotoMyProjectsBTN.setOnClickListener {
+            val intent = Intent(activity, MyProjectsActivity::class.java)
             startActivity(intent)
         }
 
