@@ -24,6 +24,6 @@
         android:layout_height="200dp"
         android:layout_below="@+id/textView1"
         android:layout_gravity="center"
-        android:src="@drawable/img_logo"/>
+        android:src="@drawable/ic_logo"/>
 
 </RelativeLayout>

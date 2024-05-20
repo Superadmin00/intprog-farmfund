@@ -5,22 +5,16 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.InputType
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.intprog.farmfund.R
-import java.io.File
-import java.io.IOException
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.reflect.KMutableProperty0
 
 class EditProfileActivity : AppCompatActivity() {
@@ -103,8 +97,8 @@ class EditProfileActivity : AppCompatActivity() {
                         emailEditText.text = userEmail
                         phoneNumEditText.text = userPhoneNumber ?: "Not Set"
                         userImageURL?.let { url ->
-                            Glide.with(this).load(url).placeholder(R.drawable.ic_default_pfp).into(imagePlaceholder)
-                        } ?: imagePlaceholder.setImageResource(R.drawable.ic_default_pfp)
+                            Glide.with(this).load(url).placeholder(R.drawable.img_default_pfp).into(imagePlaceholder)
+                        } ?: imagePlaceholder.setImageResource(R.drawable.img_default_pfp)
 
                         // Save original values
                         originalFullName = userName

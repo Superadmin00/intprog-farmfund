@@ -36,7 +36,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/img_logo" />
+                android:src="@drawable/ic_logo" />
 
             <TextView
                 android:id="@+id/pageTitle"
@@ -104,7 +104,7 @@
                 android:layout_toEndOf="@+id/donorNumber"
                 android:background="@drawable/bg_circleshape"
                 android:backgroundTint="@color/black"
-                android:src="@drawable/ic_default_pfp" />
+                android:src="@drawable/img_default_pfp" />
 
             <TextView
                 android:id="@+id/morePersons"

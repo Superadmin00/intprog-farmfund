@@ -13,7 +13,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
-        android:layout_height="120dp">
+        android:layout_height="110dp">
 
         <RelativeLayout
             android:id="@+id/fundPointsDetailsLayout"
@@ -21,27 +21,31 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:gravity="center"
-            android:background="@drawable/bg_fundpoints_profile"
-            android:padding="16dp">
+            android:background="@drawable/bg_rounded_corners"
+            android:backgroundTint="@color/grey">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true">
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/bg_rounded_corners"
+                android:padding="8dp">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/profileImage"
                     android:layout_width="75dp"
                     android:layout_height="75dp"
-                    android:layout_marginEnd="16dp"
-                    app:cardBackgroundColor="#00000000"
-                    app:cardCornerRadius="10dp"
+                    android:layout_marginEnd="8dp"
+                    app:cardBackgroundColor="@color/green"
+                    app:cardCornerRadius="150dp"
                     app:cardElevation="0dp">
 
                     <ImageView
                         android:id="@+id/imagePlaceholder"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:src="@drawable/img_default_pfp"
+                        android:background="@color/transparent"
                         android:scaleType="centerCrop" />
                 </androidx.cardview.widget.CardView>
 
@@ -51,9 +55,9 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/profileImage"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text="John Doe"
+                    android:text="Guest User"
                     android:textColor="@color/black"
-                    android:textSize="23sp" />
+                    android:textSize="21sp" />
 
                 <RelativeLayout
                     android:id="@+id/fundpointsContainer"
@@ -66,12 +70,11 @@
                         android:id="@+id/fundpoints"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
-                        android:layout_marginRight="4dp"
+                        android:layout_marginEnd="8dp"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="500"
                         android:textColor="@color/green"
-                        android:textSize="15sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/fundpointsHeader"
