@@ -44,7 +44,7 @@
                 android:background="@color/white"
                 android:contentDescription="facebookLogin"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/img_facebook" />
+                app:srcCompat="@drawable/ic_facebook" />
 
             <ImageButton
                 android:id="@+id/twitter"
@@ -54,7 +54,7 @@
                 android:background="@color/white"
                 android:contentDescription="twitterLogin"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/img_twitter" />
+                app:srcCompat="@drawable/ic_twitter" />
 
             <ImageButton
                 android:id="@+id/google"
@@ -64,7 +64,7 @@
                 android:background="@color/white"
                 android:contentDescription="googleLogin"
                 android:scaleType="fitCenter"
-                app:srcCompat="@drawable/img_google" />
+                app:srcCompat="@drawable/ic_google" />
         </LinearLayout>
 
         <TextView

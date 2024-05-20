@@ -55,8 +55,8 @@ class VouchersCenterFragment : Fragment() {
             Voucher(4, 100, R.drawable.ic_smart, "SMART Prepaid Load Credits"),
             Voucher(5, 250, R.drawable.ic_smart, "SMART Prepaid Load Credits"),
             Voucher(6, 500, R.drawable.ic_smart, "SMART Prepaid Load Credits"),
-            Voucher(7, 1000, R.drawable.img_valo, "Valorant Points | Game Credits"),
-            Voucher(8, 2500, R.drawable.img_valo, "Valorant Points | Game Credits")
+            Voucher(7, 1000, R.drawable.ic_valorant, "Valorant Points | Game Credits"),
+            Voucher(8, 2500, R.drawable.ic_valorant, "Valorant Points | Game Credits")
         )
         binding.vouchersRecyclerView.layoutManager = LinearLayoutManager(context)
         binding.vouchersRecyclerView.adapter = VoucherAdapter(vouchers)
@@ -81,7 +81,7 @@ class VouchersCenterFragment : Fragment() {
                             // Load the profile image using Glide
                             Glide.with(this)
                                 .load(profileImageUrl)
-                                .placeholder(R.drawable.ic_default_pfp) // Optional placeholder image
+                                .placeholder(R.drawable.img_default_pfp) // Optional placeholder image
                                 .into(binding.imagePlaceholder)
                         }
                     } else {
