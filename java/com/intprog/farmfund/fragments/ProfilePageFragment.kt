@@ -179,8 +179,8 @@ class ProfilePageFragment : Fragment() {
             profileImageRef.downloadUrl.addOnSuccessListener { uri ->
                 Glide.with(requireContext())
                     .load(uri)
-                    .placeholder(R.drawable.ic_default_pfp) // Placeholder image while loading
-                    .error(R.drawable.ic_default_pfp) // Error image if loading fails
+                    .placeholder(R.drawable.img_default_pfp) // Placeholder image while loading
+                    .error(R.drawable.img_default_pfp) // Error image if loading fails
                     .into(binding.imagePlaceholder)
             }.addOnFailureListener {
                 // Handle any errors

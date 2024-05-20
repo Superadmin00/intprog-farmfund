@@ -29,6 +29,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.intprog.farmfund.R
+import com.intprog.farmfund.activities.ForgotPasswordActivity
 import com.intprog.farmfund.activities.NavigatorActivity
 import com.intprog.farmfund.databinding.BottomsheetLoginBinding // This binding class corresponds to the bottomsheet_login.xml layout file
 import com.intprog.farmfund.objects.LoadingDialog
@@ -102,6 +103,11 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
             startActivity(intent)
         }
 
+        binding.forgot.setOnClickListener {
+            val intent = Intent(activity, ForgotPasswordActivity::class.java)
+            startActivity(intent)
+        }
+
         // Get the email and password from the intent arguments
         val emailNum = arguments?.getString("email")
         val passW = arguments?.getString("password")
@@ -152,15 +158,16 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
                         //Close Loading dialog
                         LoadingDialog.dismiss()
                         user = auth.currentUser
+                        binding.emailNumberInputLayout.error = null
+                        binding.passwordTextInputLayout.error = null
                         Toast.makeText(context, "Login Successful.", Toast.LENGTH_SHORT).show()
                         val intent = Intent(context, NavigatorActivity::class.java)
                         startActivity(intent)
                     } else {
-                        Toast.makeText(
-                            context,
-                            "Authentication failed: ${task.exception?.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        LoadingDialog.dismiss()
+                        binding.emailNumberInputLayout.error = "Incorrect Login Credentials"
+                        binding.passwordTextInputLayout.error = "Incorrect Login Credentials"
+                        Toast.makeText(context, "Authentication Error. Unable to Proceed", Toast.LENGTH_SHORT).show()
                     }
                 }
         }

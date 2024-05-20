@@ -40,6 +40,21 @@ class NavigatorActivity : AppCompatActivity() {
         binding = ActivityNavigatorBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //Code to refresh token ID and check if account is still existing
+        auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
+        //Get the token ID of logged in user
+        //if user? is null, this line won't get executed
+        user?.getIdToken(true)?.addOnCompleteListener { task -> // addOnCompleteListener will add a listener that will be called when the token refresh operation is complete.
+            if (!task.isSuccessful) { //check if token ID refresh operation was successful, if not refreshed, code below ill be executed
+                val intent = Intent(this, HolderLoginRegisterActivity::class.java)
+                intent.putExtra("dialogToShow", "login")
+                Toast.makeText(applicationContext, "Session expired, you are logged out.", Toast.LENGTH_SHORT).show()
+                startActivity(intent)
+                finish()
+            }
+        }
+
         val pagerAdapter = NavigationPagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
 
@@ -85,21 +100,6 @@ class NavigatorActivity : AppCompatActivity() {
                 }
             }
         })
-
-        auth = FirebaseAuth.getInstance()
-        val user = auth.currentUser
-
-        //Get the token ID of logged in user
-        //if user? is null, this line won't get executed
-        user?.getIdToken(true)?.addOnCompleteListener { task -> // addOnCompleteListener will add a listener that will be called when the token refresh operation is complete.
-            if (!task.isSuccessful) { //check if token ID refresh operation was successful, if not refreshed, code below ill be executed
-                val intent = Intent(this, HolderLoginRegisterActivity::class.java)
-                intent.putExtra("dialogToShow", "login")
-                Toast.makeText(applicationContext, "Session expired, you are logged out.", Toast.LENGTH_SHORT).show()
-                startActivity(intent)
-                finish()
-            }
-        }
 
         binding.gotoBrowseProjects.setOnClickListener {
             binding.viewPager.currentItem = 0
