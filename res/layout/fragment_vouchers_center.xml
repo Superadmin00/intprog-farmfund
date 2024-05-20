@@ -40,6 +40,7 @@
 
                     <ImageView
                         android:id="@+id/imagePlaceholder"
+                        android:src="@drawable/ic_default_pfp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop" />
@@ -51,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/profileImage"
                     android:fontFamily="@font/poppins_semibold"
-                    android:text="John Doe"
+                    android:text="Guest User"
                     android:textColor="@color/black"
                     android:textSize="23sp" />
 
@@ -69,7 +70,7 @@
                         android:layout_marginLeft="4dp"
                         android:layout_marginRight="4dp"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="500"
+                        android:text="0"
                         android:textColor="@color/green"
                         android:textSize="15sp" />
 

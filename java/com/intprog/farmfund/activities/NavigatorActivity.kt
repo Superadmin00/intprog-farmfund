@@ -59,8 +59,8 @@ class NavigatorActivity : AppCompatActivity() {
             NavigationButton(
                 binding.gotoVouchers,
                 VouchersCenterFragment::class.java,
-                R.drawable.ic_voucher,
-                R.drawable.ic_voucher_selected
+                R.drawable.ic_ticket,
+                R.drawable.ic_ticket_selected
             ),
             NavigationButton(
                 binding.gotoProfile,
