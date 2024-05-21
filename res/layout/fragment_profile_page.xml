@@ -9,10 +9,11 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
+        android:layout_height="165dp"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="15dp"
-        android:layout_height="165dp">
+        android:layout_marginBottom="15dp">
 
         <RelativeLayout
             android:id="@+id/profileDetailsLayout"
@@ -37,9 +38,9 @@
 
                     <ImageView
                         android:id="@+id/imagePlaceholder"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:scaleType="fitXY"
                         android:src="@drawable/img_default_pfp"
                         android:background="@drawable/bg_gradient"/>
                 </androidx.cardview.widget.CardView>
@@ -49,8 +50,8 @@
                     android:layout_marginStart="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/profImage"
-                    android:layout_toLeftOf="@+id/profFundPoints"
+                    android:layout_toEndOf="@id/profImage"
+                    android:layout_toStartOf="@id/profFundPoints"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="Guest User"
                     android:textColor="@color/green"
@@ -72,7 +73,7 @@
                     android:id="@+id/profEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/profNumber"
+                    android:layout_below="@id/profNumber"
                     android:layout_toEndOf="@+id/profImage"
                     android:layout_marginStart="12dp"
                     android:fontFamily="@font/poppins_semibold"
@@ -95,7 +96,7 @@
                     android:id="@+id/nameinfo5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/profFundPoints"
+                    android:layout_below="@id/profFundPoints"
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="30dp"
                     android:fontFamily="@font/poppins_semibold"
@@ -108,8 +109,8 @@
                 android:id="@+id/editProfileBTN"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/profileDetails"
-                android:layout_marginTop="5dp"
+                android:layout_below="@id/profileDetails"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/btn_gradient_rounded"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="Edit Profile"
@@ -122,7 +123,7 @@
         android:id="@+id/gotoFavProjectsBTN"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/swipeRefreshLayout"
+        android:layout_below="@id/swipeRefreshLayout"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="5dp"

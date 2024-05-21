@@ -97,6 +97,8 @@ class NavigatorActivity : AppCompatActivity() {
 
                 if (binding.viewPager.currentItem == 3) { // Assuming ProfilePageFragment is at index 3
                     binding.navigatorActivityContainer.setBackgroundResource(R.drawable.bg_gradient)
+                } else {
+                    binding.navigatorActivityContainer.setBackgroundResource(R.color.white)
                 }
             }
         })
