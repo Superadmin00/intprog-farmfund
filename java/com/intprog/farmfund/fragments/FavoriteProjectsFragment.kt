@@ -1,10 +1,14 @@
 package com.intprog.farmfund.fragments
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,10 +31,12 @@ class FavoriteProjectsFragment : Fragment(), FavoriteUpdateListener {
             return instance!!
         }
     }
+
     private lateinit var adapter: FavoriteProjectsAdapter
     private val db = FirebaseFirestore.getInstance()
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var auth: FirebaseAuth
+    private lateinit var projects: MutableList<Project>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +57,17 @@ class FavoriteProjectsFragment : Fragment(), FavoriteUpdateListener {
             fetchProjects()
         }
 
+        val search = view.findViewById<EditText>(R.id.searchBar)
+        search.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                filterProjects(s.toString())
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+
         return view
     }
 
@@ -58,10 +75,12 @@ class FavoriteProjectsFragment : Fragment(), FavoriteUpdateListener {
         super.onResume()
         fetchProjects()
     }
+
     override fun onFavoriteUpdated() {
         swipeRefreshLayout.isRefreshing = true
         fetchProjects()
     }
+
     private fun fetchProjects() {
         val user = auth.currentUser
 
@@ -94,6 +113,7 @@ class FavoriteProjectsFragment : Fragment(), FavoriteUpdateListener {
                                 swipeRefreshLayout.isRefreshing = false
                             }
                     } else {
+                        setProjects(emptyList()) // Update with empty list when no favorites
                         swipeRefreshLayout.isRefreshing = false
                     }
                 } else {
@@ -106,8 +126,28 @@ class FavoriteProjectsFragment : Fragment(), FavoriteUpdateListener {
             swipeRefreshLayout.isRefreshing = false
         }
     }
-    fun setProjects(projects: List<Project>) {
-        adapter.projects = projects
+
+    private fun setProjects(projects: List<Project>) {
+        this.projects = projects.toMutableList()
+        filterProjects("") // Ensure filtering and UI update
+    }
+
+    private fun filterProjects(query: String) {
+        val filteredProjects = if (query.isEmpty()) {
+            projects
+        } else {
+            projects.filter { project ->
+                project.projTitle.contains(query, true)
+            }
+        }
+
+        if (filteredProjects.isEmpty()) {
+            view?.findViewById<TextView>(R.id.noProjectsText)?.visibility = View.VISIBLE
+        } else {
+            view?.findViewById<TextView>(R.id.noProjectsText)?.visibility = View.GONE
+        }
+
+        adapter.projects = filteredProjects
         adapter.notifyDataSetChanged()
     }
 }

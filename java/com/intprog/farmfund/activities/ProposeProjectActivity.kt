@@ -273,8 +273,6 @@ class ProposeProjectActivity : AppCompatActivity() {
                                 gotoHome.setOnClickListener {
                                     alertDialog.dismiss()
                                     finish()
-                                    val intent = Intent(this, NavigatorActivity::class.java)
-                                    startActivity(intent)
                                 }
                             }
                             .addOnFailureListener { e ->
