@@ -25,9 +25,10 @@
             android:text="50\nPoints"
             android:textAlignment="center"
             android:fontFamily="@font/poppins_bold"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:background="@drawable/element_right_border"
-            android:paddingEnd="5dp"
+            android:paddingStart="3dp"
+            android:paddingEnd="8dp"
             android:layout_centerVertical="true"/>
 
         <ImageView android:id="@+id/voucherLogo"

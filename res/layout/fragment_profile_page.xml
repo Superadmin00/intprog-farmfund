@@ -147,7 +147,7 @@
             android:layout_marginStart="20dp"
             android:layout_toEndOf="@+id/greentime"
             android:fontFamily="@font/poppins_semibold"
-            android:text="Transaction History"
+            android:text="Transactions History"
             android:textSize="15sp"/>
 
         <ImageButton

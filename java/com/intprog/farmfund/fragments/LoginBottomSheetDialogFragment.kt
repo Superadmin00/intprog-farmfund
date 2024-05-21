@@ -159,6 +159,7 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
                         val intent = Intent(context, NavigatorActivity::class.java)
                         startActivity(intent)
                     } else {
+                        Toast.makeText(context, "Authentication failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                         LoadingDialog.dismiss()
                         binding.emailNumberInputLayout.error = "Incorrect Login Credentials"
                         binding.passwordTextInputLayout.error = "Incorrect Login Credentials"
