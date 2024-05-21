@@ -57,7 +57,6 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
         binding.toRegisterLayout.setOnClickListener {
             dismiss()
         }
-
         binding.fb.setOnClickListener {
             val facebookAppUri = "fb://facewebmodal/f?href=https://www.facebook.com"
             val facebookWebUrl = "https://www.facebook.com"
@@ -69,7 +68,6 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(facebookWebUrl)))
             }
         }
-
         binding.twitter.setOnClickListener {
             val twitterAppUri = "twitter://user?screen_name=twitter"
             val twitterWebUrl = "https://www.twitter.com"
@@ -81,7 +79,6 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(twitterWebUrl)))
             }
         }
-
         binding.google.setOnClickListener {
             val googleAppUri = "googlechrome://navigate?url=https://www.google.com"
             val googleWebUrl = "https://www.google.com"
@@ -96,8 +93,6 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(googleWebUrl)))
             }
         }
-
-        //Proceed as a Guest User
         binding.toGuestLayout.setOnClickListener {
             val intent = Intent(activity, NavigatorActivity::class.java)
             startActivity(intent)
@@ -164,6 +159,7 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
                         val intent = Intent(context, NavigatorActivity::class.java)
                         startActivity(intent)
                     } else {
+                        Toast.makeText(context, "Authentication failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                         LoadingDialog.dismiss()
                         binding.emailNumberInputLayout.error = "Incorrect Login Credentials"
                         binding.passwordTextInputLayout.error = "Incorrect Login Credentials"
@@ -207,19 +203,13 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun addTextWatcher(editText: TextInputEditText, layout: TextInputLayout) {
-        // Ensure that the space for the error message is always reserved
-        layout.isErrorEnabled = false
 
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // Clear the error message without affecting the layout spacing
-                if (s.isNotEmpty()) {
-                    layout.error = null
-                    layout.isErrorEnabled = false
-                }
+                layout.isErrorEnabled = false
             }
 
             override fun afterTextChanged(s: Editable) {
