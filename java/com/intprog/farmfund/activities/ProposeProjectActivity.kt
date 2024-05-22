@@ -29,6 +29,8 @@ import com.intprog.farmfund.R
 import com.intprog.farmfund.adapters.UploadProjectImageAdapter
 import com.intprog.farmfund.databinding.ActivityProposeProjectBinding
 import com.intprog.farmfund.dataclasses.Project
+import com.intprog.farmfund.objects.HideKeyboardOnClick
+import com.intprog.farmfund.objects.LoadingDialog
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -102,6 +104,7 @@ class ProposeProjectActivity : AppCompatActivity() {
                 binding.projectDueDateTextLayout.error = "Due must be today onwards."
                 return@setOnClickListener
             }
+            LoadingDialog.show(this, false)
 
             val title = binding.projectTitleEditText.text.toString()
             val descriptions = binding.projectDescriptionEditText.text.toString()
@@ -134,6 +137,21 @@ class ProposeProjectActivity : AppCompatActivity() {
                         .set(updatedProject)
                         .addOnSuccessListener {
                             uploadImages(projectId)
+                            LoadingDialog.dismiss()
+                            //If all validations are met and project successfully created
+                            val projSubmittedDialog =
+                                LayoutInflater.from(this).inflate(R.layout.dialog_project_proposed, null)
+                            val builder = AlertDialog.Builder(this).setView(projSubmittedDialog)
+                            val alertDialog = builder.show()
+                            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+                            val gotoHome: Button = projSubmittedDialog.findViewById(R.id.gotoHome)
+                            gotoHome.setOnClickListener {
+                                alertDialog.dismiss()
+                                finish()
+                                val intent = Intent(this, NavigatorActivity::class.java)
+                                startActivity(intent)
+                            }
                         }
                         .addOnFailureListener { e ->
                             Toast.makeText(
@@ -141,6 +159,7 @@ class ProposeProjectActivity : AppCompatActivity() {
                                 "Error updating project ID: ${e.message}",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            LoadingDialog.dismiss()
                         }
                 }
                 .addOnFailureListener { e ->
@@ -149,41 +168,17 @@ class ProposeProjectActivity : AppCompatActivity() {
                         "Error adding project: ${e.message}",
                         Toast.LENGTH_SHORT
                     ).show()
+                    LoadingDialog.dismiss()
                 }
-
-            //If all validations are met and project successfully created
-            val projSubmittedDialog =
-                LayoutInflater.from(this).inflate(R.layout.dialog_project_proposed, null)
-            val builder = AlertDialog.Builder(this).setView(projSubmittedDialog)
-            val alertDialog = builder.show()
-            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-            val gotoHome: Button = projSubmittedDialog.findViewById(R.id.gotoHome)
-            gotoHome.setOnClickListener {
-                alertDialog.dismiss()
-                finish()
-                val intent = Intent(this, NavigatorActivity::class.java)
-                startActivity(intent)
-            }
         }
 
         //Code to close keyboard when clicking outside
         binding.mainLayout.setOnClickListener {
-            val inputMethodManager =
-                it.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(
-                it.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
-            )
+            HideKeyboardOnClick.hideKeyboardOnClick(it)
         }
         //Code to close keyboard when clicking outside
         binding.mainContainer.setOnClickListener {
-            val inputMethodManager =
-                it.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(
-                it.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
-            )
+            HideKeyboardOnClick.hideKeyboardOnClick(it)
         }
 
         addTextWatcher(binding.projectTitleEditText, binding.projectTitleTextLayout)

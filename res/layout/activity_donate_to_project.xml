@@ -56,7 +56,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/header"
-        android:layout_above="@id/confirmPaymentBTN">
+        android:paddingBottom="60dp"
+        android:clipToPadding="false">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -102,7 +103,7 @@
                         android:layout_below="@+id/projTitleDonate"
                         android:layout_toEndOf="@+id/projImageDonate"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="P40,000.00"
+                        android:text="40,000.00 / 50,000.00"
                         android:textSize="13sp" />
                 </RelativeLayout>
 
@@ -126,8 +127,8 @@
 
                 <GridLayout
                     android:id="@+id/gridAmountsLayout"
-                    android:layout_width="300dp"
-                    android:layout_height="200dp"
+                    android:layout_width="250dp"
+                    android:layout_height="150dp"
                     android:layout_below="@id/selectAmountLabel"
                     android:layout_centerHorizontal="true"
                     android:columnCount="2"
@@ -225,7 +226,49 @@
                     android:id="@+id/paymethodRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/selectPayLabel" />
+                    android:layout_below="@id/selectPayLabel"/>
+
+                <TextView
+                    android:id="@+id/paymentProofLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/paymethodRecyclerView"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Upload Proof of Payment"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
+
+                <RelativeLayout android:id="@+id/paymentProofBTN"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/paymentProofLabel"
+                    android:background="@drawable/bg_rounded_corners"
+                    android:backgroundTint="@color/green">
+
+                    <ImageView
+                        android:id="@+id/paymentProofImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:scaleType="centerCrop"
+                        android:clickable="false"/>
+
+                    <ImageButton android:id="@+id/uploadBTN"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="2dp"
+                        android:background="@drawable/bg_rounded_corners"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_image_upload"
+                        android:clickable="false"/>
+                </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
     </ScrollView>

@@ -51,12 +51,16 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <ScrollView
-        android:id="@+id/projectContents"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/dynamicBTNsContainer"
         android:layout_below="@id/header">
+    <ScrollView
+        android:id="@+id/projectContents"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -80,7 +84,6 @@
                 android:layout_below="@+id/projectImagesPager"
                 android:layout_marginBottom="5dp"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Organic Farming Initiative"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
@@ -90,7 +93,6 @@
                 android:layout_height="match_parent"
                 android:layout_below="@+id/projectTitle"
                 android:fontFamily="@font/poppins_bold"
-                android:text="30+ Donated"
                 android:textAlignment="center"
                 android:textColor="#666f80"
                 android:textSize="15sp" />
@@ -115,7 +117,6 @@
                 android:layout_toEndOf="@+id/personIcon1"
                 android:background="@drawable/bg_circleshape"
                 android:backgroundTint="@color/darkgrey"
-                android:text="+9"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
@@ -127,7 +128,6 @@
                 android:layout_below="@+id/donorNumber"
                 android:fontFamily="@font/poppins_semibold"
                 android:justificationMode="inter_word"
-                android:text="Support local farmers in adopting sustainable and organic farming practices. Funds will be used to provide training, organic seeds, and equipment to enhance crop yield without harming the environment. "
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
@@ -139,7 +139,6 @@
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:justificationMode="inter_word"
-                android:text="Support local farmers in adopting sustainable and organic farming practices. Funds will be used to provide training, organic seeds, and equipment to enhance crop yield without harming the environment. "
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
@@ -187,8 +186,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/textView2"
+                        android:layout_toStartOf="@id/progressNumber"
                         android:max="100"
-                        android:progress="80"
                         android:progressTint="#24C635" />
 
                     <TextView
@@ -196,10 +195,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/daysLeft"
+                        android:layout_alignParentEnd="true"
                         android:layout_marginStart="5dp"
-                        android:layout_toEndOf="@id/progressBar"
                         android:fontFamily="@font/poppins_bold"
-                        android:text="100%"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="10sp" />
@@ -211,7 +209,6 @@
                         android:layout_below="@id/progressBar"
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/poppins_bold"
-                        android:text="₱4321"
                         android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="20sp" />
@@ -232,6 +229,7 @@
             </com.google.android.material.card.MaterialCardView>
         </RelativeLayout>
     </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:id="@+id/dynamicBTNsContainer"

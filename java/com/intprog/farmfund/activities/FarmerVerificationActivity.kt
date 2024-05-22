@@ -68,41 +68,44 @@ class FarmerVerificationActivity : AppCompatActivity() {
         }
 
         binding.submitBTN.setOnClickListener {
-            val db = Firebase.firestore
-            auth = FirebaseAuth.getInstance()
-            val userId = auth.currentUser?.uid
-            val usersRef = userId?.let { it1 -> db.collection("users").document(it1) }
+            val currentFragment = fragments[currentFragmentIndex]
+            if (currentFragment.validateInput()) {
+                val db = Firebase.firestore
+                auth = FirebaseAuth.getInstance()
+                val userId = auth.currentUser?.uid
+                val usersRef = userId?.let { it1 -> db.collection("users").document(it1) }
 
-            usersRef?.update("verified", true)?.addOnSuccessListener {
-                Log.d(TAG, "DocumentSnapshot successfully updated!")
+                usersRef?.update("verified", true)?.addOnSuccessListener {
+                    Log.d(TAG, "DocumentSnapshot successfully updated!")
 
-                // Create and show the dialog if changing user's verified field in firestore databse is successful
-                val dialogView = LayoutInflater.from(this)
-                    .inflate(R.layout.dialog_verification_submitted, null)
-                val builder = AlertDialog.Builder(this)
-                builder.setView(dialogView)
-                val alertDialog = builder.create()
-                alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                alertDialog.show()
+                    // Create and show the dialog if changing user's verified field in firestore databse is successful
+                    val dialogView = LayoutInflater.from(this)
+                        .inflate(R.layout.dialog_verification_submitted, null)
+                    val builder = AlertDialog.Builder(this)
+                    builder.setView(dialogView)
+                    val alertDialog = builder.create()
+                    alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                    alertDialog.show()
 
-                val gotoHome: Button = alertDialog.findViewById(R.id.gotoHome)
-                gotoHome.setOnClickListener {
-                    alertDialog.dismiss()
+                    val gotoHome: Button = alertDialog.findViewById(R.id.gotoHome)
+                    gotoHome.setOnClickListener {
+                        alertDialog.dismiss()
+                    }
+
+                    // Dismiss the dialog and navigate to NavigatorActivity when the dialog is clicked
+                    alertDialog.setOnDismissListener {
+                        val intent = Intent(this, NavigatorActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                }?.addOnFailureListener { e ->
+                    Log.w("UpdateData", "Error updating document", e)
+                    Toast.makeText(
+                        this,
+                        "Error updating document: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-
-                // Dismiss the dialog and navigate to NavigatorActivity when the dialog is clicked
-                alertDialog.setOnDismissListener {
-                    val intent = Intent(this, NavigatorActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
-            }?.addOnFailureListener { e ->
-                Log.w("UpdateData", "Error updating document", e)
-                Toast.makeText(
-                    this,
-                    "Error updating document: ${e.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
             }
         }
 

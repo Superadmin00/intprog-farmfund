@@ -31,17 +31,14 @@ class VouchersCenterFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentVouchersCenterBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
         // Show SwipeRefreshLayout abd load vouchers/user data
         binding.swipeRefreshLayout.isRefreshing = true
+        fetchVouchers()
+        loadUserData()
 
         voucherAdapter = VoucherAdapter(vouchers, this)
         binding.vouchersRecyclerView.apply {
@@ -53,6 +50,7 @@ class VouchersCenterFragment : Fragment() {
             fetchVouchers()
             loadUserData()
         }
+        return binding.root
     }
 
     fun fetchVouchers() {
