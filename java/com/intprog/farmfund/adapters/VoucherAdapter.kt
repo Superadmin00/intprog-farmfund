@@ -22,7 +22,10 @@ import com.intprog.farmfund.dataclasses.Voucher
 import com.intprog.farmfund.fragments.VouchersCenterFragment
 import com.intprog.farmfund.objects.LoadingDialog
 
-class VoucherAdapter(private val vouchers: List<Voucher>, private val fragment: VouchersCenterFragment) :
+class VoucherAdapter(
+    private val vouchers: List<Voucher>,
+    private val fragment: VouchersCenterFragment
+) :
     RecyclerView.Adapter<VoucherAdapter.VoucherViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VoucherViewHolder {
@@ -37,7 +40,11 @@ class VoucherAdapter(private val vouchers: List<Voucher>, private val fragment: 
 
     override fun getItemCount(): Int = vouchers.size
 
-    class VoucherViewHolder(private val binding: ItemVoucherBinding, private val context: Context, private val fragment: VouchersCenterFragment) :
+    class VoucherViewHolder(
+        private val binding: ItemVoucherBinding,
+        private val context: Context,
+        private val fragment: VouchersCenterFragment
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(voucher: Voucher) {
 
@@ -74,64 +81,87 @@ class VoucherAdapter(private val vouchers: List<Voucher>, private val fragment: 
                         (context as Activity).finish()
                     }
                 } else {
-                    val voucherClaimSummaryDialog = LayoutInflater.from(binding.root.context)
-                        .inflate(R.layout.dialog_voucher_redeem_confirmation, null)
-                    val builder =
-                        AlertDialog.Builder(binding.root.context).setView(voucherClaimSummaryDialog)
-                    val alertDialog = builder.show()
-                    alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-                    val voucherText =
-                        voucherClaimSummaryDialog.findViewById<TextView>(R.id.voucherText)
-                    val costText = voucherClaimSummaryDialog.findViewById<TextView>(R.id.costText)
-
-                    voucherText.text =
-                        "${voucher.voucherPoints} ${voucher.voucherBrand} ${voucher.voucherType}"
-                    costText.text = "${voucher.voucherPoints} FundPoints"
-
-                    val confirmRedemptionBTN: Button =
-                        voucherClaimSummaryDialog.findViewById(R.id.confirmRedemptionBTN)
-                    confirmRedemptionBTN.setOnClickListener {
-                        alertDialog.dismiss()
-                        LoadingDialog.show(context, false)
-                        // Get the reference of the user document
-                        val userDocRef = db.collection("users").document(user.uid)
-                        // Run a transaction
-                        db.runTransaction { transaction ->
-                            // Get the current user document
-                            val snapshot = transaction.get(userDocRef)
-                            val currentFundPoints = snapshot.getDouble("fundPoints") ?: 0.0
-                            val newFundPoints = currentFundPoints - voucher.voucherPoints
-                            transaction.update(userDocRef, "fundPoints", newFundPoints)
-                            newFundPoints
-                        }.addOnSuccessListener { newFundPoints ->
-                            LoadingDialog.dismiss()
-                            Toast.makeText(
-                                context,
-                                "Voucher redeemed successfully! New FundPoints: $newFundPoints",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            fragment.loadUserData()
-                            val voucherClaimSuccessDialog =
-                                LayoutInflater.from(binding.root.context)
-                                    .inflate(R.layout.dialog_voucher_redemption_success, null)
-                            val builder2 = AlertDialog.Builder(binding.root.context)
-                                .setView(voucherClaimSuccessDialog)
-                            val alertDialog2 = builder2.show()
-                            alertDialog2.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-                            val closeDialogBTN: Button =
-                                voucherClaimSuccessDialog.findViewById(R.id.closeDialogBTN)
+                    // Get the reference of the user document
+                    var userDocRef = db.collection("users").document(user.uid)
+                    userDocRef.get().addOnSuccessListener { documentSnapshot ->
+                        var currentFundPoints = documentSnapshot.getDouble("fundPoints") ?: 0.0
+                        if (currentFundPoints < voucher.voucherPoints) {
+                            // User has insufficient fundPoints
+                            val insufficientFundsDialog = LayoutInflater.from(binding.root.context)
+                                .inflate(
+                                    R.layout.dialog_voucher_redeem_insufficient_fundpoints,
+                                    null
+                                )
+                            val builder = AlertDialog.Builder(binding.root.context)
+                                .setView(insufficientFundsDialog)
+                            val alertDialog = builder.show()
+                            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                            // Handle the actions in your insufficient funds dialog
+                            val closeDialogBTN:Button = insufficientFundsDialog.findViewById(R.id.closeDialogBTN)
                             closeDialogBTN.setOnClickListener {
-                                alertDialog2.dismiss()
+                                alertDialog.dismiss()
                             }
-                        }.addOnFailureListener { e ->
-                            // Transaction failure. Handle accordingly.
-                            Toast.makeText(
-                                context,
-                                "Failed to redeem voucher: ${e.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                        } else {
+                            val voucherClaimSummaryDialog = LayoutInflater.from(binding.root.context)
+                                .inflate(R.layout.dialog_voucher_redeem_confirmation, null)
+                            val builder =
+                                AlertDialog.Builder(binding.root.context).setView(voucherClaimSummaryDialog)
+                            val alertDialog = builder.show()
+                            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+                            val voucherText =
+                                voucherClaimSummaryDialog.findViewById<TextView>(R.id.voucherText)
+                            val costText = voucherClaimSummaryDialog.findViewById<TextView>(R.id.costText)
+
+                            voucherText.text =
+                                "${voucher.voucherPoints} ${voucher.voucherBrand} ${voucher.voucherType}"
+                            costText.text = "${voucher.voucherPoints} FundPoints"
+
+                            val confirmRedemptionBTN: Button =
+                                voucherClaimSummaryDialog.findViewById(R.id.confirmRedemptionBTN)
+                            confirmRedemptionBTN.setOnClickListener {
+                                alertDialog.dismiss()
+                                LoadingDialog.show(context, false)
+                                // Get the reference of the user document
+                                userDocRef = db.collection("users").document(user.uid)
+                                // Run a transaction
+                                db.runTransaction { transaction ->
+                                    // Get the current user document
+                                    val snapshot = transaction.get(userDocRef)
+                                    currentFundPoints = snapshot.getDouble("fundPoints") ?: 0.0
+                                    val newFundPoints = currentFundPoints - voucher.voucherPoints
+                                    transaction.update(userDocRef, "fundPoints", newFundPoints)
+                                    newFundPoints
+                                }.addOnSuccessListener { newFundPoints ->
+                                    LoadingDialog.dismiss()
+                                    Toast.makeText(
+                                        context,
+                                        "Voucher redeemed successfully! New FundPoints: $newFundPoints",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    fragment.loadUserData()
+                                    val voucherClaimSuccessDialog =
+                                        LayoutInflater.from(binding.root.context)
+                                            .inflate(R.layout.dialog_voucher_redemption_success, null)
+                                    val builder2 = AlertDialog.Builder(binding.root.context)
+                                        .setView(voucherClaimSuccessDialog)
+                                    val alertDialog2 = builder2.show()
+                                    alertDialog2.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+                                    val closeDialogBTN: Button =
+                                        voucherClaimSuccessDialog.findViewById(R.id.closeDialogBTN)
+                                    closeDialogBTN.setOnClickListener {
+                                        alertDialog2.dismiss()
+                                    }
+                                }.addOnFailureListener { e ->
+                                    // Transaction failure. Handle accordingly.
+                                    Toast.makeText(
+                                        context,
+                                        "Failed to redeem voucher: ${e.message}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
                         }
                     }
                 }
