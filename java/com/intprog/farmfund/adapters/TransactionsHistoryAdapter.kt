@@ -1,41 +1,49 @@
-/*
 package com.intprog.farmfund.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.intprog.farmfund.R
+import com.intprog.farmfund.databinding.ItemTransactionBinding
 import com.intprog.farmfund.dataclasses.Transaction
+import java.text.SimpleDateFormat
 
-class TransactionsHistoryAdapter(private val transactions: List<Transaction>) :
+class TransactionsHistoryAdapter(var transactions: List<Transaction>) :
     RecyclerView.Adapter<TransactionsHistoryAdapter.TransactionViewHolder>() {
 
+    inner class TransactionViewHolder(val binding: ItemTransactionBinding) :
+        RecyclerView.ViewHolder(binding.root)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_transactions_history, parent, false)
-        return TransactionViewHolder(view)
+        val binding = ItemTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return TransactionViewHolder(binding)
+    }
+
+    private fun formatDateTime(dateTime: com.google.firebase.Timestamp?): String {
+        return dateTime?.toDate()?.let {
+            val formatter = SimpleDateFormat("dd MMM yyyy, hh:mm a")  // Combine date and time format
+            formatter.format(it)
+        } ?: "-"
     }
 
     override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
         val transaction = transactions[position]
-        holder.transactionIcon.setImageResource(transaction.icon)
-        holder.transactionTitle.text = transaction.title
-        holder.transactionType.text = transaction.type
-        holder.transactionDate.text = transaction.date
-        holder.transactionTime.text = transaction.time
+
+        with(holder.binding) {
+            when (transaction.transactionType) {
+                "Donation" -> transacIcon.setImageResource(R.drawable.ic_donate)
+                "Withdrawal" -> transacIcon.setImageResource(R.drawable.ic_withdraw)
+                "Voucher Redemption" -> transacIcon.setImageResource(R.drawable.ic_voucher_redeem)
+            }
+            transacAmount.text = when (transaction.transactionType) {
+                "Voucher Redemption" -> "${transaction.transactionAmount} FundPoints"
+                else -> "PHP ${String.format("%.2f", transaction.transactionAmount?.toDouble())}"
+            }
+            transacType.text = transaction.transactionType
+            transacDate.text = formatDateTime(transaction.transactionDateTime)
+            transacStatus.text = transaction.transactionStatus.uppercase()
+        }
     }
 
-    override fun getItemCount(): Int {
-        return transactions.size
-    }
-
-    class TransactionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val transactionIcon: ImageView = itemView.findViewById(R.id.transacIcon)
-        val transactionTitle: TextView = itemView.findViewById(R.id.transacTitle)
-        val transactionType: TextView = itemView.findViewById(R.id.transacType)
-        val transactionDate: TextView = itemView.findViewById(R.id.transacDate)
-        val transactionTime: TextView = itemView.findViewById(R.id.transacTime)
-    }
-}*/
+    override fun getItemCount() = transactions.size
+}

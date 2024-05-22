@@ -1,16 +1,26 @@
 package com.intprog.farmfund.activities
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.intprog.farmfund.R
+import com.intprog.farmfund.adapters.TransactionsHistoryAdapter
+import com.intprog.farmfund.dataclasses.Transaction
 
 class TransactionHistoryActivity : AppCompatActivity() {
 
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var transactionsRecyclerView: RecyclerView
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
+    private lateinit var adapter: TransactionsHistoryAdapter // Declare adapter here
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,30 +28,44 @@ class TransactionHistoryActivity : AppCompatActivity() {
 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
         transactionsRecyclerView = findViewById(R.id.transactionsRecyclerView)
+        transactionsRecyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = TransactionsHistoryAdapter(emptyList()) // Initialize adapter here
+        transactionsRecyclerView.adapter = adapter
 
-        /*// Dummy data pa goyyyyyyyyyyyyyyyyyyyyyyy
-        val transactions = listOf(
-            Transaction(R.drawable.ic_deposit, "Transaction 1", "Deposit", "05/25/2024", "03:12 PM"),
-            Transaction(R.drawable.ic_withdraw, "Transaction 2", "Withdraw", "05/25/2024", "03:12 PM"),
-            Transaction(R.drawable.ic_deposit, "Transaction 3", "Deposit", "05/25/2024", "03:12 PM"),
-            Transaction(R.drawable.ic_donate, "Transaction 4", "Donate", "05/25/2024", "03:12 PM"),
-            Transaction(R.drawable.ic_deposit, "Transaction 5", "Deposit", "05/25/2024", "03:12 PM"),
-            Transaction(R.drawable.ic_withdraw, "Transaction 6", "Withdraw", "05/25/2024", "03:12 PM"),
-            Transaction(R.drawable.ic_donate, "Transaction 7", "Donate", "05/25/2024", "03:12 PM")
-        )
+        swipeRefreshLayout.isRefreshing = true
 
-        // Set layout manager for transactionsRecyclerView
-        transactionsRecyclerView.layoutManager = LinearLayoutManager(this)  // Use 'this' for context
-        transactionsRecyclerView.adapter = TransactionsHistoryAdapter(transactions)*/
+        auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
+        val user = auth.currentUser
 
-        // Handle swipe to refresh functionality (optional)
+        if (user != null) {
+            fetchTransactions(user.uid)
+        } else {
+            // Handle the case where no user is logged in (optional)
+        }
+
         swipeRefreshLayout.setOnRefreshListener {
-            swipeRefreshLayout.isRefreshing = false
+            user?.uid?.let { fetchTransactions(it) }
         }
 
         val clickBackButton = findViewById<ImageButton>(R.id.backButton)
         clickBackButton.setOnClickListener {
             finish()
         }
+    }
+    private fun fetchTransactions(userId: String) {
+        db.collection("transactions")
+            .whereEqualTo("userId", userId)
+            .get()
+            .addOnSuccessListener { documents ->
+                val transactions = documents.toObjects(Transaction::class.java)
+                adapter.transactions = transactions
+                adapter.notifyDataSetChanged()
+                swipeRefreshLayout.isRefreshing = false
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+                swipeRefreshLayout.isRefreshing = false
+            }
     }
 }
