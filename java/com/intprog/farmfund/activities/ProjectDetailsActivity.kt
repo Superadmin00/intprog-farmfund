@@ -2,6 +2,7 @@ package com.intprog.farmfund.activities
 
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -55,7 +56,6 @@ class ProjectDetailsActivity : AppCompatActivity() {
 
         //Code to check if a user is currently logged in
         val user = auth.currentUser
-
         if (user == null) {
             binding.projdetailsDynamicBTN.setOnClickListener {
                 val loginNoticeDialog = LayoutInflater.from(this).inflate(R.layout.dialog_login_notice, null)
