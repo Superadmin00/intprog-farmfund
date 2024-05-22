@@ -70,38 +70,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                app:cardCornerRadius="15dp"
                 app:cardElevation="5dp"
                 app:cardUseCompatPadding="true">
 
                 <RelativeLayout
                     android:background="@color/white"
                     android:layout_width="match_parent"
-                    android:padding="8dp"
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/projImageDonate"
+                        android:id="@+id/projFirstImageDonate"
                         android:layout_width="150dp"
                         android:layout_height="80dp"
-                        android:layout_marginEnd="8dp"
-                        android:scaleType="centerCrop"/>
+                        android:layout_marginEnd="5dp"
+                        android:scaleType="fitXY"/>
 
                     <TextView
                         android:id="@+id/projTitleDonate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toEndOf="@+id/projImageDonate"
+                        android:layout_toEndOf="@+id/projFirstImageDonate"
                         android:fontFamily="@font/poppins_bold"
                         android:text="Organic Farming Initiative"
                         android:textColor="@color/black"
                         android:textSize="17sp" />
 
                     <TextView
-                        android:id="@+id/projStatusDonate"
+                        android:id="@+id/projFundGoalDonate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/projTitleDonate"
-                        android:layout_toEndOf="@+id/projImageDonate"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toEndOf="@+id/projFirstImageDonate"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="40,000.00 / 50,000.00"
                         android:textSize="13sp" />

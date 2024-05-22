@@ -83,8 +83,11 @@ class ProjectDetailsActivity : AppCompatActivity() {
                 binding.projdetailsDynamicBTN.text = "Withdraw"
 
                 binding.projdetailsDynamicBTN.setOnClickListener {
-                    val intent = Intent(this, WithdrawFundsActivity::class.java)
-                    intent.putExtra("project", project)
+                    val intent = Intent(this, DonateToProjectActivity::class.java).apply {
+                        putExtra("projId", project.projId)
+                        putExtra("project", project)
+                        putExtra("imageUrl", project.imageUrls.firstOrNull()) // Assuming the first image is the main image
+                    }
                     startActivity(intent)
                 }
             } else {
@@ -92,7 +95,7 @@ class ProjectDetailsActivity : AppCompatActivity() {
                 binding.projdetailsDynamicBTN.setOnClickListener {
                     val intent = Intent(this, DonateToProjectActivity::class.java)
                     intent.putExtra("project", project)
-                    intent.putExtra("imageUrl", project?.imageUrls?.firstOrNull())
+                    intent.putExtra("imageUrl", project.imageUrls.firstOrNull())
                     startActivity(intent)
                 }
             }
