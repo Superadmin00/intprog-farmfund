@@ -33,6 +33,7 @@ import com.google.firebase.ktx.Firebase
 import com.intprog.farmfund.activities.ForgotPasswordActivity
 import com.intprog.farmfund.activities.NavigatorActivity
 import com.intprog.farmfund.databinding.BottomsheetLoginBinding
+import com.intprog.farmfund.objects.HideKeyboardOnClick
 import com.intprog.farmfund.objects.LoadingDialog
 
 class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
@@ -169,12 +170,7 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         // Code to close keyboard when clicking outside the input fields
         binding.mainLayout.setOnClickListener {
-            val inputMethodManager =
-                it.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(
-                it.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
-            )
+            HideKeyboardOnClick.hideKeyboardOnClick(it)
         }
 
         addTextWatcher(binding.emailNumEditText, binding.emailNumberInputLayout)
