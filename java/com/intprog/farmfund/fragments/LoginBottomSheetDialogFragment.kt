@@ -43,6 +43,7 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private val RC_SIGN_IN = 9001
+    private lateinit var gso: GoogleSignInOptions
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,7 +60,7 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
         auth = FirebaseAuth.getInstance()
 
         // Configure Google Sign-In
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken("561319474391-1dhmej9q43ftotfgf0gdaur82k2iikbr.apps.googleusercontent.com")
             .requestEmail()
             .build()
@@ -177,8 +178,11 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun signInWithGoogle() {
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+        googleSignInClient.signOut().addOnCompleteListener {
+            googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+            val signInIntent = googleSignInClient.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

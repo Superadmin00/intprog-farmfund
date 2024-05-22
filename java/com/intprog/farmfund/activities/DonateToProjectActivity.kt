@@ -19,9 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.type.Date
-import com.google.type.DateTime
-import com.google.type.DateTimeOrBuilder
 import com.intprog.farmfund.R
 import com.intprog.farmfund.adapters.PaymentMethodAdapter
 import com.intprog.farmfund.databinding.ActivityDonateToProjectBinding
@@ -58,8 +55,7 @@ class DonateToProjectActivity : AppCompatActivity() {
         binding.projFundGoalDonate.text = "${project.projFundsReceived} / ${project.projFundGoal}"
         Glide.with(this).load(imageUrl).into(binding.projFirstImageDonate)
 
-        val checkBoxes =
-            listOf(binding.box50, binding.box100, binding.box500, binding.box1000)
+        val checkBoxes = listOf(binding.box50, binding.box100, binding.box500, binding.box1000)
 
         checkBoxes.forEach { checkBox ->
             checkBox.setBackgroundResource(R.drawable.bg_checkboxes_amount)
@@ -67,7 +63,7 @@ class DonateToProjectActivity : AppCompatActivity() {
 
                 binding.customAmountEditText.text = null // Clear custom amount field
                 binding.customAmountEditText.clearFocus()
-                //Close keyboard
+                // Close keyboard
                 val inputMethodManager =
                     it.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(
@@ -90,7 +86,9 @@ class DonateToProjectActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 checkBoxes.forEach { otherCheckBox ->
                     otherCheckBox.isChecked = false
-                    otherCheckBox.setTextColor(ContextCompat.getColorStateList(this@DonateToProjectActivity, R.color.black)) } }
+                    otherCheckBox.setTextColor(ContextCompat.getColorStateList(this@DonateToProjectActivity, R.color.black))
+                }
+            }
             override fun afterTextChanged(s: Editable) {}
         })
 
@@ -112,70 +110,77 @@ class DonateToProjectActivity : AppCompatActivity() {
                 Log.w(TAG, "Error getting documents: ", exception)
             }
 
-        //Code to confirm donation
+        // Code to confirm donation
+        // Code to confirm donation
         binding.confirmPaymentBTN.setOnClickListener {
             val donationAmount = getDonationAmount()
             if (donationAmount > 0) {
                 project.let {
-                    if (it.projFundsReceived + donationAmount <= it.projFundGoal) {
-                        val firestore = FirebaseFirestore.getInstance()
-                            val projectDocRef = firestore.collection("projects").document(it.projId)
+                    val newFundsReceived = it.projFundsReceived + donationAmount
+                    val isGoalReached = newFundsReceived >= it.projFundGoal
 
-                        val updatedProject = mapOf(
-                            "projFundsReceived" to it.projFundsReceived + donationAmount,
-                            "projDonorsCount" to it.projDonorsCount + 1
-                        )
+                    val updatedProject = mutableMapOf<String, Any>(
+                        "projFundsReceived" to newFundsReceived,
+                        "projDonorsCount" to (it.projDonorsCount + 1)
+                    )
 
-                        projectDocRef.update(updatedProject)
-                            .addOnSuccessListener {
-                                auth.currentUser?.let { user ->
-                                    val userDocRef = firestore.collection("users").document(user.uid)
-
-                                    userDocRef.get()
-                                        .addOnSuccessListener { document ->
-                                            val currentFundPoints = document.getDouble("fundPoints") ?: 0.0
-                                            val newFundPoints = currentFundPoints + (donationAmount * 0.1)
-
-                                            userDocRef.update("fundPoints", newFundPoints)
-                                                .addOnSuccessListener {
-                                                    showSuccessDialog()
-                                                }
-                                        }
-                                }
-                                // Create a new transaction
-                                val transaction = user?.uid?.let { it1 ->
-                                    Transaction(
-                                        transactionId = "", // Temporary value
-                                        userId = it1,
-                                        projId = project.projId,
-                                        voucherId = "", // Leave this as blank for a donation transaction
-                                        transactionType = "Donation",
-                                        transactionDateTime = com.google.firebase.Timestamp.now(), // Use the current date and time
-                                        transactionStatus = "Completed"
-                                    )
-                                }
-
-                                // Add the transaction to the "transactions" collection
-                                val transactionDocRef = db.collection("transactions").document()
-                                if (transaction != null) {
-                                    transaction.transactionId = transactionDocRef.id
-                                } // Set the transactionId to the document ID
-
-                                if (transaction != null) {
-                                    transactionDocRef.set(transaction)
-                                        .addOnSuccessListener {
-                                            Log.d("DonateToProjectActivity", "Transaction recorded successfully")
-                                        }
-                                        .addOnFailureListener { e ->
-                                            Log.e("DonateToProjectActivity", "Failed to record transaction: ${e.message}")
-                                        }
-                                }
-
-                                showSuccessDialog()
-                            }
-                    } else {
-                        Toast.makeText(this, "Donation exceeds funding goal", Toast.LENGTH_SHORT).show()
+                    if (isGoalReached) {
+                        updatedProject["projStatus"] = "Finished"
                     }
+
+                    val firestore = FirebaseFirestore.getInstance()
+                    val projectDocRef = firestore.collection("projects").document(it.projId)
+
+                    projectDocRef.update(updatedProject)
+                        .addOnSuccessListener {
+                            auth.currentUser?.let { user ->
+                                val userDocRef = firestore.collection("users").document(user.uid)
+
+                                userDocRef.get()
+                                    .addOnSuccessListener { document ->
+                                        val currentFundPoints = document.getDouble("fundPoints") ?: 0.0
+                                        val newFundPoints = currentFundPoints + (donationAmount * 0.1)
+
+                                        userDocRef.update("fundPoints", newFundPoints)
+                                            .addOnSuccessListener {
+                                                showSuccessDialog()
+                                            }
+                                    }
+                            }
+                            // Create a new transaction
+                            val transaction = user?.uid?.let { it1 ->
+                                Transaction(
+                                    transactionId = "", // Temporary value
+                                    userId = it1,
+                                    projId = project.projId,
+                                    voucherId = "", // Leave this as blank for a donation transaction
+                                    transactionType = "Donation",
+                                    transactionDateTime = com.google.firebase.Timestamp.now(), // Use the current date and time
+                                    transactionStatus = "Completed"
+                                )
+                            }
+
+                            // Add the transaction to the "transactions" collection
+                            val transactionDocRef = db.collection("transactions").document()
+                            if (transaction != null) {
+                                transaction.transactionId = transactionDocRef.id
+                            } // Set the transactionId to the document ID
+
+                            if (transaction != null) {
+                                transactionDocRef.set(transaction)
+                                    .addOnSuccessListener {
+                                        Log.d("DonateToProjectActivity", "Transaction recorded successfully")
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e("DonateToProjectActivity", "Failed to record transaction: ${e.message}")
+                                    }
+                            }
+
+                            showSuccessDialog()
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.e(TAG, "Error updating project: ", exception)
+                        }
                 }
             } else {
                 Toast.makeText(this, "Please add amount to donate.", Toast.LENGTH_SHORT).show()
@@ -183,11 +188,12 @@ class DonateToProjectActivity : AppCompatActivity() {
             }
         }
 
+
         binding.backButton.setOnClickListener {
             finish()
         }
 
-        //Code to close keyboard when clicking outside the input fields
+        // Code to close keyboard when clicking outside the input fields
         binding.paymentLayout.setOnClickListener {
             HideKeyboardOnClick.hideKeyboardOnClick(it)
         }
@@ -195,6 +201,7 @@ class DonateToProjectActivity : AppCompatActivity() {
             HideKeyboardOnClick.hideKeyboardOnClick(it)
         }
     }
+
     private fun getDonationAmount(): Int {
         val amountFromCustom = binding.customAmountEditText.text.toString().toIntOrNull() ?: 0
         val amountFromCheckBox = when {
