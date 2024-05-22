@@ -45,6 +45,7 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
     private val RC_SIGN_IN = 9001
+    private lateinit var gso: GoogleSignInOptions
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,7 +62,7 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
         auth = FirebaseAuth.getInstance()
         val db = Firebase.firestore
 
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken("561319474391-1dhmej9q43ftotfgf0gdaur82k2iikbr.apps.googleusercontent.com")
             .requestEmail()
             .build()
@@ -168,11 +169,13 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                             )
                             Toast.makeText(context, "Registration Successful.", Toast.LENGTH_SHORT).show()
                         } else {
+                            LoadingDialog.dismiss()
                             Toast.makeText(
                                 context,
                                 "Authentication failed: ${task.exception?.message}",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            binding.enterEmailNumLayout.error = "Enter a different email."
                         }
                     }
             }
@@ -230,8 +233,11 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun signInWithGoogle() {
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
+        googleSignInClient.signOut().addOnCompleteListener {
+            googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+            val signInIntent = googleSignInClient.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -264,19 +270,37 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                         verified = false,
                         status = "Active"
                     )
+
                     user?.uid?.let { uid ->
+                        // Check if the user document already exists
                         Firebase.firestore.collection("users")
                             .document(uid)
-                            .set(newUser)
-                            .addOnSuccessListener {
-                                Log.d("Firebase", "DocumentSnapshot added with ID: $uid")
+                            .get()
+                            .addOnSuccessListener { document ->
+                                if (document.exists()) {
+                                    // Document already exists, handle error
+                                    Toast.makeText(context, "This Google account is already registered.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    // Document does not exist, create a new user document
+                                    Firebase.firestore.collection("users")
+                                        .document(uid)
+                                        .set(newUser)
+                                        .addOnSuccessListener {
+                                            Log.d("Firebase", "DocumentSnapshot added with ID: $uid")
+                                            Toast.makeText(context, "Google Sign-In Successful.", Toast.LENGTH_SHORT).show()
+                                            dismiss()
+                                        }
+                                        .addOnFailureListener { e ->
+                                            Log.w("Firebase", "Error adding document", e)
+                                            Toast.makeText(context, "Error adding document: ${e.message}", Toast.LENGTH_SHORT).show()
+                                        }
+                                }
                             }
                             .addOnFailureListener { e ->
-                                Log.w("Firebase", "Error adding document", e)
+                                Log.w("Firebase", "Error checking document existence", e)
+                                Toast.makeText(context, "Error checking document existence: ${e.message}", Toast.LENGTH_SHORT).show()
                             }
                     }
-                    Toast.makeText(context, "Google Sign-In Successful.", Toast.LENGTH_SHORT).show()
-                    dismiss()
                 } else {
                     Toast.makeText(context, "Authentication Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
