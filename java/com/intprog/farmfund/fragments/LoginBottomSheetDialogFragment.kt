@@ -1,46 +1,48 @@
 package com.intprog.farmfund.fragments
 
-import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import android.content.DialogInterface
+import android.content.res.Resources
+import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.content.pm.PackageManager
-import android.content.res.Resources
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.net.Uri
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
 import android.widget.Toast
-import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
-import com.intprog.farmfund.R
+import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.intprog.farmfund.activities.ForgotPasswordActivity
 import com.intprog.farmfund.activities.NavigatorActivity
-import com.intprog.farmfund.databinding.BottomsheetLoginBinding // This binding class corresponds to the bottomsheet_login.xml layout file
+import com.intprog.farmfund.databinding.BottomsheetLoginBinding
+import com.intprog.farmfund.objects.HideKeyboardOnClick
 import com.intprog.farmfund.objects.LoadingDialog
 
 class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private var _binding: BottomsheetLoginBinding? = null
-
-    // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
+    private val RC_SIGN_IN = 9001
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,45 +56,24 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        auth = FirebaseAuth.getInstance()
+
+        // Configure Google Sign-In
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("561319474391-1dhmej9q43ftotfgf0gdaur82k2iikbr.apps.googleusercontent.com")
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+
+        binding.google.setOnClickListener {
+            signInWithGoogle()
+        }
+
         binding.toRegisterLayout.setOnClickListener {
             dismiss()
         }
-        binding.fb.setOnClickListener {
-            val facebookAppUri = "fb://facewebmodal/f?href=https://www.facebook.com"
-            val facebookWebUrl = "https://www.facebook.com"
 
-            try {
-                context?.packageManager?.getPackageInfo("com.facebook.katana", 0)
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(facebookAppUri)))
-            } catch (e: PackageManager.NameNotFoundException) {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(facebookWebUrl)))
-            }
-        }
-        binding.twitter.setOnClickListener {
-            val twitterAppUri = "twitter://user?screen_name=twitter"
-            val twitterWebUrl = "https://www.twitter.com"
-
-            try {
-                context?.packageManager?.getPackageInfo("com.twitter.android", 0)
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(twitterAppUri)))
-            } catch (e: PackageManager.NameNotFoundException) {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(twitterWebUrl)))
-            }
-        }
-        binding.google.setOnClickListener {
-            val googleAppUri = "googlechrome://navigate?url=https://www.google.com"
-            val googleWebUrl = "https://www.google.com"
-
-            try {
-                context?.packageManager?.getPackageInfo(
-                    "com.google.android.googlequicksearchbox",
-                    0
-                )
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(googleAppUri)))
-            } catch (e: PackageManager.NameNotFoundException) {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(googleWebUrl)))
-            }
-        }
         binding.toGuestLayout.setOnClickListener {
             val intent = Intent(activity, NavigatorActivity::class.java)
             startActivity(intent)
@@ -143,14 +124,13 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 binding.emailNumberInputLayout.error = null
             }
 
-            //show loading dialog
+            // Show loading dialog
             LoadingDialog.show(requireContext(), false)
 
-            auth = FirebaseAuth.getInstance()
             auth.signInWithEmailAndPassword(emailOrNumber, password)
                 .addOnCompleteListener(requireActivity()) { task ->
                     if (task.isSuccessful) {
-                        //Close Loading dialog
+                        // Close Loading dialog
                         LoadingDialog.dismiss()
                         user = auth.currentUser
                         binding.emailNumberInputLayout.error = null
@@ -159,7 +139,6 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
                         val intent = Intent(context, NavigatorActivity::class.java)
                         startActivity(intent)
                     } else {
-                        Toast.makeText(context, "Authentication failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                         LoadingDialog.dismiss()
                         binding.emailNumberInputLayout.error = "Incorrect Login Credentials"
                         binding.passwordTextInputLayout.error = "Incorrect Login Credentials"
@@ -168,7 +147,7 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 }
         }
 
-        //Code to adjust the screen when inputting/typing
+        // Code to adjust the screen when inputting/typing
         view.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
@@ -188,32 +167,63 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
             }
         })
 
-        //Code to close keyboard when clicking outside the input fields
+        // Code to close keyboard when clicking outside the input fields
         binding.mainLayout.setOnClickListener {
-            val inputMethodManager =
-                it.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(
-                it.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
-            )
+            HideKeyboardOnClick.hideKeyboardOnClick(it)
         }
 
         addTextWatcher(binding.emailNumEditText, binding.emailNumberInputLayout)
         addTextWatcher(binding.passwordEditText, binding.passwordTextInputLayout)
     }
 
-    private fun addTextWatcher(editText: TextInputEditText, layout: TextInputLayout) {
+    private fun signInWithGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
 
-        editText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                firebaseAuthWithGoogle(account.idToken!!)
+            } catch (e: ApiException) {
+                Log.w("GoogleSignIn", "Google sign in failed", e)
+                Toast.makeText(context, "Google sign in failed: ${e.message}", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
 
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnSuccessListener { authResult ->
+                val isNewUser = authResult.additionalUserInfo?.isNewUser ?: false
+                if (isNewUser) {
+                    Toast.makeText(context, "This Google account is not registered.", Toast.LENGTH_SHORT).show()
+                    auth.currentUser?.delete()
+                } else {
+                    val user = auth.currentUser
+                    Toast.makeText(context, "Google Sign-In Successful.", Toast.LENGTH_SHORT).show()
+                    dismiss()
+                    val intent = Intent(context, NavigatorActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "Authentication Failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun addTextWatcher(editText: TextInputEditText, layout: TextInputLayout) {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 layout.isErrorEnabled = false
             }
-
-            override fun afterTextChanged(s: Editable) {
-            }
+            override fun afterTextChanged(s: Editable) {}
         })
     }
 
