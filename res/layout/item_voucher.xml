@@ -1,68 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="85dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="10dp"
-    android:layout_margin="2dp"
+    app:cardCornerRadius="15dp"
+    android:layout_marginBottom="8dp"
     app:cardElevation="5dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:padding="10dp">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
-        <TextView android:id="@+id/voucherCost"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        android:layout_toStartOf="@id/voucherCheckoutBTN">
+
+        <TextView android:id="@+id/voucherPoints"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:text="50\nPoints"
             android:textAlignment="center"
             android:fontFamily="@font/poppins_bold"
-            android:textSize="15sp"
+            android:textSize="17sp"
             android:background="@drawable/element_right_border"
-            android:paddingEnd="10dp"
+            android:paddingStart="3dp"
+            android:paddingEnd="8dp"
             android:layout_centerVertical="true"/>
 
-        <ImageView android:id="@+id/voucherBrandLogo"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+        <ImageView android:id="@+id/voucherLogo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/ic_globe_logo"
-            android:layout_toEndOf="@id/voucherCost"
+            android:layout_toEndOf="@id/voucherPoints"
             android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
 
-        <CheckBox android:id="@+id/voucherCheckBox"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:padding="0dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"/>
-
-        <TextView android:id="@+id/voucherTitle"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="50 Globe Credits"
-            android:textColor="@color/black"
-            android:fontFamily="@font/poppins_bold"
-            android:textSize="13sp"
-            android:layout_toEndOf="@id/voucherBrandLogo"
-            android:layout_toStartOf="@id/voucherCheckBox"/>
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/voucherLogo"
+            android:layout_centerVertical="true"
+            android:gravity="center">
 
-        <TextView android:id="@+id/voucherDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/darkgrey"
-            android:text="For only 50 FundPoints, get 50 Globe Prepaid credits."
-            android:fontFamily="@font/poppins_semibold"
-            android:textSize="11sp"
-            android:layout_toStartOf="@id/voucherCheckBox"
-            android:layout_toEndOf="@id/voucherBrandLogo"
-            android:layout_below="@id/voucherTitle"/>
+            <TextView android:id="@+id/voucherTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="50 GLOBE Prepaid Load Credits"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_bold"
+                android:textSize="13sp"/>
 
+            <TextView android:id="@+id/voucherDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="For only 50 FundPoints, get 50 Globe Prepaid credits."
+                android:fontFamily="@font/poppins_semibold"
+                android:textSize="12sp"
+                android:layout_below="@id/voucherTitle"/>
+        </RelativeLayout>
     </RelativeLayout>
-
-
+        <ImageButton android:id="@+id/voucherCheckoutBTN"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            android:background="@color/lightgreen"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_checkout" />
+    </RelativeLayout>
 </com.google.android.material.card.MaterialCardView>

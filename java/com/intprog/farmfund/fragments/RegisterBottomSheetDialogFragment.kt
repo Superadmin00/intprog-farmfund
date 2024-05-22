@@ -55,7 +55,6 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
         binding.toLogin.setOnClickListener {
             dismiss()
         }
-
         binding.fb.setOnClickListener {
             val facebookAppUri = "fb://facewebmodal/f?href=https://www.facebook.com"
             val facebookWebUrl = "https://www.facebook.com"
@@ -67,7 +66,6 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(facebookWebUrl)))
             }
         }
-
         binding.twitter.setOnClickListener {
             val twitterAppUri = "twitter://user?screen_name=twitter"
             val twitterWebUrl = "https://www.twitter.com"
@@ -79,7 +77,6 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(twitterWebUrl)))
             }
         }
-
         binding.google.setOnClickListener {
             val googleAppUri = "googlechrome://navigate?url=https://www.google.com"
             val googleWebUrl = "https://www.google.com"
@@ -94,6 +91,7 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(googleWebUrl)))
             }
         }
+
         binding.registerButton.setOnClickListener {
             val emailOrNumber = binding.enterEmailNum.text.toString()
             val name = binding.enterName.text.toString()
@@ -234,19 +232,13 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun addTextWatcher(editText: TextInputEditText, layout: TextInputLayout) {
-        // Ensure that the space for the error message is always reserved
-        layout.isErrorEnabled = false
 
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                // Clear the error message without affecting the layout spacing
-                if (s.isNotEmpty()) {
-                    layout.error = null
-                    layout.isErrorEnabled = false
-                }
+                layout.isErrorEnabled = false
             }
 
             override fun afterTextChanged(s: Editable) {

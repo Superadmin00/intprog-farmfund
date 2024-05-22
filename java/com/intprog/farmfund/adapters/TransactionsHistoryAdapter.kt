@@ -1,3 +1,4 @@
+/*
 package com.intprog.farmfund.adapters
 
 import android.view.LayoutInflater
@@ -37,4 +38,4 @@ class TransactionsHistoryAdapter(private val transactions: List<Transaction>) :
         val transactionDate: TextView = itemView.findViewById(R.id.transacDate)
         val transactionTime: TextView = itemView.findViewById(R.id.transacTime)
     }
-}
+}*/

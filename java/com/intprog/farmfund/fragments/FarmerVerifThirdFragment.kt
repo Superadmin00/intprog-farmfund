@@ -60,7 +60,7 @@ class FarmerVerifThirdFragment : BaseFragment() {
     }
 
     override fun validateInput(): Boolean {
-        val imageUris = listOf(viewModel.barangayCertImageUri, viewModel.validIDImageUri, viewModel.landOwnershipLeaseImageUri, viewModel.rsbsaImageUri)
+        val imageUris = listOf(viewModel.barangayCertImageUri, viewModel.validIDImageUri, viewModel.landOwnershipLeaseImageUri)
         val errorMessages = listOf("Please upload the Barangay Certificate image!", "Please upload the Valid ID image!", "Please upload Proof of Land Ownership or Lease Agreement!")
         val errorTexts = listOf(binding.errorText1, binding.errorText2, binding.errorText3)
 

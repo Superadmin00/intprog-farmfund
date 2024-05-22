@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="3dp"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:id="@+id/payMethodLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/paymethodName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:text="GCash"
+            android:fontFamily="@font/poppins_semibold"
+            android:textColor="@color/black"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <View android:id="@+id/liner"
+            android:layout_width="3dp"
+            android:layout_height="30dp"
+            android:background="@color/grey"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="90dp"
+            />
+
+        <TextView
+            android:id="@+id/paymethodAccNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/liner"
+            android:layout_marginStart="18dp"
+            android:layout_toLeftOf="@+id/paymethodLogo"
+            android:text="123456-98765432"
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/paymethodLogo"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:scaleType="fitCenter"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_gcashlogo" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

@@ -38,17 +38,18 @@
 
             <ImageButton
                 android:id="@+id/fb"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:contentDescription="facebookLogin"
                 android:scaleType="fitCenter"
+                android:padding="2dp"
                 app:srcCompat="@drawable/ic_facebook" />
 
             <ImageButton
                 android:id="@+id/twitter"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@color/white"
@@ -58,12 +59,13 @@
 
             <ImageButton
                 android:id="@+id/google"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:contentDescription="googleLogin"
                 android:scaleType="fitCenter"
+                android:padding="3dp"
                 app:srcCompat="@drawable/ic_google" />
         </LinearLayout>
 
@@ -83,7 +85,7 @@
             android:id="@+id/emailNumberInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:layout_below="@+id/textView2"
@@ -112,8 +114,7 @@
             android:id="@+id/passwordTextInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:layout_marginTop="4dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:layout_below="@+id/emailNumberInputLayout"
             android:textColorHint="@color/darkgrey"
