@@ -36,7 +36,7 @@ class FavoriteProjectsFragment : Fragment(), FavoriteUpdateListener {
     private val db = FirebaseFirestore.getInstance()
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var auth: FirebaseAuth
-    private lateinit var projects: MutableList<Project>
+    private var projects: MutableList<Project> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -100,7 +100,7 @@ class FavoriteProjectsFragment : Fragment(), FavoriteUpdateListener {
                             .orderBy("timestamp", Query.Direction.DESCENDING)
                             .get()
                             .addOnSuccessListener { documents ->
-                                val projects = mutableListOf<Project>()
+                                projects.clear()
                                 for (document in documents) {
                                     val project = document.toObject(Project::class.java)
                                     projects.add(project)

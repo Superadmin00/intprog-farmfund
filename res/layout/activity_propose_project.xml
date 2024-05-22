@@ -240,8 +240,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/poppins_bold"
-                        android:hint="Due Date (MM/DD/YYYY)"
-                        android:inputType="date"
+                        android:hint="Due Date"
+                        android:focusable="false"
+                        android:inputType="none"
                         android:singleLine="true"
                         android:textColor="@color/black" />
                 </com.google.android.material.textfield.TextInputLayout>
