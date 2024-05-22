@@ -1,6 +1,7 @@
 package com.intprog.farmfund.activities
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -47,6 +48,9 @@ class ProposeProjectActivity : AppCompatActivity() {
     private val storage = FirebaseStorage.getInstance()
     private val storageRef = storage.reference
 
+    private val calendar = Calendar.getInstance()
+    private val dateFormat = SimpleDateFormat("MM/dd/yyyy", Locale.US)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProposeProjectBinding.inflate(layoutInflater)
@@ -55,7 +59,7 @@ class ProposeProjectActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         val db = Firebase.firestore
 
-        //Grid Layout of Image Uploads
+        // Grid Layout of Image Uploads
         val numberOfColumns = 2
         binding.uploadedImagesRecyclerView.layoutManager = GridLayoutManager(this, numberOfColumns)
         adapter = UploadProjectImageAdapter(imageList) // Pass the imageList to the adapter
@@ -69,6 +73,10 @@ class ProposeProjectActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             startActivityForResult(intent, PICK_IMAGE_REQUEST_CODE)
+        }
+
+        binding.projectDueDateEditText.setOnClickListener {
+            showDatePicker()
         }
 
         binding.submitButton.setOnClickListener {
@@ -91,19 +99,22 @@ class ProposeProjectActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val dueDate = SimpleDateFormat(
-                "MM/dd/yyyy",
-                Locale.US
-            ).parse(binding.projectDueDateEditText.text.toString())
+            val dueDateString = binding.projectDueDateEditText.text.toString()
+            if (dueDateString.isEmpty()) {
+                binding.projectDueDateTextLayout.error = "This field is required."
+                return@setOnClickListener
+            }
+            val dueDate = dateFormat.parse(dueDateString)
             val currentDate = Calendar.getInstance().time
 
             if (dueDate == null) {
-                binding.projectDueDateTextLayout.error = "This field is required."
+                binding.projectDueDateTextLayout.error = "Invalid date."
                 return@setOnClickListener
             } else if (dueDate.before(currentDate)) {
-                binding.projectDueDateTextLayout.error = "Due must be today onwards."
+                binding.projectDueDateTextLayout.error = "Due date must be today or later."
                 return@setOnClickListener
             }
+
             LoadingDialog.show(this, false)
 
             val title = binding.projectTitleEditText.text.toString()
@@ -138,7 +149,7 @@ class ProposeProjectActivity : AppCompatActivity() {
                         .addOnSuccessListener {
                             uploadImages(projectId)
                             LoadingDialog.dismiss()
-                            //If all validations are met and project successfully created
+                            // If all validations are met and project successfully created
                             val projSubmittedDialog =
                                 LayoutInflater.from(this).inflate(R.layout.dialog_project_proposed, null)
                             val builder = AlertDialog.Builder(this).setView(projSubmittedDialog)
@@ -149,8 +160,6 @@ class ProposeProjectActivity : AppCompatActivity() {
                             gotoHome.setOnClickListener {
                                 alertDialog.dismiss()
                                 finish()
-                                val intent = Intent(this, NavigatorActivity::class.java)
-                                startActivity(intent)
                             }
                         }
                         .addOnFailureListener { e ->
@@ -172,11 +181,11 @@ class ProposeProjectActivity : AppCompatActivity() {
                 }
         }
 
-        //Code to close keyboard when clicking outside
+        // Code to close keyboard when clicking outside
         binding.mainLayout.setOnClickListener {
             HideKeyboardOnClick.hideKeyboardOnClick(it)
         }
-        //Code to close keyboard when clicking outside
+        // Code to close keyboard when clicking outside
         binding.mainContainer.setOnClickListener {
             HideKeyboardOnClick.hideKeyboardOnClick(it)
         }
@@ -193,19 +202,38 @@ class ProposeProjectActivity : AppCompatActivity() {
         layout.isErrorEnabled = true
 
         editText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            }
-
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 // Clear the error message without affecting the layout spacing
                 if (s.isNotEmpty()) {
                     layout.error = null
                 }
             }
-
-            override fun afterTextChanged(s: Editable) {
-            }
+            override fun afterTextChanged(s: Editable) {}
         })
+    }
+
+    private fun showDatePicker() {
+        val dateSetListener =
+            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                calendar.set(Calendar.YEAR, year)
+                calendar.set(Calendar.MONTH, monthOfYear)
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                updateDueDateEditText()
+            }
+
+        DatePickerDialog(
+            this@ProposeProjectActivity,
+            dateSetListener,
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).show()
+    }
+
+    private fun updateDueDateEditText() {
+        val date = dateFormat.format(calendar.time)
+        binding.projectDueDateEditText.setText(date)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -247,21 +275,7 @@ class ProposeProjectActivity : AppCompatActivity() {
                                 )
                             )
                             .addOnSuccessListener {
-                                val projSubmittedDialog =
-                                    LayoutInflater.from(this)
-                                        .inflate(R.layout.dialog_project_proposed, null)
-                                val builder = AlertDialog.Builder(this).setView(projSubmittedDialog)
-                                val alertDialog = builder.show()
-                                alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-                                val gotoHome: Button =
-                                    projSubmittedDialog.findViewById(R.id.gotoHome)
-                                gotoHome.setOnClickListener {
-                                    alertDialog.dismiss()
-                                    finish()
-                                    val intent = Intent(this, NavigatorActivity::class.java)
-                                    startActivity(intent)
-                                }
                             }
                             .addOnFailureListener { e ->
                                 Toast.makeText(
