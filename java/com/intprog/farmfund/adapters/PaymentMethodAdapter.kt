@@ -41,6 +41,7 @@ class PaymentMethodAdapter(private val paymentMethods: List<PaymentMethod>) :
                 } else {
                     binding.payMethodLayout.setBackgroundColor(ContextCompat.getColor(binding.root.context, R.color.white))
                 }
+                holder.binding.payMethodLayout.isSelected = selectedPaymentMethod == paymentMethods[position]
             }
         }
     }
