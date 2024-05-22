@@ -9,16 +9,21 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Window
 import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.intprog.farmfund.R
 import com.intprog.farmfund.adapters.BankInfoAdapter
 import com.intprog.farmfund.dataclasses.BankInfo
+import com.intprog.farmfund.dataclasses.Project
 
 class WithdrawFundsActivity : AppCompatActivity() {
 
     private lateinit var bankRecyclerView: RecyclerView
+    private lateinit var project: Project
     private val bankList = listOf(
         BankInfo(R.drawable.ic_gcashlogo, "**** **** **** 1999", "Expires 12/26"),
         BankInfo(R.drawable.ic_gcashlogo, "**** **** **** 2024", "Expires 04/20"),
@@ -29,7 +34,29 @@ class WithdrawFundsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_withdraw_funds)
 
-        bankRecyclerView = findViewById(R.id.bankRecyclerView)
+        project = intent.getSerializableExtra("project") as Project
+
+        val projectNameTextView = findViewById<TextView>(R.id.projTitleWithdraw)
+        projectNameTextView.text = project.projTitle
+
+        val projectWithdrawableFunds = findViewById<TextView>(R.id.withdrawableFunds)
+        projectWithdrawableFunds.text = project.projFundsReceived.toString()
+
+        val projectWithdrawStatus = findViewById<TextView>(R.id.projectStatusWithdraw)
+        projectWithdrawStatus.text = project.projStatus
+
+        val projectImageView = findViewById<ImageView>(R.id.projFirstImageDonate)
+        if (project.imageUrls.isNotEmpty()) {
+            val imageUrl = project.imageUrls[0]
+            Glide.with(this)
+                .load(imageUrl)
+                .placeholder(R.drawable.ic_launcher_background) // Placeholder image
+                .into(projectImageView)
+        } else {
+            projectImageView.setImageResource(R.drawable.ic_launcher_background)
+        }
+
+        bankRecyclerView = findViewById(R.id.withdrawBankRecyclerView)
         val adapter = BankInfoAdapter(bankList)
         bankRecyclerView.layoutManager = LinearLayoutManager(this)
         bankRecyclerView.adapter = adapter

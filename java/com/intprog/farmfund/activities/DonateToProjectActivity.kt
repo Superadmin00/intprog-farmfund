@@ -119,7 +119,7 @@ class DonateToProjectActivity : AppCompatActivity() {
                 project.let {
                     if (it.projFundsReceived + donationAmount <= it.projFundGoal) {
                         val firestore = FirebaseFirestore.getInstance()
-                            val projectDocRef = firestore.collection("projects").document(it.projId)
+                        val projectDocRef = firestore.collection("projects").document(it.projId)
 
                         val updatedProject = mapOf(
                             "projFundsReceived" to it.projFundsReceived + donationAmount,
