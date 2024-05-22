@@ -126,6 +126,37 @@ class DonateToProjectActivity : AppCompatActivity() {
                         projectDocRef.update(updatedProject)
                             .addOnSuccessListener {
                                 Log.d("DonateToProjectActivity", "Document updated successfully")
+
+                                // Get the current user
+                                val user = auth.currentUser
+                                if (user != null) {
+                                    val userId = user.uid
+
+                                    // Get the user document reference
+                                    val userDocRef = firestore.collection("users").document(userId)
+
+                                    // Get the current fundPoints of the user
+                                    userDocRef.get()
+                                        .addOnSuccessListener { document ->
+                                            val currentFundPoints = document.getDouble("fundPoints") ?: 0.0
+
+                                            // Calculate the new fundPoints
+                                            val newFundPoints = currentFundPoints + (donationAmount * 0.1)
+
+                                            // Update the fundPoints of the user
+                                            userDocRef.update("fundPoints", newFundPoints)
+                                                .addOnSuccessListener {
+                                                    Log.d("DonateToProjectActivity", "User fundPoints updated successfully")
+                                                }
+                                                .addOnFailureListener { e ->
+                                                    Log.e("DonateToProjectActivity", "Failed to update user fundPoints: ${e.message}")
+                                                }
+                                        }
+                                        .addOnFailureListener { e ->
+                                            Log.e("DonateToProjectActivity", "Failed to get user document: ${e.message}")
+                                        }
+                                }
+
                                 showSuccessDialog()
                             }
                             .addOnFailureListener { exception ->

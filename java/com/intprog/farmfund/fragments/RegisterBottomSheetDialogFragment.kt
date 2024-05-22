@@ -4,9 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.res.Resources
-import android.net.Uri
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import android.os.Bundle
 import android.text.Editable
@@ -18,7 +16,6 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -31,10 +28,9 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.firestore
-import com.intprog.farmfund.R
-import com.intprog.farmfund.activities.NavigatorActivity
 import com.intprog.farmfund.databinding.BottomsheetRegisterBinding
 import com.intprog.farmfund.dataclasses.User
+import com.intprog.farmfund.objects.HideKeyboardOnClick
 import com.intprog.farmfund.objects.LoadingDialog
 
 class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
@@ -200,12 +196,7 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         //Code to close keyboard when clicking outside the input fields
         binding.mainLayout.setOnClickListener {
-            val inputMethodManager =
-                it.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(
-                it.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
-            )
+            HideKeyboardOnClick.hideKeyboardOnClick(it)
         }
 
         addTextWatcher(binding.enterEmailNum, binding.enterEmailNumLayout)
