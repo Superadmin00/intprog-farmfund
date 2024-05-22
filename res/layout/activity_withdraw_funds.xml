@@ -67,9 +67,10 @@
 
             <ImageView
                 android:id="@+id/projFirstImageDonate"
+                android:scaleType="centerCrop"
                 android:layout_width="120dp"
                 android:layout_height="70dp"
-                android:layout_marginEnd="16dp" />
+                android:layout_marginEnd="8dp" />
 
             <TextView
                 android:id="@+id/projTitleWithdraw"
