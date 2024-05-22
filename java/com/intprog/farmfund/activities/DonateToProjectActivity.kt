@@ -17,9 +17,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+<<<<<<< HEAD
 import com.google.firebase.database.FirebaseDatabase
+=======
+>>>>>>> e3e49fcbdc8f6e58d8937ae03cb059a1381c9420
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
 import com.intprog.farmfund.R
 import com.intprog.farmfund.adapters.PaymentMethodAdapter
 import com.intprog.farmfund.databinding.ActivityDonateToProjectBinding
@@ -32,9 +34,6 @@ class DonateToProjectActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDonateToProjectBinding
     private val db = FirebaseFirestore.getInstance()
     private lateinit var auth: FirebaseAuth
-    private var project: Project? = null
-    private val database = FirebaseDatabase.getInstance()
-    private val projectsRef = database.getReference("projects")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +43,8 @@ class DonateToProjectActivity : AppCompatActivity() {
 
         // Retrieve data from intent
         val project = intent.getSerializableExtra("project") as? Project
+        val imageUrl = intent.getStringExtra("imageUrl")
+
         if (project == null) {
             // Handle the error gracefully if the project is null
             Toast.makeText(this, "Project data not found", Toast.LENGTH_SHORT).show()
@@ -51,6 +52,7 @@ class DonateToProjectActivity : AppCompatActivity() {
             return
         }
 
+<<<<<<< HEAD
         val projTitle = project?.projTitle
         val projStatus = project?.projStatus
         val imageUrl = intent.getStringExtra("imageUrl")
@@ -61,13 +63,22 @@ class DonateToProjectActivity : AppCompatActivity() {
         Glide.with(this).load(imageUrl).into(binding.projImageDonate) // Use Glide or any image loading library to load the image
 
         val checkBoxes = listOf(binding.box50, binding.box100, binding.box500, binding.box1000)
+=======
+        binding.projTitleDonate.text = project.projTitle
+        binding.projFundGoalDonate.text = "${project?.projFundsReceived} / ${project?.projFundGoal}"
+        Glide.with(this).load(imageUrl).into(binding.projFirstImageDonate)
+
+        val checkBoxes =
+            listOf(binding.box50, binding.box100, binding.box500, binding.box1000)
+>>>>>>> e3e49fcbdc8f6e58d8937ae03cb059a1381c9420
 
         checkBoxes.forEach { checkBox ->
             checkBox.setBackgroundResource(R.drawable.bg_checkboxes_amount)
             checkBox.setOnClickListener {
+
                 binding.customAmountEditText.text = null // Clear custom amount field
                 binding.customAmountEditText.clearFocus()
-                // Close keyboard
+                //Close keyboard
                 val inputMethodManager =
                     it.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(
@@ -152,7 +163,7 @@ class DonateToProjectActivity : AppCompatActivity() {
             finish()
         }
 
-        // Code to close keyboard when clicking outside the input fields
+        //Code to close keyboard when clicking outside the input fields
         binding.paymentLayout.setOnClickListener {
             HideKeyboardOnClick.hideKeyboardOnClick(it)
         }
@@ -183,6 +194,7 @@ class DonateToProjectActivity : AppCompatActivity() {
         }
         dialog.show()
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+<<<<<<< HEAD
 
         // Confirm donation button click listener
         binding.confirmPaymentBTN.setOnClickListener {
@@ -218,5 +230,7 @@ class DonateToProjectActivity : AppCompatActivity() {
                 binding.customAmountEditText.error = "Please enter or select a valid amount"
             }
         }
+=======
+>>>>>>> e3e49fcbdc8f6e58d8937ae03cb059a1381c9420
     }
 }
