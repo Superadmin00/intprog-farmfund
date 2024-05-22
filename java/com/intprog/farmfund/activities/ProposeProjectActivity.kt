@@ -29,6 +29,8 @@ import com.intprog.farmfund.R
 import com.intprog.farmfund.adapters.UploadProjectImageAdapter
 import com.intprog.farmfund.databinding.ActivityProposeProjectBinding
 import com.intprog.farmfund.dataclasses.Project
+import com.intprog.farmfund.objects.HideKeyboardOnClick
+import com.intprog.farmfund.objects.LoadingDialog
 import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -44,8 +46,6 @@ class ProposeProjectActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private val storage = FirebaseStorage.getInstance()
     private val storageRef = storage.reference
-
-    private var newProjectId: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,6 +104,7 @@ class ProposeProjectActivity : AppCompatActivity() {
                 binding.projectDueDateTextLayout.error = "Due must be today onwards."
                 return@setOnClickListener
             }
+            LoadingDialog.show(this, false)
 
             val title = binding.projectTitleEditText.text.toString()
             val descriptions = binding.projectDescriptionEditText.text.toString()
@@ -112,87 +113,72 @@ class ProposeProjectActivity : AppCompatActivity() {
             val status = "Active"
 
             val user = auth.currentUser
-            val counterRef = db.collection("counters").document("projectCounter")
 
-            counterRef.get().addOnSuccessListener { document ->
-                if (document.exists()) {
-                    val lastProjectId = document.getLong("lastProjectId") ?: 0
-                    newProjectId = lastProjectId + 1
-                    counterRef.update("lastProjectId", newProjectId)
+            val project = Project(
+                projId = "", // Temporary value
+                userId = user?.uid ?: "userId",
+                projTitle = title,
+                projDescription = descriptions,
+                projMilestone = milestone,
+                projDonorsCount = 0,
+                projFundGoal = fundGoal,
+                projFundsReceived = 0.0,
+                projDueDate = dueDate,
+                projStatus = status
+            )
 
-                    val project = Project(
-                        projId = newProjectId,
-                        userId = user?.uid ?: "userId",
-                        projTitle = title,
-                        projDescription = descriptions,
-                        projMilestone = milestone,
-                        projDonorsCount = 0,
-                        projFundGoal = fundGoal,
-                        projFundsReceived = 0.0,
-                        projDueDate = dueDate,
-                        projStatus = status
-                    )
+            db.collection("projects")
+                .add(project)
+                .addOnSuccessListener { documentReference ->
+                    val projectId = documentReference.id
+                    val updatedProject = project.copy(projId = projectId)
 
-                    db.collection("projects")
-                        .add(project)
-                        .addOnSuccessListener { documentReference ->
-                            val projectId = documentReference.id
+                    db.collection("projects").document(projectId)
+                        .set(updatedProject)
+                        .addOnSuccessListener {
                             uploadImages(projectId)
+                            LoadingDialog.dismiss()
+                            //If all validations are met and project successfully created
+                            val projSubmittedDialog =
+                                LayoutInflater.from(this).inflate(R.layout.dialog_project_proposed, null)
+                            val builder = AlertDialog.Builder(this).setView(projSubmittedDialog)
+                            val alertDialog = builder.show()
+                            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+                            val gotoHome: Button = projSubmittedDialog.findViewById(R.id.gotoHome)
+                            gotoHome.setOnClickListener {
+                                alertDialog.dismiss()
+                                finish()
+                                val intent = Intent(this, NavigatorActivity::class.java)
+                                startActivity(intent)
+                            }
                         }
                         .addOnFailureListener { e ->
                             Toast.makeText(
                                 this,
-                                "Error adding project: ${e.message}",
+                                "Error updating project ID: ${e.message}",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            LoadingDialog.dismiss()
                         }
-                } else {
-                    val data = hashMapOf(
-                        "lastProjectId" to 1
-                    )
-                    counterRef.set(data)
                 }
-            }.addOnFailureListener { exception ->
-                Toast.makeText(
-                    this,
-                    "An error occurred: ${exception.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
-            //If all validations are met and project successfully created
-            val projSubmittedDialog =
-                LayoutInflater.from(this).inflate(R.layout.dialog_project_proposed, null)
-            val builder = AlertDialog.Builder(this).setView(projSubmittedDialog)
-            val alertDialog = builder.show()
-            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-            val gotoHome: Button = projSubmittedDialog.findViewById(R.id.gotoHome)
-            gotoHome.setOnClickListener {
-                alertDialog.dismiss()
-                finish()
-                val intent = Intent(this, NavigatorActivity::class.java)
-                startActivity(intent)
-            }
+                .addOnFailureListener { e ->
+                    Toast.makeText(
+                        this,
+                        "Error adding project: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    LoadingDialog.dismiss()
+                }
         }
 
         //Code to close keyboard when clicking outside
         binding.mainLayout.setOnClickListener {
-            val inputMethodManager =
-                it.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(
-                it.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
-            )
+            HideKeyboardOnClick.hideKeyboardOnClick(it)
         }
         //Code to close keyboard when clicking outside
         binding.mainContainer.setOnClickListener {
-            val inputMethodManager =
-                it.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(
-                it.windowToken,
-                InputMethodManager.HIDE_NOT_ALWAYS
-            )
+            HideKeyboardOnClick.hideKeyboardOnClick(it)
         }
 
         addTextWatcher(binding.projectTitleEditText, binding.projectTitleTextLayout)
@@ -273,6 +259,8 @@ class ProposeProjectActivity : AppCompatActivity() {
                                 gotoHome.setOnClickListener {
                                     alertDialog.dismiss()
                                     finish()
+                                    val intent = Intent(this, NavigatorActivity::class.java)
+                                    startActivity(intent)
                                 }
                             }
                             .addOnFailureListener { e ->
