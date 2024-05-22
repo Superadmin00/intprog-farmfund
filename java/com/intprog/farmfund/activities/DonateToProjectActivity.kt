@@ -17,10 +17,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
-<<<<<<< HEAD
-import com.google.firebase.database.FirebaseDatabase
-=======
->>>>>>> e3e49fcbdc8f6e58d8937ae03cb059a1381c9420
 import com.google.firebase.firestore.FirebaseFirestore
 import com.intprog.farmfund.R
 import com.intprog.farmfund.adapters.PaymentMethodAdapter
@@ -52,25 +48,12 @@ class DonateToProjectActivity : AppCompatActivity() {
             return
         }
 
-<<<<<<< HEAD
-        val projTitle = project?.projTitle
-        val projStatus = project?.projStatus
-        val imageUrl = intent.getStringExtra("imageUrl")
-
-        // Set the data to the views
-        binding.projTitleDonate.text = projTitle
-        binding.projStatusDonate.text = projStatus
-        Glide.with(this).load(imageUrl).into(binding.projImageDonate) // Use Glide or any image loading library to load the image
-
-        val checkBoxes = listOf(binding.box50, binding.box100, binding.box500, binding.box1000)
-=======
         binding.projTitleDonate.text = project.projTitle
         binding.projFundGoalDonate.text = "${project?.projFundsReceived} / ${project?.projFundGoal}"
         Glide.with(this).load(imageUrl).into(binding.projFirstImageDonate)
 
         val checkBoxes =
             listOf(binding.box50, binding.box100, binding.box500, binding.box1000)
->>>>>>> e3e49fcbdc8f6e58d8937ae03cb059a1381c9420
 
         checkBoxes.forEach { checkBox ->
             checkBox.setBackgroundResource(R.drawable.bg_checkboxes_amount)
@@ -101,7 +84,15 @@ class DonateToProjectActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 checkBoxes.forEach { otherCheckBox ->
                     otherCheckBox.isChecked = false
-                    otherCheckBox.setTextColor(ContextCompat.getColorStateList(this@DonateToProjectActivity, R.color.black)) } }
+                    otherCheckBox.setTextColor(
+                        ContextCompat.getColorStateList(
+                            this@DonateToProjectActivity,
+                            R.color.black
+                        )
+                    )
+                }
+            }
+
             override fun afterTextChanged(s: Editable) {}
         })
 
@@ -129,7 +120,10 @@ class DonateToProjectActivity : AppCompatActivity() {
             if (donationAmount > 0) {
                 project.let {
                     if (it.projFundsReceived + donationAmount <= it.projFundGoal) {
-                        Log.d("DonateToProjectActivity", "Current Funds Received: ${project!!.projFundsReceived}")
+                        Log.d(
+                            "DonateToProjectActivity",
+                            "Current Funds Received: ${project!!.projFundsReceived}"
+                        )
                         Log.d("DonateToProjectActivity", "Donation Amount: $donationAmount")
 
                         val firestore = FirebaseFirestore.getInstance()
@@ -155,33 +149,52 @@ class DonateToProjectActivity : AppCompatActivity() {
                                     // Get the current fundPoints of the user
                                     userDocRef.get()
                                         .addOnSuccessListener { document ->
-                                            val currentFundPoints = document.getDouble("fundPoints") ?: 0.0
+                                            val currentFundPoints =
+                                                document.getDouble("fundPoints") ?: 0.0
 
                                             // Calculate the new fundPoints
-                                            val newFundPoints = currentFundPoints + (donationAmount * 0.1)
+                                            val newFundPoints =
+                                                currentFundPoints + (donationAmount * 0.1)
 
                                             // Update the fundPoints of the user
                                             userDocRef.update("fundPoints", newFundPoints)
                                                 .addOnSuccessListener {
-                                                    Log.d("DonateToProjectActivity", "User fundPoints updated successfully")
+                                                    Log.d(
+                                                        "DonateToProjectActivity",
+                                                        "User fundPoints updated successfully"
+                                                    )
                                                 }
                                                 .addOnFailureListener { e ->
-                                                    Log.e("DonateToProjectActivity", "Failed to update user fundPoints: ${e.message}")
+                                                    Log.e(
+                                                        "DonateToProjectActivity",
+                                                        "Failed to update user fundPoints: ${e.message}"
+                                                    )
                                                 }
                                         }
                                         .addOnFailureListener { e ->
-                                            Log.e("DonateToProjectActivity", "Failed to get user document: ${e.message}")
+                                            Log.e(
+                                                "DonateToProjectActivity",
+                                                "Failed to get user document: ${e.message}"
+                                            )
                                         }
                                 }
 
                                 showSuccessDialog()
                             }
                             .addOnFailureListener { exception ->
-                                Log.e("DonateToProjectActivity", "Failed to update donation: ${exception.message}")
-                                Toast.makeText(this, "Failed to update donation: ${exception.message}", Toast.LENGTH_SHORT).show()
+                                Log.e(
+                                    "DonateToProjectActivity",
+                                    "Failed to update donation: ${exception.message}"
+                                )
+                                Toast.makeText(
+                                    this,
+                                    "Failed to update donation: ${exception.message}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                     } else {
-                        Toast.makeText(this, "Donation exceeds funding goal", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Donation exceeds funding goal", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             } else {
@@ -202,6 +215,7 @@ class DonateToProjectActivity : AppCompatActivity() {
             HideKeyboardOnClick.hideKeyboardOnClick(it)
         }
     }
+
     private fun getDonationAmount(): Int {
         val amountFromCustom = binding.customAmountEditText.text.toString().toIntOrNull() ?: 0
         val amountFromCheckBox = when {
@@ -225,43 +239,5 @@ class DonateToProjectActivity : AppCompatActivity() {
         }
         dialog.show()
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-<<<<<<< HEAD
-
-        // Confirm donation button click listener
-        binding.confirmPaymentBTN.setOnClickListener {
-            val donationAmount = getDonationAmount()
-            if (donationAmount > 0) {
-                project?.let {
-                    if (it.projFundsReceived + donationAmount <= it.projFundGoal) {
-                        Log.d("DonateToProjectActivity", "Current Funds Received: ${project!!.projFundsReceived}")
-                        Log.d("DonateToProjectActivity", "Donation Amount: $donationAmount")
-
-                        val firestore = FirebaseFirestore.getInstance()
-                        val projectDocRef = firestore.collection("projects").document(it.projId.toString())
-
-                        val updatedProject = it.copy(
-                            projFundsReceived = it.projFundsReceived + donationAmount,
-                            projDonorsCount = it.projDonorsCount + 1
-                        )
-
-                        projectDocRef.set(updatedProject)
-                            .addOnSuccessListener {
-                                Log.d("DonateToProjectActivity", "Document updated successfully")
-                                showSuccessDialog()
-                            }
-                            .addOnFailureListener { exception ->
-                                Log.e("DonateToProjectActivity", "Failed to update donation: ${exception.message}")
-                                Toast.makeText(this, "Failed to update donation: ${exception.message}", Toast.LENGTH_SHORT).show()
-                            }
-                    } else {
-                        Toast.makeText(this, "Donation exceeds funding goal", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } else {
-                binding.customAmountEditText.error = "Please enter or select a valid amount"
-            }
-        }
-=======
->>>>>>> e3e49fcbdc8f6e58d8937ae03cb059a1381c9420
     }
 }

@@ -77,13 +77,14 @@
                 <RelativeLayout
                     android:background="@color/white"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:padding="8dp">
 
                     <ImageView
                         android:id="@+id/projFirstImageDonate"
                         android:layout_width="150dp"
                         android:layout_height="80dp"
-                        android:layout_marginEnd="5dp"
+                        android:layout_marginEnd="8dp"
                         android:scaleType="fitXY"/>
 
                     <TextView

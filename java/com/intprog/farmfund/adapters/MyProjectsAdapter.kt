@@ -1,16 +1,26 @@
 package com.intprog.farmfund.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.intprog.farmfund.R
+import com.intprog.farmfund.activities.WithdrawFundsActivity
 import com.intprog.farmfund.dataclasses.Project
 
 class MyProjectsAdapter(private val projects: List<Project>) : RecyclerView.Adapter<MyProjectsAdapter.ProjectViewHolder>() {
+
+    inner class ProjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val projectName: TextView = itemView.findViewById(R.id.projectName)
+        val projectStatus: TextView = itemView.findViewById(R.id.projectStatus)
+        val projectImage: ImageView = itemView.findViewById(R.id.projectImage)
+        val projectItemLayout: RelativeLayout = itemView.findViewById(R.id.projectItemLayout)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_my_projects, parent, false)
@@ -32,15 +42,16 @@ class MyProjectsAdapter(private val projects: List<Project>) : RecyclerView.Adap
         } else {
             holder.projectImage.setImageResource(R.drawable.ic_launcher_background)
         }
+
+        holder.projectItemLayout.setOnClickListener {
+            val context = holder.itemView.context
+            val intent = Intent(context, WithdrawFundsActivity::class.java)
+            intent.putExtra("project", project)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {
         return projects.size
-    }
-
-    class ProjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val projectName: TextView = itemView.findViewById(R.id.projectName)
-        val projectStatus: TextView = itemView.findViewById(R.id.projectStatus)
-        val projectImage: ImageView = itemView.findViewById(R.id.projectImage)
     }
 }

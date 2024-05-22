@@ -57,19 +57,19 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/header"
         android:layout_margin="16dp"
-        app:cardCornerRadius="15dp"
-        app:cardElevation="5dp">
+        app:cardCornerRadius="5dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp">
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="8dp">
 
             <ImageView
                 android:id="@+id/projFirstImageDonate"
-                android:layout_width="140dp"
-                android:layout_height="80dp"
-                android:layout_marginEnd="5dp"
-                android:background="@drawable/img_default_projectimage" />
+                android:layout_width="120dp"
+                android:layout_height="70dp"
+                android:layout_marginEnd="16dp" />
 
             <TextView
                 android:id="@+id/projTitleWithdraw"
@@ -77,20 +77,27 @@
                 android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/projFirstImageDonate"
                 android:fontFamily="@font/poppins_bold"
-                android:layout_margin="4dp"
                 android:text="Organic Farming Initiative"
                 android:textColor="@color/black"
-                android:textSize="17sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/withdrawableFunds"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_margin="4dp"
-                android:layout_toEndOf="@+id/projFirstImageDonate"
                 android:fontFamily="@font/poppins_semibold"
+                android:layout_toRightOf="@+id/projFirstImageDonate"
+                android:layout_below="@+id/projTitleWithdraw"
                 android:text="Withdrawable Funds: ₱5000"
+                android:textSize="13sp" />
+            <TextView
+                android:id="@+id/projectStatusWithdraw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_toRightOf="@+id/projFirstImageDonate"
+                android:layout_below="@+id/withdrawableFunds"
+                android:text="Ongoing"
                 android:textSize="13sp" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
@@ -108,7 +115,7 @@
         android:textSize="20sp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/bankRecyclerView"
+        android:id="@+id/withdrawBankRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/withdrawHeader"
