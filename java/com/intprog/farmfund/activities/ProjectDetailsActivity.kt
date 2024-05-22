@@ -1,5 +1,6 @@
 package com.intprog.farmfund.activities
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -43,10 +44,8 @@ class ProjectDetailsActivity : AppCompatActivity() {
             binding.projectImagesPager.adapter = ProjectImagesPagerAdapter(this, it.imageUrls)
         }
 
-        //CODE HERE
         val userOwns = false // User owns the project
 
-        //If the user owns the project, adjust the code if necessary
         if (userOwns) {
             binding.updateProjBTN.visibility = View.VISIBLE
             binding.spaceBetween.visibility = View.VISIBLE
@@ -57,9 +56,15 @@ class ProjectDetailsActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         } else {
-            //User does not own the project
+            // User does not own the project
             binding.projdetailsDynamicBTN.setOnClickListener {
-                val intent = Intent(this, DonateToProjectActivity::class.java)
+                val intent = Intent(this, DonateToProjectActivity::class.java).apply {
+                    putExtra("projId", project?.projId)
+                    putExtra("project", project)
+                    putExtra("projTitle", project?.projTitle)
+                    putExtra("projStatus", project?.projStatus)
+                    putExtra("imageUrl", project?.imageUrls?.firstOrNull()) // Assuming the first image is the main image
+                }
                 startActivity(intent)
             }
         }

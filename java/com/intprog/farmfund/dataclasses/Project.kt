@@ -4,7 +4,7 @@ import java.io.Serializable
 import java.util.*
 
 data class Project(
-    val projId: Long = 0,
+    val projId: String = "",
     val userId: String = "",
     val projTitle: String = "",
     val projDescription: String = "",
@@ -17,7 +17,7 @@ data class Project(
     val imageUrls: List<String> = emptyList()
 ): Serializable {
     constructor() : this(
-        0,
+        "",
         "",
         "",
         "",
