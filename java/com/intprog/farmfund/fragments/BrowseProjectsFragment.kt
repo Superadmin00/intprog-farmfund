@@ -14,6 +14,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -130,6 +131,7 @@ class BrowseProjectsFragment : Fragment() {
             }
             .addOnFailureListener { exception ->
                 swipeRefreshLayout.isRefreshing = false
+                Toast.makeText(context, "Failed to fetch projects: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -148,7 +150,6 @@ class BrowseProjectsFragment : Fragment() {
         }
 
         if (filteredProjects.isEmpty()) {
-            // Show "No projects found" text
             view?.findViewById<TextView>(R.id.noProjectsText)?.visibility = View.VISIBLE
         } else {
             view?.findViewById<TextView>(R.id.noProjectsText)?.visibility = View.GONE
