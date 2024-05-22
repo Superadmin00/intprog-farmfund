@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.SystemClock
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -18,11 +19,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.type.Date
+import com.google.type.DateTime
+import com.google.type.DateTimeOrBuilder
 import com.intprog.farmfund.R
 import com.intprog.farmfund.adapters.PaymentMethodAdapter
 import com.intprog.farmfund.databinding.ActivityDonateToProjectBinding
 import com.intprog.farmfund.dataclasses.PaymentMethod
 import com.intprog.farmfund.dataclasses.Project
+import com.intprog.farmfund.dataclasses.Transaction
 import com.intprog.farmfund.objects.HideKeyboardOnClick
 
 class DonateToProjectActivity : AppCompatActivity() {
@@ -40,6 +45,7 @@ class DonateToProjectActivity : AppCompatActivity() {
         // Retrieve data from intent
         val project = intent.getSerializableExtra("project") as? Project
         val imageUrl = intent.getStringExtra("imageUrl")
+        val user = auth.currentUser
 
         if (project == null) {
             // Handle the error gracefully if the project is null
@@ -49,7 +55,7 @@ class DonateToProjectActivity : AppCompatActivity() {
         }
 
         binding.projTitleDonate.text = project.projTitle
-        binding.projFundGoalDonate.text = "${project?.projFundsReceived} / ${project?.projFundGoal}"
+        binding.projFundGoalDonate.text = "${project.projFundsReceived} / ${project.projFundGoal}"
         Glide.with(this).load(imageUrl).into(binding.projFirstImageDonate)
 
         val checkBoxes =
@@ -112,11 +118,8 @@ class DonateToProjectActivity : AppCompatActivity() {
             if (donationAmount > 0) {
                 project.let {
                     if (it.projFundsReceived + donationAmount <= it.projFundGoal) {
-                        Log.d("DonateToProjectActivity", "Current Funds Received: ${project!!.projFundsReceived}")
-                        Log.d("DonateToProjectActivity", "Donation Amount: $donationAmount")
-
                         val firestore = FirebaseFirestore.getInstance()
-                        val projectDocRef = firestore.collection("projects").document(it.projId)
+                            val projectDocRef = firestore.collection("projects").document(it.projId)
 
                         val updatedProject = mapOf(
                             "projFundsReceived" to it.projFundsReceived + donationAmount,
@@ -125,43 +128,50 @@ class DonateToProjectActivity : AppCompatActivity() {
 
                         projectDocRef.update(updatedProject)
                             .addOnSuccessListener {
-                                Log.d("DonateToProjectActivity", "Document updated successfully")
+                                auth.currentUser?.let { user ->
+                                    val userDocRef = firestore.collection("users").document(user.uid)
 
-                                // Get the current user
-                                val user = auth.currentUser
-                                if (user != null) {
-                                    val userId = user.uid
-
-                                    // Get the user document reference
-                                    val userDocRef = firestore.collection("users").document(userId)
-
-                                    // Get the current fundPoints of the user
                                     userDocRef.get()
                                         .addOnSuccessListener { document ->
                                             val currentFundPoints = document.getDouble("fundPoints") ?: 0.0
-
-                                            // Calculate the new fundPoints
                                             val newFundPoints = currentFundPoints + (donationAmount * 0.1)
 
-                                            // Update the fundPoints of the user
                                             userDocRef.update("fundPoints", newFundPoints)
                                                 .addOnSuccessListener {
-                                                    Log.d("DonateToProjectActivity", "User fundPoints updated successfully")
-                                                }
-                                                .addOnFailureListener { e ->
-                                                    Log.e("DonateToProjectActivity", "Failed to update user fundPoints: ${e.message}")
+                                                    showSuccessDialog()
                                                 }
                                         }
+                                }
+                                // Create a new transaction
+                                val transaction = user?.uid?.let { it1 ->
+                                    Transaction(
+                                        transactionId = "", // Temporary value
+                                        userId = it1,
+                                        projId = project.projId,
+                                        voucherId = "", // Leave this as blank for a donation transaction
+                                        transactionType = "Donation",
+                                        transactionDateTime = com.google.firebase.Timestamp.now(), // Use the current date and time
+                                        transactionStatus = "Completed"
+                                    )
+                                }
+
+                                // Add the transaction to the "transactions" collection
+                                val transactionDocRef = db.collection("transactions").document()
+                                if (transaction != null) {
+                                    transaction.transactionId = transactionDocRef.id
+                                } // Set the transactionId to the document ID
+
+                                if (transaction != null) {
+                                    transactionDocRef.set(transaction)
+                                        .addOnSuccessListener {
+                                            Log.d("DonateToProjectActivity", "Transaction recorded successfully")
+                                        }
                                         .addOnFailureListener { e ->
-                                            Log.e("DonateToProjectActivity", "Failed to get user document: ${e.message}")
+                                            Log.e("DonateToProjectActivity", "Failed to record transaction: ${e.message}")
                                         }
                                 }
 
                                 showSuccessDialog()
-                            }
-                            .addOnFailureListener { exception ->
-                                Log.e("DonateToProjectActivity", "Failed to update donation: ${exception.message}")
-                                Toast.makeText(this, "Failed to update donation: ${exception.message}", Toast.LENGTH_SHORT).show()
                             }
                     } else {
                         Toast.makeText(this, "Donation exceeds funding goal", Toast.LENGTH_SHORT).show()
@@ -203,8 +213,7 @@ class DonateToProjectActivity : AppCompatActivity() {
         dialog.setCancelable(false)
         dialog.findViewById<Button>(R.id.closeDialogBTN).setOnClickListener {
             dialog.dismiss()
-            // Navigate to BrowseProjectsFragment or Activity
-            finish() // or startActivity(Intent(this, BrowseProjectsActivity::class.java))
+            finish()
         }
         dialog.show()
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
