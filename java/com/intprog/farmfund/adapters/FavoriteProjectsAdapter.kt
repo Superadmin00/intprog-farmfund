@@ -47,8 +47,9 @@ class FavoriteProjectsAdapter(
     inner class ProjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val projectTitle: TextView = itemView.findViewById(R.id.projectTitle)
         private val projectImage: ImageView = itemView.findViewById(R.id.projectImage1)
-        private val addToFavoritesBTN : ImageView = itemView.findViewById(R.id.addToFavoritesBTN)
-        private val projectItemCard : RelativeLayout = itemView.findViewById(R.id.projectItemCard)
+        private val addToFavoritesBTN: ImageView = itemView.findViewById(R.id.addToFavoritesBTN)
+        private val projectItemCard: RelativeLayout = itemView.findViewById(R.id.projectItemCard)
+
         fun bind(project: Project) {
             projectTitle.text = project.projTitle
 
@@ -77,7 +78,7 @@ class FavoriteProjectsAdapter(
                     if (!querySnapshot.isEmpty) {
                         val documentSnapshot = querySnapshot.documents[0]
                         val userData = documentSnapshot.data
-                        val favorites = userData?.get("favorites") as? List<Long> ?: emptyList()
+                        val favorites = userData?.get("favorites") as? List<String> ?: emptyList()
                         if (favorites.contains(project.projId)) {
                             isFavorite = true
                             addToFavoritesBTN.setImageResource(R.drawable.ic_heart_filled)
@@ -88,7 +89,7 @@ class FavoriteProjectsAdapter(
                     }
                 }
                     .addOnFailureListener { e ->
-                        Log.e("BrowseProjectsAdapter", "Error getting user document: ${e.message}")
+                        Log.e("FavoriteProjectsAdapter", "Error getting user document: ${e.message}")
                     }
 
                 addToFavoritesBTN.setOnClickListener {
@@ -107,25 +108,41 @@ class FavoriteProjectsAdapter(
             }
         }
     }
-    private fun updateFavorites(userId: String, projectId: Long, add: Boolean) {
+
+    private fun updateFavorites(userId: String, projectId: String, add: Boolean) {
         val db = FirebaseFirestore.getInstance()
         val userRef = db.collection("users").whereEqualTo("userId", userId)
         userRef.get().addOnSuccessListener { querySnapshot ->
             for (document in querySnapshot.documents) {
                 val userData = document.data
-                val favorites = userData?.get("favorites") as? MutableList<Long> ?: mutableListOf()
-
-                favorites.remove(projectId)
-                document.reference.update("favorites", favorites)
-                    .addOnSuccessListener {
-                        Toast.makeText(context, "Project Removed from Favorites!", Toast.LENGTH_SHORT).show()
-                        listener.onFavoriteUpdated()
+                val favorites = userData?.get("favorites") as? MutableList<String> ?: mutableListOf()
+                if (add) {
+                    if (!favorites.contains(projectId)) {
+                        favorites.add(projectId)
+                        document.reference.update("favorites", favorites)
+                            .addOnSuccessListener {
+                                Toast.makeText(context, "Project Added to Favorites!", Toast.LENGTH_SHORT).show()
+                                listener.onFavoriteUpdated()
+                            }
+                            .addOnFailureListener { e ->
+                                Toast.makeText(context, "Failed to add to favorites: ${e.message}", Toast.LENGTH_SHORT).show()
+                            }
+                    } else {
+                        // Project already in favorites
+                        Toast.makeText(context, "Project already in favorites!", Toast.LENGTH_SHORT).show()
                     }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(context, "Failed to remove from favorites: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
+                } else {
+                    favorites.remove(projectId)
+                    document.reference.update("favorites", favorites)
+                        .addOnSuccessListener {
+                            Toast.makeText(context, "Project Removed from Favorites!", Toast.LENGTH_SHORT).show()
+                            listener.onFavoriteUpdated()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(context, "Failed to remove from favorites: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
                 }
             }
         }
+    }
 }
-

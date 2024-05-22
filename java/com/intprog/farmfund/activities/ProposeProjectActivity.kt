@@ -45,8 +45,6 @@ class ProposeProjectActivity : AppCompatActivity() {
     private val storage = FirebaseStorage.getInstance()
     private val storageRef = storage.reference
 
-    private var newProjectId: Long = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProposeProjectBinding.inflate(layoutInflater)
@@ -112,53 +110,46 @@ class ProposeProjectActivity : AppCompatActivity() {
             val status = "Active"
 
             val user = auth.currentUser
-            val counterRef = db.collection("counters").document("projectCounter")
 
-            counterRef.get().addOnSuccessListener { document ->
-                if (document.exists()) {
-                    val lastProjectId = document.getLong("lastProjectId") ?: 0
-                    newProjectId = lastProjectId + 1
-                    counterRef.update("lastProjectId", newProjectId)
+            val project = Project(
+                projId = "", // Temporary value
+                userId = user?.uid ?: "userId",
+                projTitle = title,
+                projDescription = descriptions,
+                projMilestone = milestone,
+                projDonorsCount = 0,
+                projFundGoal = fundGoal,
+                projFundsReceived = 0.0,
+                projDueDate = dueDate,
+                projStatus = status
+            )
 
-                    val project = Project(
-                        projId = newProjectId,
-                        userId = user?.uid ?: "userId",
-                        projTitle = title,
-                        projDescription = descriptions,
-                        projMilestone = milestone,
-                        projDonorsCount = 0,
-                        projFundGoal = fundGoal,
-                        projFundsReceived = 0.0,
-                        projDueDate = dueDate,
-                        projStatus = status
-                    )
+            db.collection("projects")
+                .add(project)
+                .addOnSuccessListener { documentReference ->
+                    val projectId = documentReference.id
+                    val updatedProject = project.copy(projId = projectId)
 
-                    db.collection("projects")
-                        .add(project)
-                        .addOnSuccessListener { documentReference ->
-                            val projectId = documentReference.id
+                    db.collection("projects").document(projectId)
+                        .set(updatedProject)
+                        .addOnSuccessListener {
                             uploadImages(projectId)
                         }
                         .addOnFailureListener { e ->
                             Toast.makeText(
                                 this,
-                                "Error adding project: ${e.message}",
+                                "Error updating project ID: ${e.message}",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                } else {
-                    val data = hashMapOf(
-                        "lastProjectId" to 1
-                    )
-                    counterRef.set(data)
                 }
-            }.addOnFailureListener { exception ->
-                Toast.makeText(
-                    this,
-                    "An error occurred: ${exception.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+                .addOnFailureListener { e ->
+                    Toast.makeText(
+                        this,
+                        "Error adding project: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
 
             //If all validations are met and project successfully created
             val projSubmittedDialog =
@@ -273,6 +264,8 @@ class ProposeProjectActivity : AppCompatActivity() {
                                 gotoHome.setOnClickListener {
                                     alertDialog.dismiss()
                                     finish()
+                                    val intent = Intent(this, NavigatorActivity::class.java)
+                                    startActivity(intent)
                                 }
                             }
                             .addOnFailureListener { e ->
