@@ -12,7 +12,7 @@ import com.intprog.farmfund.databinding.ItemPaymentMethodBinding
 class PaymentMethodAdapter(private val paymentMethods: List<PaymentMethod>) :
     RecyclerView.Adapter<PaymentMethodAdapter.PaymentMethodViewHolder>() {
 
-    var selectedPaymentMethod: PaymentMethod? = null
+    private var selectedPaymentMethod: PaymentMethod? = null
 
     inner class PaymentMethodViewHolder(val binding: ItemPaymentMethodBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -45,5 +45,10 @@ class PaymentMethodAdapter(private val paymentMethods: List<PaymentMethod>) :
             }
         }
     }
+
     override fun getItemCount() = paymentMethods.size
+
+    fun getSelectedPaymentMethod(): PaymentMethod? {
+        return selectedPaymentMethod
+    }
 }

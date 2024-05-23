@@ -70,7 +70,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                app:cardCornerRadius="15dp"
                 app:cardElevation="5dp"
                 app:cardUseCompatPadding="true">
 
@@ -82,8 +81,9 @@
 
                     <ImageView
                         android:id="@+id/projFirstImageDonate"
-                        android:layout_width="150dp"
-                        android:layout_height="80dp"
+                        android:layout_width="130dp"
+                        android:layout_centerVertical="true"
+                        android:layout_height="70dp"
                         android:layout_marginEnd="8dp"
                         android:scaleType="fitXY"/>
 
@@ -101,7 +101,7 @@
                         android:id="@+id/projFundGoalDonate"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
+                        android:layout_below="@+id/projTitleDonate"
                         android:layout_toEndOf="@+id/projFirstImageDonate"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="40,000.00 / 50,000.00"
