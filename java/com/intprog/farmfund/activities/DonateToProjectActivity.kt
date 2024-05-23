@@ -45,11 +45,16 @@ class DonateToProjectActivity : AppCompatActivity() {
         val imageUrl = intent.getStringExtra("imageUrl")
         val user = auth.currentUser
 
+        //Code to use the projId in project in retrieving the whole project details of that projId
+        binding.swipeRefreshLayout.isRefreshing = true
+
         if (project == null) {
             // Handle the error gracefully if the project is null
             Toast.makeText(this, "Project data not found", Toast.LENGTH_SHORT).show()
             finish() // Close the activity
             return
+        } else {
+            fetchProjectDetails(project.projId)
         }
 
         binding.projTitleDonate.text = project.projTitle
@@ -249,5 +254,22 @@ class DonateToProjectActivity : AppCompatActivity() {
                 .load(imageUri)
                 .into(binding.paymentProofImage)
         }
+    }
+    fun fetchProjectDetails(projId:String) {
+        db.collection("projects").document(projId)
+            .get()
+            .addOnSuccessListener { document ->
+                val projectNew = document.toObject(Project::class.java)
+                projectNew?.let {
+                    // Use the project object to populate your views
+                    binding.projTitleDonate.text = it.projTitle
+                    binding.projFundGoalDonate.text = "${it.projFundsReceived} / ${it.projFundGoal}"
+                }
+                binding.swipeRefreshLayout.isRefreshing = false
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+                binding.swipeRefreshLayout.isRefreshing = false
+            }
     }
 }
