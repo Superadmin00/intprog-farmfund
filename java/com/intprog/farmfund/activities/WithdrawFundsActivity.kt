@@ -11,24 +11,23 @@ import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.firestore.FirebaseFirestore
 import com.intprog.farmfund.R
-import com.intprog.farmfund.adapters.BankInfoAdapter
-import com.intprog.farmfund.dataclasses.BankInfo
+import com.intprog.farmfund.adapters.PaymentMethodAdapter
+import com.intprog.farmfund.dataclasses.PaymentMethod
 import com.intprog.farmfund.dataclasses.Project
 
 class WithdrawFundsActivity : AppCompatActivity() {
 
     private lateinit var bankRecyclerView: RecyclerView
     private lateinit var project: Project
-    private val bankList = listOf(
-        BankInfo(R.drawable.ic_gcashlogo, "**** **** **** 1999", "Expires 12/26"),
-        BankInfo(R.drawable.ic_gcashlogo, "**** **** **** 2024", "Expires 04/20"),
-        BankInfo(R.drawable.ic_gcashlogo, "**** **** **** 3782", "Expires 09/11")
-    )
+    private lateinit var paymentMethods: List<PaymentMethod>
+    private lateinit var adapter: PaymentMethodAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +39,7 @@ class WithdrawFundsActivity : AppCompatActivity() {
         projectNameTextView.text = project.projTitle
 
         val projectWithdrawableFunds = findViewById<TextView>(R.id.withdrawableFunds)
-        projectWithdrawableFunds.text = project.projFundsReceived.toString()
+        projectWithdrawableFunds.text = String.format("%.2f", project.projFundsReceived)
 
         val projectWithdrawStatus = findViewById<TextView>(R.id.projectStatusWithdraw)
         projectWithdrawStatus.text = project.projStatus
@@ -57,18 +56,47 @@ class WithdrawFundsActivity : AppCompatActivity() {
         }
 
         bankRecyclerView = findViewById(R.id.withdrawBankRecyclerView)
-        val adapter = BankInfoAdapter(bankList)
         bankRecyclerView.layoutManager = LinearLayoutManager(this)
-        bankRecyclerView.adapter = adapter
+
+        // Fetch payment methods and set up the adapter
+        fetchPaymentMethods()
 
         val withdrawButton = findViewById<Button>(R.id.withdrawButton)
         withdrawButton.setOnClickListener {
-            val dialog = WithdrawalSuccessDialog(this)
-            dialog.show()
+            val selectedPaymentMethod = adapter.getSelectedPaymentMethod()
+            if (selectedPaymentMethod == null) {
+                Toast.makeText(this, "Please select a payment method.", Toast.LENGTH_SHORT).show()
+            } else if (project.projStatus == "Finished") {
+                val dialog = WithdrawalSuccessDialog(this, project, projectWithdrawableFunds)
+                dialog.show()
+            } else if (project.projStatus == "Withdrawn") {
+                Toast.makeText(this, "Project funds already withdrawn.", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Project funds can only be withdrawn when the project is finished.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
-    class WithdrawalSuccessDialog(context: Context) : Dialog(context) {
+    private fun fetchPaymentMethods() {
+        // Fetch the payment methods from your data source (e.g., Firebase Firestore)
+        val db = FirebaseFirestore.getInstance()
+        db.collection("paymentMethods")
+            .get()
+            .addOnSuccessListener { result ->
+                paymentMethods = result.toObjects(PaymentMethod::class.java)
+                adapter = PaymentMethodAdapter(paymentMethods)
+                bankRecyclerView.adapter = adapter
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to load payment methods.", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    class WithdrawalSuccessDialog(
+        context: Context,
+        private val project: Project,
+        private val withdrawableFundsTextView: TextView
+    ) : Dialog(context) {
         init {
             // Set custom dialog properties
             requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -80,14 +108,26 @@ class WithdrawFundsActivity : AppCompatActivity() {
                 // Close the dialog
                 dismiss()
 
-                // Start NavigatorActivity
-                val intent = Intent(context, NavigatorActivity::class.java)
-                context.startActivity(intent)
+                // Update project status to Withdrawn and projFundsReceived to 0
+                val db = FirebaseFirestore.getInstance()
+                db.collection("projects").document(project.projId)
+                    .update("projStatus", "Withdrawn", "projFundsReceived", 0.0)
+                    .addOnSuccessListener {
+                        // Update the TextView to show 0.00
+                        withdrawableFundsTextView.text = String.format("%.2f", 0.0)
 
-                // If you want to finish the current activity (optional)
-                if (context is Activity) {
-                    context.finish()
-                }
+                        // Start NavigatorActivity
+                        val intent = Intent(context, NavigatorActivity::class.java)
+                        context.startActivity(intent)
+
+                        // If you want to finish the current activity (optional)
+                        if (context is Activity) {
+                            context.finish()
+                        }
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(context, "Failed to update project status.", Toast.LENGTH_SHORT).show()
+                    }
             }
         }
     }

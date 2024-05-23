@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_gradient"
-        android:padding="10dp">
+        android:padding="16dp">
 
         <ImageView
             android:id="@+id/imgLogo"
@@ -28,7 +28,7 @@
             android:text="Voucher Redemption Confirmation"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="25sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/textView2"
@@ -36,48 +36,49 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView1"
             android:layout_centerHorizontal="true"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_semibold"
             android:text="Are you sure to redeem this voucher?"
             android:textAlignment="center"
             android:textColor="@color/grey"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView2"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_semibold"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="10dp"
             android:text="Summary :"
-            android:layout_marginBottom="5dp"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="17sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/voucherLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView3"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_semibold"
             android:text="Voucher"
             android:layout_marginStart="10dp"
             android:textAlignment="center"
             android:textColor="@color/whitesmoke"
-            android:textSize="17sp" />
+            android:textSize="15sp" />
         <TextView
             android:id="@+id/voucherText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView3"
             android:layout_toEndOf="@id/voucherLabel"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_regular"
             android:text="100 SMART Prepaid Load Credits"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="16dp"
             android:layout_marginEnd="10dp"
             android:textAlignment="center"
             android:textColor="@color/whitesmoke"
-            android:textSize="17sp" />
+            android:textSize="13sp" />
 
         <View
             android:id="@+id/line"
@@ -95,12 +96,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/line"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_semibold"
             android:text="Cost"
             android:layout_marginStart="10dp"
             android:textAlignment="center"
             android:textColor="@color/whitesmoke"
-            android:textSize="17sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/costText"
@@ -108,20 +109,20 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/line"
             android:layout_toEndOf="@id/voucherLabel"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_regular"
             android:text="100 FundPoints"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="10dp"
             android:textAlignment="center"
             android:textColor="@color/whitesmoke"
-            android:textSize="17sp" />
+            android:textSize="13sp" />
 
         <Button
             android:id="@+id/confirmRedemptionBTN"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="12dp"
             android:layout_marginBottom="5dp"
             android:layout_below="@id/costText"
             android:fontFamily="@font/poppins_bold"

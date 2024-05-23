@@ -113,94 +113,79 @@ class DonateToProjectActivity : AppCompatActivity() {
         //Code to confirm donation
         binding.confirmPaymentBTN.setOnClickListener {
             val donationAmount = getDonationAmount()
-            val paymentMethodAdapter = binding.paymethodRecyclerView.adapter as PaymentMethodAdapter
-            val selectedPaymentMethod = paymentMethodAdapter.selectedPaymentMethod
-            var paymentMethod: String = ""
-
-            if (donationAmount == 0) {
-                Toast.makeText(this, "Please add amount to donate.", Toast.LENGTH_SHORT).show()
-                binding.customAmountEditText.error = "Please enter or select a valid amount"
-                return@setOnClickListener
-            }
-
-            if (selectedPaymentMethod != null) {
-                paymentMethod = selectedPaymentMethod.paymethodName // Get the payment method name or other details
-            } else {
-                Toast.makeText(this, "Please select a payment method.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            val hasImage = binding.paymentProofImage.drawable?.let { drawable ->
-                drawable is BitmapDrawable && drawable.bitmap != null
-            } ?: false
-
-            if (hasImage) {
-                LoadingDialog.show(this, false)
+            if (donationAmount > 0) {
                 project.let {
-                    if (it.projFundsReceived + donationAmount <= it.projFundGoal) {
-                        val firestore = FirebaseFirestore.getInstance()
-                        val projectDocRef = firestore.collection("projects").document(it.projId)
+                    val newFundsReceived = it.projFundsReceived + donationAmount
+                    val isGoalReached = newFundsReceived >= it.projFundGoal
 
-                        val updatedProject = mapOf(
-                            "projFundsReceived" to it.projFundsReceived + donationAmount,
-                            "projDonorsCount" to it.projDonorsCount + 1
-                        )
+                    val updatedProject = mutableMapOf<String, Any>(
+                        "projFundsReceived" to newFundsReceived,
+                        "projDonorsCount" to (it.projDonorsCount + 1)
+                    )
 
-                        projectDocRef.update(updatedProject)
-                            .addOnSuccessListener {
-                                auth.currentUser?.let { user ->
-                                    val userDocRef = firestore.collection("users").document(user.uid)
-
-                                    userDocRef.get()
-                                        .addOnSuccessListener { document ->
-                                            val currentFundPoints = document.getDouble("fundPoints") ?: 0.0
-                                            val newFundPoints = currentFundPoints + (donationAmount * 0.1)
-
-                                            userDocRef.update("fundPoints", newFundPoints)
-                                                .addOnSuccessListener {
-                                                }
-                                        }
-                                }
-                                // Create a new transaction
-                                val transaction = user?.uid?.let { it1 ->
-                                    Transaction(
-                                        transactionId = "", // Temporary value
-                                        userId = it1,
-                                        projId = project.projId,
-                                        voucherId = "", // Leave this as blank for a donation transaction
-                                        transactionType = "Donation",
-                                        transactionAmount = donationAmount,
-                                        paymentMethod = paymentMethod,
-                                        transactionDateTime = com.google.firebase.Timestamp.now(), // Use the current date and time
-                                        transactionStatus = "Completed"
-                                    )
-                                }
-
-                                // Add the transaction to the "transactions" collection
-                                val transactionDocRef = db.collection("transactions").document()
-                                if (transaction != null) {
-                                    transaction.transactionId = transactionDocRef.id
-                                } // Set the transactionId to the document ID
-
-                                if (transaction != null) {
-                                    transactionDocRef.set(transaction)
-                                        .addOnSuccessListener {
-                                            Log.d("DonateToProjectActivity", "Transaction recorded successfully")
-                                        }
-                                        .addOnFailureListener { e ->
-                                            Log.e("DonateToProjectActivity", "Failed to record transaction: ${e.message}")
-                                        }
-                                }
-                                LoadingDialog.dismiss()
-                                showSuccessDialog()
-                            }
-                    } else {
-                        Toast.makeText(this, "Donation exceeds funding goal", Toast.LENGTH_SHORT).show()
+                    if (isGoalReached) {
+                        updatedProject["projStatus"] = "Finished"
                     }
+
+                    val firestore = FirebaseFirestore.getInstance()
+                    val projectDocRef = firestore.collection("projects").document(it.projId)
+
+                    projectDocRef.update(updatedProject)
+                        .addOnSuccessListener {
+                            auth.currentUser?.let { user ->
+                                val userDocRef = firestore.collection("users").document(user.uid)
+
+                                userDocRef.get()
+                                    .addOnSuccessListener { document ->
+                                        val currentFundPoints = document.getDouble("fundPoints") ?: 0.0
+                                        val newFundPoints = currentFundPoints + (donationAmount * 0.1)
+
+                                        val formattedFundPoints = String.format("%.2f", newFundPoints).toDouble()
+
+                                        userDocRef.update("fundPoints", formattedFundPoints)
+                                            .addOnSuccessListener {
+                                                showSuccessDialog()
+                                            }
+                                    }
+                            }
+                            // Create a new transaction
+                            val transaction = user?.uid?.let { it1 ->
+                                Transaction(
+                                    transactionId = "", // Temporary value
+                                    userId = it1,
+                                    projId = project.projId,
+                                    voucherId = "", // Leave this as blank for a donation transaction
+                                    transactionType = "Donation",
+                                    transactionDateTime = com.google.firebase.Timestamp.now(), // Use the current date and time
+                                    transactionStatus = "Completed"
+                                )
+                            }
+
+                            // Add the transaction to the "transactions" collection
+                            val transactionDocRef = db.collection("transactions").document()
+                            if (transaction != null) {
+                                transaction.transactionId = transactionDocRef.id
+                            } // Set the transactionId to the document ID
+
+                            if (transaction != null) {
+                                transactionDocRef.set(transaction)
+                                    .addOnSuccessListener {
+                                        Log.d("DonateToProjectActivity", "Transaction recorded successfully")
+                                    }
+                                    .addOnFailureListener { e ->
+                                        Log.e("DonateToProjectActivity", "Failed to record transaction: ${e.message}")
+                                    }
+                            }
+
+                            showSuccessDialog()
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.e(TAG, "Error updating project: ", exception)
+                        }
                 }
             } else {
-                Toast.makeText(this, "Please add proof of payment.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+                Toast.makeText(this, "Please add amount to donate.", Toast.LENGTH_SHORT).show()
+                binding.customAmountEditText.error = "Please enter or select a valid amount"
             }
         }
 
