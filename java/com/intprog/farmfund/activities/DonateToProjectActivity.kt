@@ -114,7 +114,7 @@ class DonateToProjectActivity : AppCompatActivity() {
 
         //Code to confirm donation
         binding.confirmPaymentBTN.setOnClickListener {
-            val donationAmount = getDonationAmount()
+            val donationAmount = getDonationAmount().toDouble()
             val paymentMethodAdapter = binding.paymethodRecyclerView.adapter as PaymentMethodAdapter
             val selectedPaymentMethod = paymentMethodAdapter.selectedPaymentMethod
             var paymentMethod: String = ""
@@ -132,7 +132,7 @@ class DonateToProjectActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (donationAmount == 0) {
+            if (donationAmount == 0.0) {
                 Toast.makeText(this, "Please add amount to donate.", Toast.LENGTH_SHORT).show()
                 binding.customAmountEditText.error = "Please enter or select a valid amount"
                 return@setOnClickListener

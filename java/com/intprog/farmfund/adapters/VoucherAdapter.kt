@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Button
@@ -13,11 +14,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.intprog.farmfund.R
 import com.intprog.farmfund.activities.HolderLoginRegisterActivity
 import com.intprog.farmfund.databinding.ItemVoucherBinding
+import com.intprog.farmfund.dataclasses.Transaction
 import com.intprog.farmfund.dataclasses.Voucher
 import com.intprog.farmfund.fragments.VouchersCenterFragment
 import com.intprog.farmfund.objects.LoadingDialog
@@ -97,21 +100,25 @@ class VoucherAdapter(
                             val alertDialog = builder.show()
                             alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                             // Handle the actions in your insufficient funds dialog
-                            val closeDialogBTN:Button = insufficientFundsDialog.findViewById(R.id.closeDialogBTN)
+                            val closeDialogBTN: Button =
+                                insufficientFundsDialog.findViewById(R.id.closeDialogBTN)
                             closeDialogBTN.setOnClickListener {
                                 alertDialog.dismiss()
                             }
                         } else {
-                            val voucherClaimSummaryDialog = LayoutInflater.from(binding.root.context)
-                                .inflate(R.layout.dialog_voucher_redeem_confirmation, null)
+                            val voucherClaimSummaryDialog =
+                                LayoutInflater.from(binding.root.context)
+                                    .inflate(R.layout.dialog_voucher_redeem_confirmation, null)
                             val builder =
-                                AlertDialog.Builder(binding.root.context).setView(voucherClaimSummaryDialog)
+                                AlertDialog.Builder(binding.root.context)
+                                    .setView(voucherClaimSummaryDialog)
                             val alertDialog = builder.show()
                             alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
                             val voucherText =
                                 voucherClaimSummaryDialog.findViewById<TextView>(R.id.voucherText)
-                            val costText = voucherClaimSummaryDialog.findViewById<TextView>(R.id.costText)
+                            val costText =
+                                voucherClaimSummaryDialog.findViewById<TextView>(R.id.costText)
 
                             voucherText.text =
                                 "${voucher.voucherPoints} ${voucher.voucherBrand} ${voucher.voucherType}"
@@ -133,6 +140,37 @@ class VoucherAdapter(
                                     transaction.update(userDocRef, "fundPoints", newFundPoints)
                                     newFundPoints
                                 }.addOnSuccessListener { newFundPoints ->
+                                    // Record transaction for voucher redemption
+                                    val transaction = user.uid.let { it1 ->
+                                        Transaction(
+                                            transactionId = "",
+                                            userId = it1,
+                                            projId = "",
+                                            voucherId = voucher.voucherId,
+                                            transactionType = "Voucher Redemption",
+                                            transactionAmount = voucher.voucherPoints.toDouble(),
+                                            paymentMethod = "",
+                                            transactionDateTime = Timestamp.now(),
+                                            transactionStatus = "Completed"
+                                        )
+                                    }
+                                    val transactionDocRef = db.collection("transactions").document()
+                                    transaction.transactionId = transactionDocRef.id
+
+                                    transactionDocRef.set(transaction)
+                                        .addOnSuccessListener {
+                                            Log.d(
+                                                "VoucherRedemption",
+                                                "Transaction recorded successfully"
+                                            )
+                                        }
+                                        .addOnFailureListener { e ->
+                                            Log.e(
+                                                "VoucherRedemption",
+                                                "Failed to record transaction: ${e.message}"
+                                            )
+                                        }
+
                                     LoadingDialog.dismiss()
                                     Toast.makeText(
                                         context,
@@ -142,7 +180,10 @@ class VoucherAdapter(
                                     fragment.loadUserData()
                                     val voucherClaimSuccessDialog =
                                         LayoutInflater.from(binding.root.context)
-                                            .inflate(R.layout.dialog_voucher_redemption_success, null)
+                                            .inflate(
+                                                R.layout.dialog_voucher_redemption_success,
+                                                null
+                                            )
                                     val builder2 = AlertDialog.Builder(binding.root.context)
                                         .setView(voucherClaimSuccessDialog)
                                     val alertDialog2 = builder2.show()
