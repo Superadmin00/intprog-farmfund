@@ -77,7 +77,7 @@ class ProfilePageFragment : Fragment() {
 
                         binding.profName.text = userName
                         binding.profEmail.text = userEmail
-                        binding.profFundPoints.text = userFundPoints?.toDouble()?.toString() ?: "0.00"
+                        binding.profFundPoints.text = "%.2f".format(userFundPoints?.toDouble() ?: 0.00)
                         binding.profNumber.text = userPhoneNumber ?: "(Not set)"
                     }
                     swipeRefreshLayout.isRefreshing = false

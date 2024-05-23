@@ -86,7 +86,7 @@ class VouchersCenterFragment : Fragment() {
                         val profileImageUrl = document.getString("userImageURL") ?: ""
 
                         binding.username.text = userName
-                        binding.fundpoints.text = userFundPoints.toString()
+                        binding.fundpoints.text = "%.2f".format(userFundPoints)
 
                         if (profileImageUrl.isNotEmpty()) {
                             // Load the profile image using Glide

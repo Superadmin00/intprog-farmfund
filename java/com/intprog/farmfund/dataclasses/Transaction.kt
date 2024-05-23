@@ -8,7 +8,7 @@ data class Transaction(
     val projId: String = "",
     val voucherId: String = "",
     val transactionType: String = "",
-    val transactionAmount: Int? = null,
+    val transactionAmount: Double? = null,
     val paymentMethod: String = "",
     val transactionDateTime: Timestamp? = null, // Use Firestore's Timestamp
     val transactionStatus: String = ""
