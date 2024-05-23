@@ -63,7 +63,7 @@ class WithdrawFundsActivity : AppCompatActivity() {
 
         val withdrawButton = findViewById<Button>(R.id.withdrawButton)
         withdrawButton.setOnClickListener {
-            val selectedPaymentMethod = adapter.getSelectedPaymentMethod()
+            val selectedPaymentMethod = adapter.retrieveSelectedPaymentMethod()
             if (selectedPaymentMethod == null) {
                 Toast.makeText(this, "Please select a payment method.", Toast.LENGTH_SHORT).show()
             } else if (project.projStatus == "Finished") {
