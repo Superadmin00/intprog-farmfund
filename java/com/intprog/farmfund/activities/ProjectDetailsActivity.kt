@@ -83,25 +83,38 @@ class ProjectDetailsActivity : AppCompatActivity() {
                 binding.projdetailsDynamicBTN.text = "Withdraw"
 
                 binding.projdetailsDynamicBTN.setOnClickListener {
-                    val intent = Intent(this, DonateToProjectActivity::class.java).apply {
-                        putExtra("projId", project.projId)
-                        putExtra("project", project)
-                        putExtra("imageUrl", project.imageUrls.firstOrNull()) // Assuming the first image is the main image
+                    if (project.projStatus == "Finished" || project.projFundsReceived >= project.projFundGoal) {
+                        binding.projdetailsDynamicBTN.isEnabled = false
+                        binding.projdetailsDynamicBTN.text = "Withdraw (Finished)"
+                        Toast.makeText(this, "Project is finished or fully funded.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        val intent = Intent(this, WithdrawFundsActivity::class.java).apply {
+                            putExtra("projId", project.projId)
+                            putExtra("project", project)
+                            putExtra("imageUrl", project.imageUrls.firstOrNull()) // Assuming the first image is the main image
+                        }
+                        startActivity(intent)
                     }
-                    startActivity(intent)
                 }
             } else {
-                //User does not own the pr oject
+                //User does not own the project
                 binding.projdetailsDynamicBTN.setOnClickListener {
-                    val intent = Intent(this, DonateToProjectActivity::class.java)
-                    intent.putExtra("project", project)
-                    intent.putExtra("imageUrl", project.imageUrls.firstOrNull())
-                    startActivity(intent)
+                    if (project.projStatus == "Finished" || project.projFundsReceived >= project.projFundGoal) {
+                        binding.projdetailsDynamicBTN.isEnabled = false
+                        binding.projdetailsDynamicBTN.text = "Donate (Closed)"
+                        Toast.makeText(this, "Project is finished or fully funded.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        val intent = Intent(this, DonateToProjectActivity::class.java)
+                        intent.putExtra("project", project)
+                        intent.putExtra("imageUrl", project.imageUrls.firstOrNull())
+                        startActivity(intent)
+                    }
                 }
             }
         }
     }
-    fun fetchProjectDetails(projId:String) {
+
+    fun fetchProjectDetails(projId: String) {
         db.collection("projects").document(projId)
             .get()
             .addOnSuccessListener { document ->
@@ -124,6 +137,12 @@ class ProjectDetailsActivity : AppCompatActivity() {
 
                     // Setup ViewPager with images
                     binding.projectImagesPager.adapter = ProjectImagesPagerAdapter(this, it.imageUrls)
+
+                    // Update dynamic button based on project status and fund goal
+                    if (it.projStatus == "Finished" || it.projFundsReceived >= it.projFundGoal) {
+                        binding.projdetailsDynamicBTN.isEnabled = false
+                        binding.projdetailsDynamicBTN.text = if (it.projStatus == "Finished") "Closed" else "Closed"
+                    }
                 }
                 binding.swipeRefreshLayout.isRefreshing = false
             }

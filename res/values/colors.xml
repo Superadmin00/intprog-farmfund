@@ -13,4 +13,7 @@
     <color name="semitransparent_black">#CC000000</color>
     <color name="semitransparent_white">#B3FFFFFF</color>
     <color name="whitesmoke">#D8E4F6</color>
+    <color name="activeStatus">#007BFF</color>
+    <color name="withdrawnStatus">#FFA500</color>
+    <color name="finishedStatus">#4CAF50</color>
 </resources>

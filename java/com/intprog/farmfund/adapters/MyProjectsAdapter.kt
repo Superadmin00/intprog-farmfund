@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.intprog.farmfund.R
@@ -32,6 +33,14 @@ class MyProjectsAdapter(private val projects: List<Project>) : RecyclerView.Adap
         holder.projectName.text = project.projTitle
         holder.projectStatus.text = project.projStatus
 
+        // Set the text color based on project status
+        val context = holder.itemView.context
+        when (project.projStatus) {
+            "Active" -> holder.projectStatus.setTextColor(ContextCompat.getColor(context, R.color.activeStatus))
+            "Withdrawn" -> holder.projectStatus.setTextColor(ContextCompat.getColor(context, R.color.withdrawnStatus))
+            "Finished" -> holder.projectStatus.setTextColor(ContextCompat.getColor(context, R.color.finishedStatus))
+        }
+
         // Check if there are any image URLs and load the first one
         if (project.imageUrls.isNotEmpty()) {
             val imageUrl = project.imageUrls[0]
@@ -44,7 +53,6 @@ class MyProjectsAdapter(private val projects: List<Project>) : RecyclerView.Adap
         }
 
         holder.projectItemLayout.setOnClickListener {
-            val context = holder.itemView.context
             val intent = Intent(context, WithdrawFundsActivity::class.java)
             intent.putExtra("project", project)
             context.startActivity(intent)

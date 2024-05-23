@@ -65,7 +65,7 @@ class BrowseProjectsFragment : Fragment() {
                 val intent = Intent(activity, HolderLoginRegisterActivity::class.java)
                 intent.putExtra("dialogToShow", "login")
                 startActivity(intent)
-            } else{
+            } else {
                 val userId = user.uid
                 val firestore = FirebaseFirestore.getInstance()
                 val userRef = firestore.collection("users").whereEqualTo("userId", userId)
@@ -81,8 +81,7 @@ class BrowseProjectsFragment : Fragment() {
                         } else {
                             val verificationDialog = LayoutInflater.from(requireContext())
                                 .inflate(R.layout.dialog_verification_notice, null)
-                            val builder =
-                                AlertDialog.Builder(requireContext())
+                            val builder = AlertDialog.Builder(requireContext())
                             val alertDialog = builder.setView(verificationDialog).show()
                             alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
@@ -124,7 +123,9 @@ class BrowseProjectsFragment : Fragment() {
                 projects.clear()
                 for (document in documents) {
                     val project = document.toObject(Project::class.java)
-                    projects.add(project)
+                    if (project.projStatus == "Active") { // Only add active projects
+                        projects.add(project)
+                    }
                 }
                 setProjects(projects)
                 swipeRefreshLayout.isRefreshing = false
