@@ -9,7 +9,7 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="165dp"
+        android:layout_height="160dp"
         android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
@@ -40,7 +40,7 @@
                         android:id="@+id/imagePlaceholder"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
-                        android:scaleType="fitXY"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/img_default_pfp"
                         android:background="@drawable/bg_gradient"/>
                 </androidx.cardview.widget.CardView>
@@ -64,6 +64,7 @@
                     android:layout_below="@+id/profName"
                     android:layout_marginStart="12dp"
                     android:layout_toEndOf="@+id/profImage"
+                    android:layout_toStartOf="@+id/nameinfo5"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="(+63) 9XX XXX XXXX"
                     android:textColor="@color/darkgrey"
@@ -86,11 +87,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="8dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="0.0"
                     android:textColor="@color/green"
-                    android:textSize="15sp"/>
+                    android:textSize="17sp"/>
 
                 <TextView
                     android:id="@+id/nameinfo5"
@@ -98,20 +99,20 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/profFundPoints"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="8dp"
                     android:fontFamily="@font/poppins_semibold"
                     android:text="FundPoints"
                     android:textColor="@color/darkgrey"
-                    android:textSize="12sp"/>
+                    android:textSize="13sp"/>
             </RelativeLayout>
 
             <Button
                 android:id="@+id/editProfileBTN"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/profileDetails"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/btn_gradient_rounded"
+                android:layout_alignParentBottom="true"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="Edit Profile"
                 android:textColor="@color/white"
@@ -145,6 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="20dp"
+            android:textColor="@color/darkgrey"
             android:layout_toEndOf="@+id/greentime"
             android:fontFamily="@font/poppins_semibold"
             android:text="Transactions History"
@@ -186,6 +188,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="20dp"
+            android:textColor="@color/darkgrey"
             android:layout_toEndOf="@+id/myprojects"
             android:fontFamily="@font/poppins_semibold"
             android:text="My Projects"
@@ -227,6 +230,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="20dp"
+            android:textColor="@color/darkgrey"
             android:layout_toEndOf="@+id/greencard"
             android:fontFamily="@font/poppins_semibold"
             android:text="Payment Method"
@@ -268,6 +272,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="20dp"
+            android:textColor="@color/darkgrey"
             android:layout_toEndOf="@+id/greensettings"
             android:fontFamily="@font/poppins_semibold"
             android:text="Settings"
@@ -308,6 +313,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="20dp"
+            android:textColor="@color/darkgrey"
             android:layout_toEndOf="@+id/redlogout"
             android:fontFamily="@font/poppins_semibold"
             android:text="Logout"
