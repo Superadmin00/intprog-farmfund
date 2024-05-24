@@ -80,6 +80,8 @@ class ProposeProjectActivity : AppCompatActivity() {
         }
 
         binding.submitButton.setOnClickListener {
+            var hasError = false
+
             val fields = listOf(
                 binding.projectTitleEditText to binding.projectTitleTextLayout,
                 binding.projectDescriptionEditText to binding.projectDescriptionTextLayout,
@@ -90,95 +92,116 @@ class ProposeProjectActivity : AppCompatActivity() {
             for ((editText, textLayout) in fields) {
                 if (editText.text!!.isEmpty()) {
                     textLayout.error = "This field is required."
-                    return@setOnClickListener
+                    hasError = true
+                } else {
+                    textLayout.error = null // Clear error if it's not empty
                 }
             }
 
             if (imageList.isEmpty()) {
                 binding.errorText.visibility = View.VISIBLE
-                return@setOnClickListener
+                hasError = true
+            } else {
+                binding.errorText.visibility = View.GONE // Hide error if image list is not empty
             }
 
             val dueDateString = binding.projectDueDateEditText.text.toString()
             if (dueDateString.isEmpty()) {
                 binding.projectDueDateTextLayout.error = "This field is required."
-                return@setOnClickListener
+                hasError = true
+            } else {
+                binding.projectDueDateTextLayout.error = null
+                val dueDate = dateFormat.parse(dueDateString)
+                val currentDate = Calendar.getInstance().time
             }
-            val dueDate = dateFormat.parse(dueDateString)
+
+            val dueDate = if (dueDateString.isNotEmpty()) {
+                dateFormat.parse(dueDateString)
+            } else {
+                null
+            }
+
             val currentDate = Calendar.getInstance().time
 
             if (dueDate == null) {
                 binding.projectDueDateTextLayout.error = "Invalid date."
-                return@setOnClickListener
+                hasError = true
             } else if (dueDate.before(currentDate)) {
                 binding.projectDueDateTextLayout.error = "Due date must be today or later."
-                return@setOnClickListener
+                hasError = true
+            } else {
+                binding.projectDueDateTextLayout.error = null // Clear error if due date is valid
             }
 
-            LoadingDialog.show(this, false)
+            if (!hasError) {
+                LoadingDialog.show(this, false)
 
-            val title = binding.projectTitleEditText.text.toString()
-            val descriptions = binding.projectDescriptionEditText.text.toString()
-            val milestone = binding.projectMilestoneEditText.text.toString()
-            val fundGoal = binding.projectFundGoalEditText.text.toString().toDouble()
-            val status = "Active"
+                val title = binding.projectTitleEditText.text.toString()
+                val descriptions = binding.projectDescriptionEditText.text.toString()
+                val milestone = binding.projectMilestoneEditText.text.toString()
+                val fundGoal = binding.projectFundGoalEditText.text.toString().toDouble()
+                val status = "Active"
 
-            val user = auth.currentUser
+                val user = auth.currentUser
 
-            val project = Project(
-                projId = "", // Temporary value
-                userId = user?.uid ?: "userId",
-                projTitle = title,
-                projDescription = descriptions,
-                projMilestone = milestone,
-                projDonorsCount = 0,
-                projFundGoal = fundGoal,
-                projFundsReceived = 0.0,
-                projDueDate = dueDate,
-                projStatus = status
-            )
+                val project = Project(
+                    projId = "", // Temporary value
+                    userId = user?.uid ?: "userId",
+                    projTitle = title,
+                    projDescription = descriptions,
+                    projMilestone = milestone,
+                    projDonorsCount = 0,
+                    projFundGoal = fundGoal,
+                    projFundsReceived = 0.0,
+                    projDueDate = dueDate,
+                    projStatus = status
+                )
 
-            db.collection("projects")
-                .add(project)
-                .addOnSuccessListener { documentReference ->
-                    val projectId = documentReference.id
-                    val updatedProject = project.copy(projId = projectId)
+                db.collection("projects")
+                    .add(project)
+                    .addOnSuccessListener { documentReference ->
+                        val projectId = documentReference.id
+                        val updatedProject = project.copy(projId = projectId)
 
-                    db.collection("projects").document(projectId)
-                        .set(updatedProject)
-                        .addOnSuccessListener {
-                            uploadImages(projectId)
-                            LoadingDialog.dismiss()
-                            // If all validations are met and project successfully created
-                            val projSubmittedDialog =
-                                LayoutInflater.from(this).inflate(R.layout.dialog_project_proposed, null)
-                            val builder = AlertDialog.Builder(this).setView(projSubmittedDialog)
-                            val alertDialog = builder.show()
-                            alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                        db.collection("projects").document(projectId)
+                            .set(updatedProject)
+                            .addOnSuccessListener {
+                                uploadImages(projectId)
+                                LoadingDialog.dismiss()
 
-                            val gotoHome: Button = projSubmittedDialog.findViewById(R.id.gotoHome)
-                            gotoHome.setOnClickListener {
-                                alertDialog.dismiss()
-                                finish()
+                                // If all validations are met and project successfully created
+                                val projSubmittedDialog =
+                                    LayoutInflater.from(this)
+                                        .inflate(R.layout.dialog_project_proposed, null)
+                                val builder = AlertDialog.Builder(this).setView(projSubmittedDialog)
+                                val alertDialog = builder.show()
+                                alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+                                val gotoHome: Button =
+                                    projSubmittedDialog.findViewById(R.id.gotoHome)
+                                gotoHome.setOnClickListener {
+                                    alertDialog.dismiss()
+                                    finish()
+                                }
                             }
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(
-                                this,
-                                "Error updating project ID: ${e.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            LoadingDialog.dismiss()
-                        }
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(
-                        this,
-                        "Error adding project: ${e.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    LoadingDialog.dismiss()
-                }
+                            .addOnFailureListener { e ->
+                                Toast.makeText(
+                                    this,
+                                    "Error updating project ID: ${e.message}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                LoadingDialog.dismiss()
+                            }
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(
+                            this,
+                            "Error adding project: ${e.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        LoadingDialog.dismiss()
+                    }
+            }
         }
 
         // Code to close keyboard when clicking outside
@@ -198,15 +221,12 @@ class ProposeProjectActivity : AppCompatActivity() {
     }
 
     private fun addTextWatcher(editText: TextInputEditText, layout: TextInputLayout) {
-        // Ensure that the space for the error message is always reserved
-        layout.isErrorEnabled = true
-
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 // Clear the error message without affecting the layout spacing
                 if (s.isNotEmpty()) {
-                    layout.error = null
+                    layout.isErrorEnabled  = false
                 }
             }
             override fun afterTextChanged(s: Editable) {}

@@ -73,56 +73,59 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
         }
 
         binding.registerButton.setOnClickListener {
-            val emailOrNumber = binding.enterEmailNum.text.toString()
+            val email = binding.enterEmailNum.text.toString()
             val name = binding.enterName.text.toString()
             val password = binding.enterPassword.text.toString()
             val confirmPassword = binding.enterConfirmPassword.text.toString()
-
-            if (emailOrNumber.isEmpty()) {
-                binding.enterEmailNumLayout.error = "This field is required!"
-                return@setOnClickListener
-            }
+            var hasError = false
 
             val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-            val phonePattern = "^09[0-9]{9}$"
-
-            var email: String? = null
-            var number: String? = null
-
-            // Create a Bundle
             val bundle = Bundle()
 
-            if (emailOrNumber.matches(emailPattern.toRegex())) {
-                email = emailOrNumber
-                bundle.putString("email", email) //Put the email in the bundle
-            } /*else if (emailOrNumber.matches(phonePattern.toRegex())) {
-                number = emailOrNumber
-                bundle.putString("email", number) //Put the number in the bundle
-            } */ else {
-                binding.enterEmailNumLayout.error = "This is not a valid input."
-                return@setOnClickListener
+            if (email.isEmpty()) {
+                binding.enterEmailNumLayout.error = "This field is required!"
+                hasError = true
+            } else if (!email.matches(emailPattern.toRegex())) {
+                binding.enterEmailNumLayout.error = "Invalid email format."
+                hasError = true
+            } else {
+                binding.enterEmailNumLayout.error = null
             }
 
             if (name.isEmpty()) {
                 binding.enterNameLayout.error = "This field is required!"
-                return@setOnClickListener
+                hasError = true
+            } else{
+                binding.enterNameLayout.error = null
             }
 
             if (password.isEmpty()) {
                 binding.enterPasswordLayout.error = "This field is required!"
-                return@setOnClickListener
+                hasError = true
+            }else{
+                binding.enterPasswordLayout.error = null
             }
 
             if (confirmPassword.isEmpty()) {
                 binding.enterConfirmPasswordLayout.error = "This field is required!"
-                return@setOnClickListener
+                hasError = true
+            }else{
+                binding.enterConfirmPasswordLayout.error = null
             }
 
             if (password != confirmPassword) {
                 binding.enterPasswordLayout.error = "Passwords don't match."
                 binding.enterConfirmPasswordLayout.error = "Passwords don't match."
-                return@setOnClickListener
+                hasError = true
             } else {
+                if (!password.isEmpty()) {
+                    binding.enterPasswordLayout.error = null // Clear error if it's valid
+                }
+                if (!confirmPassword.isEmpty()) {
+                    binding.enterConfirmPasswordLayout.error = null // Clear error if it's valid
+                }
+            }
+            if(!hasError){
                 LoadingDialog.show(requireContext(), false)
 
                 auth.createUserWithEmailAndPassword(email, password)
