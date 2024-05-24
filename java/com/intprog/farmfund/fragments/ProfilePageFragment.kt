@@ -34,7 +34,6 @@ class ProfilePageFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
     private lateinit var storageReference: StorageReference
-    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,11 +43,11 @@ class ProfilePageFragment : Fragment() {
         _binding = FragmentProfilePageBinding.inflate(inflater, container, false)
         auth = FirebaseAuth.getInstance()
         storageReference = FirebaseStorage.getInstance().reference
-        swipeRefreshLayout = binding.swipeRefreshLayout
 
+        binding.swipeRefreshLayout.isRefreshing = true
         loadUserProfile()
 
-        swipeRefreshLayout.setOnRefreshListener {
+        binding.swipeRefreshLayout.setOnRefreshListener {
             loadUserProfile()
         }
 
@@ -65,30 +64,33 @@ class ProfilePageFragment : Fragment() {
                 .addOnSuccessListener { querySnapshot ->
                     for (document in querySnapshot.documents) {
                         val userData = document.data
-                        val userName = userData?.get("name") as? String
+                        val firstName = userData?.get("firstName") as? String
+                        val midName = userData?.get("midName") as? String
+                        val lastName = userData?.get("lastName") as? String
                         val userEmail = userData?.get("email") as? String
                         val userFundPoints = userData?.get("fundPoints") as? Number
                         val userPhoneNumber = userData?.get("phoneNum") as? String
 
-                        Log.d("FirestoreData", "Name: $userName")
+                        val midInitial = if (midName?.isNotEmpty() == true) "${midName.first()}." else ""
+
+                        Log.d("FirestoreData", "Name: $firstName $midInitial $lastName")
                         Log.d("FirestoreData", "Email: $userEmail")
                         Log.d("FirestoreData", "Fund Points: $userFundPoints")
                         Log.d("FirestoreData", "Phone Number: $userPhoneNumber")
 
-                        binding.profName.text = userName
+                        binding.profName.text = "$firstName $midInitial $lastName"
                         binding.profEmail.text = userEmail
                         binding.profFundPoints.text = "%.2f".format(userFundPoints?.toDouble() ?: 0.00)
                         binding.profNumber.text = userPhoneNumber ?: "(Not set)"
                     }
-                    swipeRefreshLayout.isRefreshing = false
+                    binding.swipeRefreshLayout.isRefreshing = false
                 }
                 .addOnFailureListener { exception ->
-                    swipeRefreshLayout.isRefreshing = false
+                    binding.swipeRefreshLayout.isRefreshing = false
                     Log.e("FirestoreError", "Error retrieving user data", exception)
                     // Handle any errors
                 }
         }
-        loadProfileImage()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

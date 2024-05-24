@@ -1,7 +1,6 @@
 package com.intprog.farmfund.fragments
 
 import android.content.ContentValues
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Resources
@@ -14,7 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -135,8 +133,12 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                             val newUser = User(
                                 userId = user?.uid,
                                 email = user?.email,
+                                firstName = name,
+                                midName = "",
+                                lastName = "",
+                                birthDate = null,
+                                address = null,
                                 phoneNum = null,
-                                name = name,
                                 fundPoints = 0.0,
                                 verified = false,
                                 status = "Active"
@@ -258,8 +260,12 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                     val newUser = User(
                         userId = user?.uid,
                         email = user?.email,
+                        firstName = user?.displayName.toString(),
+                        midName = "",
+                        lastName = "",
+                        birthDate = null,
+                        address = null,
                         phoneNum = null,
-                        name = user?.displayName.toString(),
                         fundPoints = 0.0,
                         verified = false,
                         status = "Active"

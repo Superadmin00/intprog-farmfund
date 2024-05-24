@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/fundPointsDetailsLayout"
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
@@ -28,9 +28,10 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/profileImage"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_marginEnd="8dp"
+                android:layout_centerVertical="true"
                 app:cardBackgroundColor="@color/green"
                 app:cardCornerRadius="150dp"
                 app:cardElevation="0dp">

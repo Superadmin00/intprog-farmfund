@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import java.util.Date
 
 class FarmerVerifViewModel : ViewModel() {
 
@@ -16,8 +17,7 @@ class FarmerVerifViewModel : ViewModel() {
     val barangay = MutableLiveData<String>()
     val zipCode = MutableLiveData<String>()
     val phoneNum = MutableLiveData<String>()
-    val email = MutableLiveData<String>()
-    val birthDate = MutableLiveData<String>()
+    val birthDate = MutableLiveData<Date>()
     val selfieImage = MutableLiveData<Bitmap>()
 
     // For the second fragment

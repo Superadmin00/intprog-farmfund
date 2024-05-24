@@ -1,6 +1,5 @@
 package com.intprog.farmfund.fragments
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
@@ -9,9 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.intprog.farmfund.abstractclass.BaseFragment
 import com.intprog.farmfund.databinding.FragmentFarmverifFarmerdocsBinding
 import com.intprog.farmfund.viewmodels.FarmerVerifViewModel
@@ -64,15 +61,17 @@ class FarmerVerifThirdFragment : BaseFragment() {
         val errorMessages = listOf("Please upload the Barangay Certificate image!", "Please upload the Valid ID image!", "Please upload Proof of Land Ownership or Lease Agreement!")
         val errorTexts = listOf(binding.errorText1, binding.errorText2, binding.errorText3)
 
+        var isValid = true
+
         imageUris.forEachIndexed { index, uri ->
             if (uri.value == null) {
                 Toast.makeText(context, errorMessages[index], Toast.LENGTH_SHORT).show()
                 errorTexts[index].visibility = View.VISIBLE
-                return false
+                isValid = false
             } else {
                 errorTexts[index].visibility = View.INVISIBLE
             }
         }
-        return true
+        return isValid
     }
 }

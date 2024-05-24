@@ -81,11 +81,15 @@ class VouchersCenterFragment : Fragment() {
             userDocRef.get()
                 .addOnSuccessListener { document ->
                     if (document != null) {
-                        val userName = document.getString("name") ?: "N/A"
+                        val firstName = document.getString("firstName") ?: "-"
+                        val midName = document.getString("midName") ?: "-"
+                        val lastName = document.getString("lastName") ?: "-"
                         val userFundPoints = document.getDouble("fundPoints") ?: 0.0
                         val profileImageUrl = document.getString("userImageURL") ?: ""
 
-                        binding.username.text = userName
+                        val midInitial = if (midName.isNotEmpty()) "${midName.first()}." else ""
+
+                        binding.username.text = "${firstName} ${midInitial} ${lastName} "
                         binding.fundpoints.text = "%.2f".format(userFundPoints)
 
                         if (profileImageUrl.isNotEmpty()) {

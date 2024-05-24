@@ -14,22 +14,26 @@ import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
 import com.intprog.farmfund.R
 import com.intprog.farmfund.databinding.ActivityFarmerVerificationBinding
 import com.intprog.farmfund.fragments.FarmerVerifFirstFragment
 import com.intprog.farmfund.fragments.FarmerVerifSecondFragment
 import com.intprog.farmfund.fragments.FarmerVerifThirdFragment
+import com.intprog.farmfund.viewmodels.FarmerVerifViewModel
 
 class FarmerVerificationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFarmerVerificationBinding
     private lateinit var auth: FirebaseAuth
     private var currentFragmentIndex = 0
+
+    private lateinit var viewModel: FarmerVerifViewModel
 
     private val fragments = listOf(
         FarmerVerifFirstFragment(),
@@ -42,10 +46,16 @@ class FarmerVerificationActivity : AppCompatActivity() {
         binding = ActivityFarmerVerificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel = ViewModelProvider(this).get(FarmerVerifViewModel::class.java)  // Initialize the ViewModel
+
         // Initially add the first fragment
         supportFragmentManager.beginTransaction()
             .add(R.id.farmerVerificationContainer, fragments[currentFragmentIndex])
             .commit()
+
+        binding.backButton.setOnClickListener {
+            finish()
+        }
 
         // Set up the button click listeners
         binding.previousBTN.setOnClickListener {
@@ -75,7 +85,23 @@ class FarmerVerificationActivity : AppCompatActivity() {
                 val userId = auth.currentUser?.uid
                 val usersRef = userId?.let { it1 -> db.collection("users").document(it1) }
 
-                usersRef?.update("verified", true)?.addOnSuccessListener {
+                // Create a map of the fields to update
+                val updates = hashMapOf<String, Any>(
+                    "firstName" to (viewModel.firstName.value ?: ""),
+                    "midName" to (viewModel.midName.value ?: ""),
+                    "lastName" to (viewModel.lastName.value ?: ""),
+                    "birthDate" to (viewModel.birthDate.value?.let { Timestamp(it) } ?: FieldValue.delete()),
+                    "address" to mapOf(
+                        "province" to (viewModel.province.value ?: ""),
+                        "municipality" to (viewModel.municipality.value ?: ""),
+                        "barangay" to (viewModel.barangay.value ?: ""),
+                        "zip code" to (viewModel.zipCode.value ?: "")
+                    ),
+                    "phoneNum" to (viewModel.phoneNum.value ?: ""),
+                    "verified" to true
+                )
+
+                usersRef?.update(updates)?.addOnSuccessListener {
                     Log.d(TAG, "DocumentSnapshot successfully updated!")
 
                     // Create and show the dialog if changing user's verified field in firestore databse is successful
