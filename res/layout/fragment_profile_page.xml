@@ -89,7 +89,7 @@
                     android:fontFamily="@font/poppins_semibold"
                     android:text="0.0"
                     android:textColor="@color/green"
-                    android:textSize="17sp"/>
+                    android:textSize="14sp"/>
 
                 <TextView
                     android:id="@+id/nameinfo5"

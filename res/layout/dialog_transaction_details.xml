@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_gradient"
-        android:padding="8dp">
+        android:padding="16dp">
 
         <ImageView
             android:id="@+id/imgLogo"
@@ -27,7 +27,7 @@
             android:text="Transaction Details"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="23sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/transactionTypeLabel"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/textView1"
             android:layout_centerHorizontal="true"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_semibold"
             android:text="Transaction Type"
             android:textColor="@color/whitesmoke"
             android:textSize="15sp" />
@@ -47,9 +47,9 @@
             android:layout_below="@id/transactionTypeLabel"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="-4dp"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_regular"
             android:text="Donation"
-            android:paddingStart="25dp"
+            android:paddingStart="10dp"
             android:textColor="@color/white"
             android:textSize="15sp" />
 
@@ -60,7 +60,7 @@
             android:layout_below="@id/transactionTypeText"
             android:layout_marginTop="4dp"
             android:layout_centerHorizontal="true"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_semibold"
             android:text="Transaction Amount"
             android:textColor="@color/whitesmoke"
             android:textSize="15sp" />
@@ -72,9 +72,9 @@
             android:layout_below="@id/transactionAmountLabel"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="-4dp"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_regular"
             android:text="PHP 20.00"
-            android:paddingStart="25dp"
+            android:paddingStart="10dp"
             android:textColor="@color/white"
             android:textSize="15sp" />
 
@@ -85,7 +85,7 @@
             android:layout_below="@id/transactionAmountText"
             android:layout_marginTop="4dp"
             android:layout_centerHorizontal="true"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_semibold"
             android:text="Project Name"
             android:textColor="@color/whitesmoke"
             android:textSize="15sp" />
@@ -97,8 +97,8 @@
             android:layout_below="@id/projectVoucherLabel"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="-4dp"
-            android:fontFamily="@font/poppins_bold"
-            android:paddingStart="25dp"
+            android:fontFamily="@font/poppins_regular"
+            android:paddingStart="10dp"
             android:textColor="@color/white"
             android:textSize="15sp" />
 
@@ -109,7 +109,7 @@
             android:layout_below="@id/projectVoucherText"
             android:layout_marginTop="4dp"
             android:layout_centerHorizontal="true"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_semibold"
             android:text="Payment Method"
             android:textColor="@color/whitesmoke"
             android:textSize="15sp" />
@@ -121,9 +121,9 @@
             android:layout_below="@id/payMethodVouchTypeLabel"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="-4dp"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_regular"
             android:text="GCash"
-            android:paddingStart="25dp"
+            android:paddingStart="10dp"
             android:textColor="@color/white"
             android:textSize="15sp" />
 
@@ -134,7 +134,7 @@
             android:layout_below="@id/payMethodVouchTypeText"
             android:layout_marginTop="4dp"
             android:layout_centerHorizontal="true"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_semibold"
             android:text="Transaction Timestamp"
             android:textColor="@color/whitesmoke"
             android:textSize="15sp" />
@@ -146,9 +146,9 @@
             android:layout_below="@id/transacDateTimeLabel"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="-4dp"
-            android:fontFamily="@font/poppins_bold"
+            android:fontFamily="@font/poppins_regular"
             android:text="22 May 2024, 10:11 PM"
-            android:paddingStart="25dp"
+            android:paddingStart="10dp"
             android:textColor="@color/white"
             android:textSize="15sp" />
 
@@ -159,7 +159,7 @@
             android:layout_below="@id/transacDateTimeText"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
             android:fontFamily="@font/poppins_bold"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,239 +8,544 @@
     tools:context=".activities.EditProfileActivity">
 
     <RelativeLayout
-        android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_header_gradient_roundedbottom"
-        android:padding="15dp">
-
-        <ImageButton
-            android:id="@+id/backButton"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:background="@color/transparent"
-            android:padding="10dp"
-            android:rotationY="180"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_arrow" />
-
+        android:layout_height="match_parent"
+        android:paddingBottom="16dp"
+        android:layout_width="match_parent">
         <RelativeLayout
-            android:id="@+id/headerSubContainer"
-            android:layout_width="wrap_content"
+            android:id="@+id/header"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:background="@drawable/bg_header_gradient_roundedbottom"
+            android:padding="15dp">
 
-            <ImageView
-                android:id="@+id/logo"
-                android:layout_width="50dp"
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="60dp"
                 android:layout_height="50dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_logo" />
+                android:background="@color/transparent"
+                android:padding="10dp"
+                android:rotationY="180"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_arrow" />
 
-            <TextView
-                android:id="@+id/pageTitle"
+            <RelativeLayout
+                android:id="@+id/headerSubContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/logo"
-                android:fontFamily="@font/poppins_bold"
-                android:text="Edit Profile"
-                android:textColor="@color/white"
-                android:textSize="23sp" />
-        </RelativeLayout>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/editAccountFieldsContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/header"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/bg_gradient_rounded_nolines"
-        android:padding="16dp">
-        <TextView
-            android:id="@+id/containerHeader"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Account Information"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            android:fontFamily="@font/poppins_bold"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true"/>
-
-        <RelativeLayout
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:id="@+id/editImageContainer"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/containerHeader"
-            android:gravity="center"
-            android:layout_width="match_parent">
-
-            <androidx.cardview.widget.CardView
-                app:cardBackgroundColor="#00000000"
-                app:cardElevation="0dp"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                app:cardCornerRadius="75dp">
+                android:layout_centerInParent="true">
 
                 <ImageView
-                    android:id="@+id/imagePlaceholder"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:onClick="onImagePlaceholderClick"/>
-            </androidx.cardview.widget.CardView>
-        </RelativeLayout>
+                    android:id="@+id/logo"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_logo" />
 
-
-        <RelativeLayout
-            android:id="@+id/editNameContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/editImageContainer"
-            android:padding="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="Full Name"
-                android:textColor="@color/white"
-                android:textSize="17sp" />
-
-            <EditText
-                android:id="@+id/fullnamePlaceholder"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
-                android:layout_toLeftOf="@+id/editNameIcon"
-                android:fontFamily="@font/poppins_semibold"
-                android:background="@android:color/transparent"
-                android:hint="Name"
-                android:textColor="#c5c5c5"
-                android:singleLine="true"
-                android:textSize="13sp" />
-
-            <ImageButton
-                android:id="@+id/editNameIcon"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_alignParentEnd="true"
-                android:scaleType="fitXY"
-                android:background="@color/transparent"
-                android:layout_centerVertical="true"
-                android:src="@drawable/edit_icon_selector"
-                android:onClick="toggleEditMode" />
+                <TextView
+                    android:id="@+id/pageTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/logo"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Edit Profile"
+                    android:textColor="@color/white"
+                    android:textSize="23sp" />
+            </RelativeLayout>
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/editEmailContainer"
+            android:id="@+id/editAccountFieldsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editNameContainer"
-            android:padding="8dp">
-
+            android:layout_below="@+id/header"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_gradient_rounded_nolines"
+            android:padding="16dp">
             <TextView
+                android:id="@+id/accountInfoHeader"
+                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="Email"
+                android:text="Account Information"
                 android:textColor="@color/white"
-                android:textSize="17sp" />
+                android:textSize="25sp"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"/>
 
-            <EditText
-                android:id="@+id/emailPlaceholder"
-                android:layout_width="150dp"
+            <RelativeLayout
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:id="@+id/editImageContainer"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
-                android:layout_toLeftOf="@+id/editEmailIcon"
-                android:fontFamily="@font/poppins_semibold"
-                android:background="@android:color/transparent"
-                android:hint="Email"
-                android:textColor="#c5c5c5"
-                android:singleLine="true"
-                android:textSize="13sp" />
+                android:layout_below="@id/accountInfoHeader"
+                android:gravity="center"
+                android:layout_width="match_parent">
 
-            <ImageButton
-                android:id="@+id/editEmailIcon"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:scaleType="fitXY"
-                android:background="@color/transparent"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/edit_icon_selector"
-                android:onClick="toggleEditMode" />
+                <androidx.cardview.widget.CardView
+                    app:cardBackgroundColor="#00000000"
+                    app:cardElevation="0dp"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    app:cardCornerRadius="75dp">
+
+                    <ImageView
+                        android:id="@+id/imagePlaceholder"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:onClick="onImagePlaceholderClick"/>
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/editNameContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editImageContainer"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/fullnameHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginRight="45dp"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Full Name"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/fullnamePlaceholder"
+                    android:layout_width="190dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:background="@android:color/transparent"
+                    android:hint="Full Name"
+                    android:textColor="#c5c5c5"
+                    android:textSize="13sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/editEmailContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editNumberContainer"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/emailHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Email"
+                    android:textColor="@color/white"
+                    android:layout_marginRight="45dp"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/emailPlaceholder"
+                    android:layout_width="190dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:background="@android:color/transparent"
+                    android:layout_alignParentEnd="true"
+                    android:hint="Email"
+                    android:textColor="#c5c5c5"
+                    android:textSize="13sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/editNumberContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editNameContainer"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Phone No."
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/numberPlaceholder"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:layout_toLeftOf="@+id/editNumberIcon"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:background="@android:color/transparent"
+                    android:hint="Phone Number"
+                    android:textColor="#c5c5c5"
+                    android:singleLine="true"
+                    android:textSize="13sp" />
+
+                <ImageButton
+                    android:id="@+id/editNumberIcon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:scaleType="fitXY"
+                    android:background="@color/transparent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/edit_icon_selector"
+                    android:onClick="toggleEditMode"/>
+            </RelativeLayout>
+
         </RelativeLayout>
-
         <RelativeLayout
-            android:id="@+id/editNumberContainer"
+            android:id="@+id/editPersonalInfoContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editEmailContainer"
-            android:padding="8dp">
-
+            android:layout_below="@+id/editAccountFieldsContainer"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="70dp"
+            android:background="@drawable/bg_gradient_rounded_nolines"
+            android:padding="16dp">
             <TextView
+                android:id="@+id/personalInfoHeader"
+                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="Phone No."
+                android:text="Personal Information"
                 android:textColor="@color/white"
-                android:textSize="17sp" />
-
-            <EditText
-                android:id="@+id/numberPlaceholder"
-                android:layout_width="150dp"
+                android:textSize="25sp"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"/>
+            <RelativeLayout
+                android:id="@+id/editFirstNameContainer"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
-                android:layout_toLeftOf="@+id/editNumberIcon"
-                android:fontFamily="@font/poppins_semibold"
-                android:background="@android:color/transparent"
-                android:hint="Phone Number"
-                android:textColor="#c5c5c5"
-                android:singleLine="true"
-                android:textSize="13sp" />
+                android:layout_below="@+id/personalInfoHeader"
+                android:padding="8dp">
 
-            <ImageButton
-                android:id="@+id/editNumberIcon"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:scaleType="fitXY"
-                android:background="@color/transparent"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/edit_icon_selector"
-                android:onClick="toggleEditMode"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="First Name"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/firstNamePlaceholder"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:layout_toLeftOf="@+id/editFirstNameIcon"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:background="@android:color/transparent"
+                    android:hint="First Name"
+                    android:textColor="#c5c5c5"
+                    android:singleLine="true"
+                    android:textSize="13sp" />
+
+                <ImageButton
+                    android:id="@+id/editFirstNameIcon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:scaleType="fitXY"
+                    android:background="@color/transparent"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/edit_icon_selector"
+                    android:onClick="toggleEditMode" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/editMiddleNameContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editFirstNameContainer"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Middle Name"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/editMiddleInitialPlaceholder"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:layout_toLeftOf="@+id/editMiddleNameIcon"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:background="@android:color/transparent"
+                    android:hint="Middle Name"
+                    android:textColor="#c5c5c5"
+                    android:singleLine="true"
+                    android:textSize="13sp" />
+
+                <ImageButton
+                    android:id="@+id/editMiddleNameIcon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:scaleType="fitXY"
+                    android:background="@color/transparent"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/edit_icon_selector"
+                    android:onClick="toggleEditMode" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/editLastNameContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editMiddleNameContainer"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Last Name"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/editLastNamePlaceholder"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:layout_toLeftOf="@+id/editLastNameIcon"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:background="@android:color/transparent"
+                    android:hint="Last Name"
+                    android:textColor="#c5c5c5"
+                    android:singleLine="true"
+                    android:textSize="13sp" />
+
+                <ImageButton
+                    android:id="@+id/editLastNameIcon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:scaleType="fitXY"
+                    android:background="@color/transparent"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/edit_icon_selector"
+                    android:onClick="toggleEditMode" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/editMunicipalityContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editLastNameContainer"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Municipality"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/editMunicipalityPlaceholder"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:layout_toLeftOf="@+id/editMunicipalityIcon"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:background="@android:color/transparent"
+                    android:hint="Municipality"
+                    android:textColor="#c5c5c5"
+                    android:singleLine="true"
+                    android:textSize="13sp" />
+
+                <ImageButton
+                    android:id="@+id/editMunicipalityIcon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:scaleType="fitXY"
+                    android:background="@color/transparent"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/edit_icon_selector"
+                    android:onClick="toggleEditMode" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/editProvinceContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editMunicipalityContainer"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Province"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/editProvincePlaceholder"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:layout_toLeftOf="@+id/editProvinceIcon"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:background="@android:color/transparent"
+                    android:hint="Province"
+                    android:textColor="#c5c5c5"
+                    android:singleLine="true"
+                    android:textSize="13sp" />
+
+                <ImageButton
+                    android:id="@+id/editProvinceIcon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:scaleType="fitXY"
+                    android:background="@color/transparent"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/edit_icon_selector"
+                    android:onClick="toggleEditMode" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/editBarangayContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editProvinceContainer"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Barangay"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/editBarangayPlaceholder"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:layout_toLeftOf="@+id/editBarangayIcon"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:background="@android:color/transparent"
+                    android:hint="Barangay"
+                    android:textColor="#c5c5c5"
+                    android:singleLine="true"
+                    android:textSize="13sp" />
+
+                <ImageButton
+                    android:id="@+id/editBarangayIcon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:scaleType="fitXY"
+                    android:background="@color/transparent"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/edit_icon_selector"
+                    android:onClick="toggleEditMode" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/editZipContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editBarangayContainer"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="Zip Code"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/editZipPlaceholder"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:layout_toLeftOf="@+id/editZipIcon"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:background="@android:color/transparent"
+                    android:hint="Zip Code"
+                    android:textColor="#c5c5c5"
+                    android:singleLine="true"
+                    android:textSize="13sp" />
+
+                <ImageButton
+                    android:id="@+id/editZipIcon"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:scaleType="fitXY"
+                    android:background="@color/transparent"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/edit_icon_selector"
+                    android:onClick="toggleEditMode" />
+            </RelativeLayout>
+
+
         </RelativeLayout>
+        <Button
+
+            android:id="@+id/saveUpdatesButton"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_gradient_rounded"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="SAVE"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:backgroundTint="@null"/>
     </RelativeLayout>
-    <Button
 
-        android:id="@+id/saveUpdatesButton"
-        android:layout_height="wrap_content"
-        android:background="@drawable/btn_gradient_rounded"
-        android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="SAVE"
-        android:fontFamily="@font/poppins_bold"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:backgroundTint="@null"/>
-</RelativeLayout>
+</ScrollView>

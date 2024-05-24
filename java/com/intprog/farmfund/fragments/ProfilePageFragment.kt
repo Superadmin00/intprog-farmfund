@@ -82,6 +82,8 @@ class ProfilePageFragment : Fragment() {
                         binding.profEmail.text = userEmail
                         binding.profFundPoints.text = "%.2f".format(userFundPoints?.toDouble() ?: 0.00)
                         binding.profNumber.text = userPhoneNumber ?: "(Not set)"
+
+                        loadProfileImage()
                     }
                     binding.swipeRefreshLayout.isRefreshing = false
                 }
@@ -187,8 +189,9 @@ class ProfilePageFragment : Fragment() {
                     .placeholder(R.drawable.img_default_pfp) // Placeholder image while loading
                     .error(R.drawable.img_default_pfp) // Error image if loading fails
                     .into(binding.imagePlaceholder)
-            }.addOnFailureListener {
+            }.addOnFailureListener { exception ->
                 // Handle any errors
+                Log.e("ImageLoadingError", "Error loading profile image", exception)
             }
         }
     }
