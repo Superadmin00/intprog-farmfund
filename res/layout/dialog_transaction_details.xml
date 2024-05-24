@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="25dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_gradient"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_logo" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgLogo"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Transaction Details"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="23sp" />
+
+        <TextView
+            android:id="@+id/transactionTypeLabel"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView1"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Transaction Type"
+            android:textColor="@color/whitesmoke"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/transactionTypeText"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/transactionTypeLabel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-4dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Donation"
+            android:paddingStart="25dp"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/transactionAmountLabel"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/transactionTypeText"
+            android:layout_marginTop="4dp"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Transaction Amount"
+            android:textColor="@color/whitesmoke"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/transactionAmountText"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/transactionAmountLabel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-4dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="PHP 20.00"
+            android:paddingStart="25dp"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/projectVoucherLabel"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/transactionAmountText"
+            android:layout_marginTop="4dp"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Project Name"
+            android:textColor="@color/whitesmoke"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/projectVoucherText"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/projectVoucherLabel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-4dp"
+            android:fontFamily="@font/poppins_bold"
+            android:paddingStart="25dp"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/payMethodVouchTypeLabel"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/projectVoucherText"
+            android:layout_marginTop="4dp"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Payment Method"
+            android:textColor="@color/whitesmoke"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/payMethodVouchTypeText"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/payMethodVouchTypeLabel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-4dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="GCash"
+            android:paddingStart="25dp"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/transacDateTimeLabel"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/payMethodVouchTypeText"
+            android:layout_marginTop="4dp"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Transaction Timestamp"
+            android:textColor="@color/whitesmoke"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/transacDateTimeText"
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/transacDateTimeLabel"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-4dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="22 May 2024, 10:11 PM"
+            android:paddingStart="25dp"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/transacDetailsBTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/transacDateTimeText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@font/poppins_bold"
+            android:text="Okay"
+            android:textColor="@color/green"
+            android:textSize="20sp"
+            app:backgroundTint="@color/white" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
