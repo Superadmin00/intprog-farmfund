@@ -41,8 +41,6 @@ class TransactionHistoryActivity : AppCompatActivity() {
 
         if (user != null) {
             fetchTransactions(user.uid)
-        } else {
-            // Handle the case where no user is logged in (optional)
         }
 
         swipeRefreshLayout.setOnRefreshListener {

@@ -2,7 +2,6 @@ package com.intprog.farmfund.activities
 
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -38,9 +37,14 @@ class ProjectDetailsActivity : AppCompatActivity() {
         }
 
         val project = intent.getSerializableExtra("project") as? Project
-        val projId = project?.projId
+        val projId1 = project?.projId
+        val projId2 = intent.getStringExtra("projId2")
 
-        if (projId == null) {
+        val projId: String = if (projId1 != null) {
+            project.projId
+        } else if (projId2 != null) {
+            projId2
+        } else {
             // Handle the error gracefully if the projId is null
             Toast.makeText(this, "Project ID not found", Toast.LENGTH_SHORT).show()
             finish() // Close the activity
@@ -58,7 +62,8 @@ class ProjectDetailsActivity : AppCompatActivity() {
         val user = auth.currentUser
         if (user == null) {
             binding.projdetailsDynamicBTN.setOnClickListener {
-                val loginNoticeDialog = LayoutInflater.from(this).inflate(R.layout.dialog_login_notice, null)
+                val loginNoticeDialog =
+                    LayoutInflater.from(this).inflate(R.layout.dialog_login_notice, null)
                 val builder = AlertDialog.Builder(this).setView(loginNoticeDialog)
                 val alertDialog = builder.show()
 
@@ -83,15 +88,22 @@ class ProjectDetailsActivity : AppCompatActivity() {
                 binding.projdetailsDynamicBTN.text = "Withdraw"
 
                 binding.projdetailsDynamicBTN.setOnClickListener {
-                    if (project.projStatus == "Finished" || project.projFundsReceived >= project.projFundGoal) {
+                    if (project?.projStatus == "Finished" || project?.projFundsReceived!! >= project.projFundGoal) {
                         binding.projdetailsDynamicBTN.isEnabled = false
                         binding.projdetailsDynamicBTN.text = "Withdraw (Finished)"
-                        Toast.makeText(this, "Project is finished or fully funded.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this,
+                            "Project is finished or fully funded.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } else {
                         val intent = Intent(this, WithdrawFundsActivity::class.java).apply {
                             putExtra("projId", project.projId)
                             putExtra("project", project)
-                            putExtra("imageUrl", project.imageUrls.firstOrNull()) // Assuming the first image is the main image
+                            putExtra(
+                                "imageUrl",
+                                project.imageUrls.firstOrNull()
+                            ) // Assuming the first image is the main image
                         }
                         startActivity(intent)
                     }
@@ -99,15 +111,21 @@ class ProjectDetailsActivity : AppCompatActivity() {
             } else {
                 //User does not own the project
                 binding.projdetailsDynamicBTN.setOnClickListener {
-                    if (project.projStatus == "Finished" || project.projFundsReceived >= project.projFundGoal) {
-                        binding.projdetailsDynamicBTN.isEnabled = false
-                        binding.projdetailsDynamicBTN.text = "Donate (Closed)"
-                        Toast.makeText(this, "Project is finished or fully funded.", Toast.LENGTH_SHORT).show()
-                    } else {
-                        val intent = Intent(this, DonateToProjectActivity::class.java)
-                        intent.putExtra("project", project)
-                        intent.putExtra("imageUrl", project.imageUrls.firstOrNull())
-                        startActivity(intent)
+                    if (project != null) {
+                        if (project.projStatus == "Finished" || project.projFundsReceived >= project.projFundGoal) {
+                            binding.projdetailsDynamicBTN.isEnabled = false
+                            binding.projdetailsDynamicBTN.text = "Donate (Closed)"
+                            Toast.makeText(
+                                this,
+                                "Project is finished or fully funded.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            val intent = Intent(this, DonateToProjectActivity::class.java)
+                            intent.putExtra("project", project)
+                            intent.putExtra("imageUrl", project.imageUrls.firstOrNull())
+                            startActivity(intent)
+                        }
                     }
                 }
             }
@@ -127,8 +145,10 @@ class ProjectDetailsActivity : AppCompatActivity() {
                     binding.projectMilestone.text = it.projMilestone
                     binding.donorNumber.text = "${it.projDonorsCount} donated"
                     // Calculate days left
-                    val totalDays = ((it.projDueDate?.time?.minus(System.currentTimeMillis()))?.div((1000 * 60 * 60 * 24)))?.toInt()
-                    binding.daysLeft.text = if ((totalDays ?: 0) > 0) "$totalDays Days Left" else "0 Days Left"
+                    val totalDays =
+                        ((it.projDueDate?.time?.minus(System.currentTimeMillis()))?.div((1000 * 60 * 60 * 24)))?.toInt()
+                    binding.daysLeft.text =
+                        if ((totalDays ?: 0) > 0) "$totalDays Days Left" else "0 Days Left"
 
                     val totalProgress = it.projFundsReceived / it.projFundGoal
                     binding.progressNumber.text = "${(totalProgress * 100).toInt()}%"
@@ -136,12 +156,14 @@ class ProjectDetailsActivity : AppCompatActivity() {
                     binding.projectDonations.text = String.format("₱%.2f", it.projFundsReceived)
 
                     // Setup ViewPager with images
-                    binding.projectImagesPager.adapter = ProjectImagesPagerAdapter(this, it.imageUrls)
+                    binding.projectImagesPager.adapter =
+                        ProjectImagesPagerAdapter(this, it.imageUrls)
 
                     // Update dynamic button based on project status and fund goal
                     if (it.projStatus == "Finished" || it.projFundsReceived >= it.projFundGoal) {
                         binding.projdetailsDynamicBTN.isEnabled = false
-                        binding.projdetailsDynamicBTN.text = if (it.projStatus == "Finished") "Closed" else "Closed"
+                        binding.projdetailsDynamicBTN.text =
+                            if (it.projStatus == "Finished") "Closed" else "Closed"
                     }
                 }
                 binding.swipeRefreshLayout.isRefreshing = false
