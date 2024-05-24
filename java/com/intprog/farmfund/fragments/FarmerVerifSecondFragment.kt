@@ -1,9 +1,7 @@
 package com.intprog.farmfund.fragments
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
@@ -22,7 +20,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.textfield.TextInputLayout
 import com.intprog.farmfund.abstractclass.BaseFragment
 import com.intprog.farmfund.adapters.FarmerVerificationFarmImagesAdapter
-import com.intprog.farmfund.adapters.UploadProjectImageAdapter
 import com.intprog.farmfund.databinding.FragmentFarmverifFarmdetailsBinding
 import com.intprog.farmfund.viewmodels.FarmerVerifViewModel
 
@@ -92,34 +89,35 @@ class FarmerVerifSecondFragment : BaseFragment() {
     }
 
     override fun validateInput(): Boolean {
+        var isValid = true
         if (binding.farmLocationInputField.text.toString().isEmpty()) {
             binding.farmLocationLayout.error = "This field is required!"
-            return false
+            isValid = false
         }
 
         if (binding.farmAreaInputField.text.toString().isEmpty()) {
             binding.farmAreaLayout.error = "This field is required!"
-            return false
+            isValid = false
         }
 
         val selectedFarmType = binding.farmTypeSpinner.selectedItem.toString()
         if (selectedFarmType != "Crops Farming" && selectedFarmType != "Livestock Farming") {
             Toast.makeText(context, "Please select a valid farm type!", Toast.LENGTH_SHORT).show()
             binding.errorText1.visibility = View.VISIBLE
-            return false
+            isValid = false
         }
 
         if (viewModel.farmImages.value.isNullOrEmpty()) {
             Toast.makeText(context, "Please upload at least one image!", Toast.LENGTH_SHORT).show()
             binding.errorText2.visibility = View.VISIBLE
-            return false
+            isValid = false
         }
 
         viewModel.farmLocation.value = binding.farmLocationInputField.text.toString()
         viewModel.farmArea.value = binding.farmAreaInputField.text.toString()
         viewModel.farmType.value = binding.farmTypeSpinner.selectedItem.toString()
 
-        return true
+        return isValid
     }
     private fun addTextWatcher(layout: TextInputLayout, editText: EditText, liveData: MutableLiveData<String>) {
         layout.isErrorEnabled = false
