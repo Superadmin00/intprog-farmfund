@@ -95,6 +95,7 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         var user: FirebaseUser?
         binding.loginBTN.setOnClickListener {
+            var hasError = false
             val emailOrNumber = binding.emailNumEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
 
@@ -107,45 +108,52 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
             if (emailOrNumber.isNotEmpty()) {
                 if (emailOrNumber.matches(validEmailPattern.toRegex())) {
                     email = emailOrNumber
+                    binding.emailNumberInputLayout.error = null
                 } else if (emailOrNumber.matches(validPhonePattern.toRegex())) {
                     number = emailOrNumber
+                    binding.emailNumberInputLayout.error = null
                 } else {
                     binding.emailNumberInputLayout.error = "This is not a valid input."
-                    return@setOnClickListener
+                    hasError = true
                 }
             } else {
                 binding.emailNumberInputLayout.error = "This field is required!"
-                return@setOnClickListener
+                hasError = true
             }
 
             if (password.isEmpty()) {
                 binding.passwordTextInputLayout.error = "This field is required!"
-                return@setOnClickListener
+                hasError = true
             } else {
                 binding.emailNumberInputLayout.error = null
             }
 
-            // Show loading dialog
-            LoadingDialog.show(requireContext(), false)
+            if(!hasError) {
+                LoadingDialog.show(requireContext(), false)
 
-            auth.signInWithEmailAndPassword(emailOrNumber, password)
-                .addOnCompleteListener(requireActivity()) { task ->
-                    if (task.isSuccessful) {
-                        // Close Loading dialog
-                        LoadingDialog.dismiss()
-                        user = auth.currentUser
-                        binding.emailNumberInputLayout.error = null
-                        binding.passwordTextInputLayout.error = null
-                        Toast.makeText(context, "Login Successful.", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(context, NavigatorActivity::class.java)
-                        startActivity(intent)
-                    } else {
-                        LoadingDialog.dismiss()
-                        binding.emailNumberInputLayout.error = "Incorrect Login Credentials"
-                        binding.passwordTextInputLayout.error = "Incorrect Login Credentials"
-                        Toast.makeText(context, "Authentication Error. Unable to Proceed", Toast.LENGTH_SHORT).show()
+                auth.signInWithEmailAndPassword(emailOrNumber, password)
+                    .addOnCompleteListener(requireActivity()) { task ->
+                        if (task.isSuccessful) {
+                            // Close Loading dialog
+                            LoadingDialog.dismiss()
+                            user = auth.currentUser
+                            binding.emailNumberInputLayout.error = null
+                            binding.passwordTextInputLayout.error = null
+                            Toast.makeText(context, "Login Successful.", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(context, NavigatorActivity::class.java)
+                            startActivity(intent)
+                        } else {
+                            LoadingDialog.dismiss()
+                            binding.emailNumberInputLayout.error = "Incorrect Login Credentials"
+                            binding.passwordTextInputLayout.error = "Incorrect Login Credentials"
+                            Toast.makeText(
+                                context,
+                                "Authentication Error. Unable to Proceed",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
-                }
+            }
         }
 
         // Code to adjust the screen when inputting/typing
