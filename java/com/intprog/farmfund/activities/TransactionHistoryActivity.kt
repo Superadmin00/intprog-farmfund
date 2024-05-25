@@ -3,7 +3,11 @@ package com.intprog.farmfund.activities
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.ImageButton
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +25,10 @@ class TransactionHistoryActivity : AppCompatActivity() {
     private lateinit var transactionsRecyclerView: RecyclerView
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-    private lateinit var adapter: TransactionsHistoryAdapter // Declare adapter here
+    private lateinit var adapter: TransactionsHistoryAdapter
+    private lateinit var sorterSpinner: Spinner
+
+    private var currentFilter = "All"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +37,11 @@ class TransactionHistoryActivity : AppCompatActivity() {
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
         transactionsRecyclerView = findViewById(R.id.transactionsRecyclerView)
         transactionsRecyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = TransactionsHistoryAdapter(emptyList()) // Initialize adapter here
+        adapter = TransactionsHistoryAdapter(emptyList())
         transactionsRecyclerView.adapter = adapter
+
+        sorterSpinner = findViewById(R.id.sorterSpinner)
+        setupSorterSpinner()
 
         swipeRefreshLayout.isRefreshing = true
 
@@ -53,11 +63,37 @@ class TransactionHistoryActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupSorterSpinner() {
+        val transactionTypes = arrayOf("All", "Donation", "Voucher Redemption")
+        val adapter = ArrayAdapter(
+            this,
+            R.layout.spinner_item,
+            transactionTypes
+        ).also { it.setDropDownViewResource(R.layout.spinner_item) }
+
+        sorterSpinner.adapter = adapter
+
+        sorterSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                currentFilter = parent.getItemAtPosition(position).toString()
+                auth.currentUser?.uid?.let { fetchTransactions(it) }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+            }
+        }
+    }
+
     private fun fetchTransactions(userId: String) {
-        db.collection("transactions")
+        var query: Query = db.collection("transactions")
             .whereEqualTo("userId", userId)
-            .orderBy("transactionDateTime", Query.Direction.DESCENDING) // Order by date and time in descending order
-            .get()
+            .orderBy("transactionDateTime", Query.Direction.DESCENDING)
+
+        if (currentFilter != "All") {
+            query = query.whereEqualTo("transactionType", currentFilter)
+        }
+
+        query.get()
             .addOnSuccessListener { documents ->
                 val transactions = documents.toObjects(Transaction::class.java)
                 adapter.transactions = transactions

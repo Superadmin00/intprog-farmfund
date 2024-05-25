@@ -51,12 +51,27 @@
         </RelativeLayout>
     </RelativeLayout>
 
+    <Spinner
+        android:id="@+id/sorterSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="@font/poppins_bold"
+        android:layout_alignParentRight="true"
+        android:padding="5dp"
+        android:spinnerMode="dropdown" />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/header"
-        android:padding="16dp">
+        android:layout_below="@id/sorterSpinner"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/transactionsRecyclerView"
