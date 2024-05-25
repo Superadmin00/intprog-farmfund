@@ -287,7 +287,7 @@ class RegisterBottomSheetDialogFragment : BottomSheetDialogFragment() {
                                         .set(newUser)
                                         .addOnSuccessListener {
                                             Log.d("Firebase", "DocumentSnapshot added with ID: $uid")
-                                            Toast.makeText(context, "Google Sign-In Successful.", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(context, "Google Sign-Up Successful.", Toast.LENGTH_SHORT).show()
                                             dismiss()
                                         }
                                         .addOnFailureListener { e ->
