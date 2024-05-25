@@ -2,6 +2,7 @@ package com.intprog.farmfund.activities
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,11 +22,13 @@ class MyProjectsActivity : AppCompatActivity() {
     private lateinit var projectAdapter: MyProjectsAdapter
     private lateinit var myProjectsRecyclerView: RecyclerView
     private lateinit var noProjectsTextView: TextView
+    private lateinit var backButton: ImageButton
     private val projects = mutableListOf<Project>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_projects)
+        backButton = findViewById(R.id.backButton)
 
         // Initialize Firebase Auth and Firestore
         auth = FirebaseAuth.getInstance()
@@ -48,6 +51,9 @@ class MyProjectsActivity : AppCompatActivity() {
 
         // Load user projects
         loadUserProjects()
+        backButton.setOnClickListener {
+            finish()
+        }
     }
 
     private fun loadUserProjects() {

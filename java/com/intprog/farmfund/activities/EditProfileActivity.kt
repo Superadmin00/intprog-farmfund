@@ -42,6 +42,7 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var editProvinceIcon: ImageButton
     private lateinit var editBarangayIcon: ImageButton
     private lateinit var editZipIcon: ImageButton
+    private lateinit var backButton: ImageButton
 
     private var isPhoneNumEditable = false
     private var isFirstNameEditable = false
@@ -94,6 +95,8 @@ class EditProfileActivity : AppCompatActivity() {
         editBarangayIcon = findViewById(R.id.editBarangayIcon)
         editZipIcon = findViewById(R.id.editZipIcon)
 
+        backButton = findViewById(R.id.backButton)
+
         // Initially disable edit texts and set input type to none
         disableEditText(phoneNumEditText)
         disableEditText(firstNameEditText)
@@ -145,6 +148,10 @@ class EditProfileActivity : AppCompatActivity() {
 
         imagePlaceholder.setOnClickListener {
             showImagePickerOptions()
+        }
+
+        backButton.setOnClickListener {
+            finish()
         }
 
         // Get Firebase references
