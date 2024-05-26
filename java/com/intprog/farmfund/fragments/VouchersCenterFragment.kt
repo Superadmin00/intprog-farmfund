@@ -35,7 +35,7 @@ class VouchersCenterFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
-        // Show SwipeRefreshLayout abd load vouchers/user data
+        // Show SwipeRefreshLayout and load vouchers/user data
         binding.swipeRefreshLayout.isRefreshing = true
         fetchVouchers()
         loadUserData()
@@ -63,6 +63,8 @@ class VouchersCenterFragment : Fragment() {
                     val voucher = document.toObject(Voucher::class.java)
                     vouchers.add(voucher)
                 }
+                // Sort vouchers by voucherBrand alphabetically and then by voucherPoints
+                vouchers.sortWith(compareBy<Voucher> { it.voucherBrand }.thenBy { it.voucherPoints })
                 voucherAdapter.notifyDataSetChanged()
                 binding.swipeRefreshLayout.isRefreshing = false
             }
@@ -72,6 +74,7 @@ class VouchersCenterFragment : Fragment() {
                 binding.swipeRefreshLayout.isRefreshing = false
             }
     }
+
 
     fun loadUserData() {
         val user = auth.currentUser

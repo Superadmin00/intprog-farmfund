@@ -128,8 +128,6 @@ class ProjectDetailsActivity : AppCompatActivity() {
 
         binding.apply {
             if (isProjectOverdue || isFundGoalReached) {
-                updateProjBTN.visibility = View.GONE
-                spaceBetween.visibility = View.GONE
                 projdetailsDynamicBTN.text = if (isProjectOverdue) "Overdue" else "Completed"
                 projdetailsDynamicBTN.setOnClickListener { showProjectEndedDialog() }
             } else {
@@ -137,8 +135,8 @@ class ProjectDetailsActivity : AppCompatActivity() {
                     projdetailsDynamicBTN.setOnClickListener { showLoginNoticeDialog() }
                 } else {
                     if (userOwnsProject) {
-                        updateProjBTN.visibility = View.VISIBLE
-                        spaceBetween.visibility = View.VISIBLE
+                        updateProjBTN.visibility = View.GONE
+                        spaceBetween.visibility = View.GONE
                         projdetailsDynamicBTN.text = "Withdraw"
                         projdetailsDynamicBTN.setOnClickListener { handleWithdrawFunds() }
                     } else {
@@ -148,6 +146,7 @@ class ProjectDetailsActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun showProjectEndedDialog() {
         val projectEndedDialog = LayoutInflater.from(this).inflate(R.layout.dialog_project_ended, null)
