@@ -79,56 +79,63 @@
 
             <TextView
                 android:id="@+id/projectTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/projectImagesPager"
+                android:textAlignment="center"
                 android:layout_marginBottom="8dp"
+                android:text="..."
                 android:fontFamily="@font/poppins_bold"
                 android:textColor="@color/black"
                 android:textSize="20sp" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/authorPfpCardView"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="8dp"
+                app:cardCornerRadius="100dp"
+                android:layout_below="@id/projectTitle">
+                <ImageView
+                    android:id="@+id/projectAuthorPfp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/img_default_pfp"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView android:id="@+id/projectAuthorName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/projectTitle"
+                android:layout_toEndOf="@id/authorPfpCardView"
+                android:text="Guest User"
+                android:fontFamily="@font/poppins_semibold"
+                android:textAlignment="center"
+                android:layout_marginBottom="8dp"
+                android:textSize="17sp"/>
 
             <TextView
                 android:id="@+id/donorNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/projectTitle"
+                android:layout_alignParentEnd="true"
                 android:fontFamily="@font/poppins_semibold"
+                android:text="..."
                 android:textAlignment="center"
-                android:textColor="#666f80"
                 android:layout_marginBottom="8dp"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:id="@+id/personIcon1"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:layout_below="@+id/projectTitle"
-                android:layout_marginStart="15dp"
-                android:layout_toEndOf="@+id/donorNumber"
-                android:background="@drawable/bg_circleshape"
-                android:backgroundTint="@color/black"
-                android:src="@drawable/img_default_pfp" />
-
-            <TextView
-                android:id="@+id/morePersons"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:layout_below="@+id/projectTitle"
-                android:layout_marginStart="-12dp"
-                android:layout_toEndOf="@+id/personIcon1"
-                android:background="@drawable/bg_circleshape"
-                android:backgroundTint="@color/darkgrey"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="15sp" />
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/projectDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/donorNumber"
+                android:layout_below="@+id/authorPfpCardView"
                 android:fontFamily="@font/poppins_regular"
                 android:justificationMode="inter_word"
+                android:text="..."
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
@@ -140,6 +147,7 @@
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/poppins_regular"
                 android:justificationMode="inter_word"
+                android:text="..."
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 

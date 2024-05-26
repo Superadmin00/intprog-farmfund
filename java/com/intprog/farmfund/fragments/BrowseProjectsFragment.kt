@@ -62,9 +62,18 @@ class BrowseProjectsFragment : Fragment() {
 
         addProjectButton.setOnClickListener {
             if (user == null) {
-                val intent = Intent(activity, HolderLoginRegisterActivity::class.java)
-                intent.putExtra("dialogToShow", "login")
-                startActivity(intent)
+                val loginDialog = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_login_notice, null)
+                val builder = AlertDialog.Builder(requireContext())
+                val alertDialog = builder.setView(loginDialog).show()
+                alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+                val gotoLoginButton: Button = loginDialog.findViewById(R.id.gotoLoginButton)
+                gotoLoginButton.setOnClickListener {
+                    val intent = Intent(activity, HolderLoginRegisterActivity::class.java)
+                    intent.putExtra("dialogToShow", "login")
+                    alertDialog.dismiss()
+                    startActivity(intent)
+                }
             } else {
                 val userId = user.uid
                 val firestore = FirebaseFirestore.getInstance()
@@ -79,8 +88,7 @@ class BrowseProjectsFragment : Fragment() {
                             val intent = Intent(activity, ProposeProjectActivity::class.java)
                             startActivity(intent)
                         } else {
-                            val verificationDialog = LayoutInflater.from(requireContext())
-                                .inflate(R.layout.dialog_verification_notice, null)
+                            val verificationDialog = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_verification_notice, null)
                             val builder = AlertDialog.Builder(requireContext())
                             val alertDialog = builder.setView(verificationDialog).show()
                             alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -123,7 +131,7 @@ class BrowseProjectsFragment : Fragment() {
                 projects.clear()
                 for (document in documents) {
                     val project = document.toObject(Project::class.java)
-                    if (project.projStatus == "Active") { // Only add active projects
+                    if (project.projStatus == "Ongoing") { // Only add active projects
                         projects.add(project)
                     }
                 }

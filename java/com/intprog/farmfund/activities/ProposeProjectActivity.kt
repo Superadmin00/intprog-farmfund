@@ -2,7 +2,6 @@ package com.intprog.farmfund.activities
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -15,7 +14,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
@@ -140,7 +138,7 @@ class ProposeProjectActivity : AppCompatActivity() {
                 val descriptions = binding.projectDescriptionEditText.text.toString()
                 val milestone = binding.projectMilestoneEditText.text.toString()
                 val fundGoal = binding.projectFundGoalEditText.text.toString().toDouble()
-                val status = "Active"
+                val status = "Ongoing"
 
                 val user = auth.currentUser
 
@@ -242,13 +240,24 @@ class ProposeProjectActivity : AppCompatActivity() {
                 updateDueDateEditText()
             }
 
-        DatePickerDialog(
+        val datePickerDialog = DatePickerDialog(
             this@ProposeProjectActivity,
             dateSetListener,
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
             calendar.get(Calendar.DAY_OF_MONTH)
-        ).show()
+        )
+
+        // Set the maximum date to 6 months from now
+        val maxDate = Calendar.getInstance()
+        maxDate.add(Calendar.MONTH, 12)
+        datePickerDialog.datePicker.maxDate = maxDate.timeInMillis
+
+        // Set the minimum date to the current date
+        val minDate = Calendar.getInstance()
+        datePickerDialog.datePicker.minDate = minDate.timeInMillis
+
+        datePickerDialog.show()
     }
 
     private fun updateDueDateEditText() {

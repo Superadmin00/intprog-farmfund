@@ -57,19 +57,30 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/header"
         android:layout_alignParentEnd="true"
-        android:fontFamily="@font/poppins_bold"
+        android:fontFamily="@font/poppins_semibold"
         android:padding="5dp"
+        android:layout_marginEnd="8dp"
         android:spinnerMode="dropdown"
         android:popupBackground="@color/white"/>
+
+    <TextView android:id="@+id/noTransacFoundText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Transactions Found"
+        android:textSize="20sp"
+        android:fontFamily="@font/poppins_bold"
+        android:textColor="@color/darkgrey"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/sorterSpinner"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/sorterSpinner"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="16dp">
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/transactionsRecyclerView"

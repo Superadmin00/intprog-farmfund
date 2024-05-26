@@ -1,5 +1,6 @@
 package com.intprog.farmfund.activities
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -12,18 +13,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.intprog.farmfund.R
 import com.intprog.farmfund.adapters.ProjectImagesPagerAdapter
 import com.intprog.farmfund.databinding.ActivityProjectDetailsBinding
 import com.intprog.farmfund.dataclasses.Project
+import com.intprog.farmfund.dataclasses.User
+import java.util.Date
 
 class ProjectDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityProjectDetailsBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private lateinit var projId: String
+    private lateinit var project: Project
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,145 +38,159 @@ class ProjectDetailsActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
-        binding.backButton.setOnClickListener {
-            finish()
-        }
 
-        val project = intent.getSerializableExtra("project") as? Project
-        val projId1 = project?.projId
-        val projId2 = intent.getStringExtra("projId2")
+        binding.backButton.setOnClickListener { finish() }
 
-        val projId: String = if (projId1 != null) {
-            project.projId
-        } else if (projId2 != null) {
-            projId2
-        } else {
-            // Handle the error gracefully if the projId is null
+        projId = intent.getStringExtra("projId") ?: ""
+
+        if (projId.isEmpty()) {
             Toast.makeText(this, "Project ID not found", Toast.LENGTH_SHORT).show()
-            finish() // Close the activity
+            finish()
             return
         }
 
         binding.swipeRefreshLayout.isRefreshing = true
         fetchProjectDetails(projId)
 
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            fetchProjectDetails(projId)
-        }
-
-        //Code to check if a user is currently logged in
-        val user = auth.currentUser
-        if (user == null) {
-            binding.projdetailsDynamicBTN.setOnClickListener {
-                val loginNoticeDialog =
-                    LayoutInflater.from(this).inflate(R.layout.dialog_login_notice, null)
-                val builder = AlertDialog.Builder(this).setView(loginNoticeDialog)
-                val alertDialog = builder.show()
-
-                alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-                val gotoLoginButton = loginNoticeDialog.findViewById<Button>(R.id.gotoLoginButton)
-                gotoLoginButton.setOnClickListener {
-                    val intent = Intent(this, HolderLoginRegisterActivity::class.java)
-                    intent.putExtra("dialogToShow", "login")
-                    startActivity(intent)
-                    finish()
-                }
-            }
-        } else {
-            val userId = user.uid
-            //Check whether the logged in user owns the project
-            val userOwns = project?.userId == userId
-            //If the user owns the project, adjust the code if necessary
-            if (userOwns) {
-                binding.updateProjBTN.visibility = View.VISIBLE
-                binding.spaceBetween.visibility = View.VISIBLE
-                binding.projdetailsDynamicBTN.text = "Withdraw"
-
-                binding.projdetailsDynamicBTN.setOnClickListener {
-                    if (project?.projStatus == "Finished" || project?.projFundsReceived!! >= project.projFundGoal) {
-                        binding.projdetailsDynamicBTN.isEnabled = false
-                        binding.projdetailsDynamicBTN.text = "Withdraw (Finished)"
-                        Toast.makeText(
-                            this,
-                            "Project is finished or fully funded.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        val intent = Intent(this, WithdrawFundsActivity::class.java).apply {
-                            putExtra("projId", project.projId)
-                            putExtra("project", project)
-                            putExtra(
-                                "imageUrl",
-                                project.imageUrls.firstOrNull()
-                            ) // Assuming the first image is the main image
-                        }
-                        startActivity(intent)
-                    }
-                }
-            } else {
-                //User does not own the project
-                binding.projdetailsDynamicBTN.setOnClickListener {
-                    if (project != null) {
-                        if (project.projStatus == "Finished" || project.projFundsReceived >= project.projFundGoal) {
-                            binding.projdetailsDynamicBTN.isEnabled = false
-                            binding.projdetailsDynamicBTN.text = "Donate (Closed)"
-                            Toast.makeText(
-                                this,
-                                "Project is finished or fully funded.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            val intent = Intent(this, DonateToProjectActivity::class.java)
-                            intent.putExtra("project", project)
-                            intent.putExtra("imageUrl", project.imageUrls.firstOrNull())
-                            startActivity(intent)
-                        }
-                    }
-                }
-            }
-        }
+        binding.swipeRefreshLayout.setOnRefreshListener { fetchProjectDetails(projId) }
     }
 
-    fun fetchProjectDetails(projId: String) {
+    private fun fetchProjectDetails(projId: String) {
         db.collection("projects").document(projId)
             .get()
             .addOnSuccessListener { document ->
-                val projectNew = document.toObject(Project::class.java)
-                projectNew?.let {
-                    // Use the project object to populate your views
+                project = document.toObject(Project::class.java) ?: return@addOnSuccessListener
+                fetchUserDetails(project.userId)
+            }
+            .addOnFailureListener { exception ->
+                Log.w(TAG, "Error getting documents: ", exception)
+                binding.swipeRefreshLayout.isRefreshing = false
+            }
+    }
 
-                    binding.projectTitle.text = it.projTitle
-                    binding.projectDescription.text = it.projDescription
-                    binding.projectMilestone.text = it.projMilestone
-                    binding.donorNumber.text = "${it.projDonorsCount} donated"
-                    // Calculate days left
-                    val totalDays =
-                        ((it.projDueDate?.time?.minus(System.currentTimeMillis()))?.div((1000 * 60 * 60 * 24)))?.toInt()
-                    binding.daysLeft.text =
-                        if ((totalDays ?: 0) > 0) "$totalDays Days Left" else "0 Days Left"
-
-                    val totalProgress = it.projFundsReceived / it.projFundGoal
-                    binding.progressNumber.text = "${(totalProgress * 100).toInt()}%"
-                    binding.progressBar.progress = (totalProgress * 100).toInt()
-                    binding.projectDonations.text = String.format("₱%.2f", it.projFundsReceived)
-
-                    // Setup ViewPager with images
-                    binding.projectImagesPager.adapter =
-                        ProjectImagesPagerAdapter(this, it.imageUrls)
-
-                    // Update dynamic button based on project status and fund goal
-                    if (it.projStatus == "Finished" || it.projFundsReceived >= it.projFundGoal) {
-                        binding.projdetailsDynamicBTN.isEnabled = false
-                        binding.projdetailsDynamicBTN.text =
-                            if (it.projStatus == "Finished") "Closed" else "Closed"
-                    }
-                }
+    private fun fetchUserDetails(userId: String) {
+        db.collection("users").document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                val user = document.toObject(User::class.java) ?: return@addOnSuccessListener
+                val userImageURL = document.getString("userImageURL")
+                updateUI(user, userImageURL)
                 binding.swipeRefreshLayout.isRefreshing = false
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
                 binding.swipeRefreshLayout.isRefreshing = false
             }
+    }
+
+
+    private fun updateUI(user: User, userImageURL: String?) {
+        binding.apply {
+            projectTitle.text = project.projTitle
+            projectDescription.text = project.projDescription
+            projectMilestone.text = project.projMilestone
+            donorNumber.text = "${project.projDonorsCount} donated"
+            daysLeft.text = calculateDaysLeft(project.projDueDate)
+            progressNumber.text = "${calculateProgress(project.projFundsReceived, project.projFundGoal)}%"
+            progressBar.progress = calculateProgress(project.projFundsReceived, project.projFundGoal)
+            projectDonations.text = String.format("₱%.2f", project.projFundsReceived)
+            projectImagesPager.adapter = ProjectImagesPagerAdapter(this@ProjectDetailsActivity, project.imageUrls)
+
+            val midInitial = if (user.midName!!.isNotEmpty()) "${user.midName?.first()}." else ""
+            binding.projectAuthorName.text = "${user.firstName} $midInitial ${user.lastName}"
+
+            if (!userImageURL.isNullOrEmpty()) {
+                Glide.with(this@ProjectDetailsActivity)
+                    .load(userImageURL)
+                    .placeholder(R.drawable.img_default_pfp) // Placeholder image while loading
+                    .error(R.drawable.img_default_pfp) // Error image if loading fails
+                    .into(binding.projectAuthorPfp)
+            }
+        }
+        handleDynamicButton()
+    }
+
+    private fun calculateDaysLeft(dueDate: Date?): String {
+        val totalDays = ((dueDate?.time?.minus(System.currentTimeMillis()))?.div(1000 * 60 * 60 * 24))?.toInt()
+        return if ((totalDays ?: 0) > 0) "$totalDays Days Left" else "0 Days Left"
+    }
+
+    private fun calculateProgress(fundsReceived: Double, fundGoal: Double): Int {
+        return ((fundsReceived / fundGoal) * 100).toInt()
+    }
+
+    private fun handleDynamicButton() {
+        val currentDate = Date()
+        val user = auth.currentUser
+        val isProjectOverdue = currentDate.after(project.projDueDate)
+        val isFundGoalReached = project.projFundsReceived >= project.projFundGoal
+        val userOwnsProject = project.userId == user?.uid
+
+        binding.apply {
+            if (isProjectOverdue || isFundGoalReached) {
+                updateProjBTN.visibility = View.GONE
+                spaceBetween.visibility = View.GONE
+                projdetailsDynamicBTN.text = if (isProjectOverdue) "Overdue" else "Completed"
+                projdetailsDynamicBTN.setOnClickListener { showProjectEndedDialog() }
+            } else {
+                if (user == null) {
+                    projdetailsDynamicBTN.setOnClickListener { showLoginNoticeDialog() }
+                } else {
+                    if (userOwnsProject) {
+                        updateProjBTN.visibility = View.VISIBLE
+                        spaceBetween.visibility = View.VISIBLE
+                        projdetailsDynamicBTN.text = "Withdraw"
+                        projdetailsDynamicBTN.setOnClickListener { handleWithdrawFunds() }
+                    } else {
+                        projdetailsDynamicBTN.setOnClickListener { handleDonation() }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showProjectEndedDialog() {
+        val projectEndedDialog = LayoutInflater.from(this).inflate(R.layout.dialog_project_ended, null)
+        val builder = AlertDialog.Builder(this).setView(projectEndedDialog)
+        val alertDialog = builder.show()
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val closeDialogBTN = projectEndedDialog.findViewById<Button>(R.id.closeDialogBTN)
+        closeDialogBTN.setOnClickListener {
+            alertDialog.dismiss()
+        }
+    }
+
+    private fun showLoginNoticeDialog() {
+        val loginNoticeDialog = LayoutInflater.from(this).inflate(R.layout.dialog_login_notice, null)
+        val builder = AlertDialog.Builder(this).setView(loginNoticeDialog)
+        val alertDialog = builder.show()
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        loginNoticeDialog.findViewById<Button>(R.id.gotoLoginButton).setOnClickListener {
+            val intent = Intent(this, HolderLoginRegisterActivity::class.java).apply {
+                putExtra("dialogToShow", "login")
+            }
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    private fun handleWithdrawFunds() {
+        if (project.projStatus == "Withdrawn") {
+            Toast.makeText(this, "Donation Funds has already been withdrawn.", Toast.LENGTH_SHORT).show()
+        } else {
+            val intent = Intent(this, WithdrawFundsActivity::class.java).apply {
+                putExtra("project", project)
+                putExtra("imageUrl", project.imageUrls.firstOrNull())
+            }
+            startActivity(intent)
+        }
+    }
+
+    private fun handleDonation() {
+        val intent = Intent(this, DonateToProjectActivity::class.java).apply {
+            putExtra("projId", project.projId)
+            putExtra("imageUrl", project.imageUrls.firstOrNull())
+        }
+        startActivity(intent)
     }
 }

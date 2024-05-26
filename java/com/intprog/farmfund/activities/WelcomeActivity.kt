@@ -3,7 +3,6 @@ package com.intprog.farmfund.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.intprog.farmfund.databinding.ActivityWelcomeBinding
 
@@ -28,7 +27,6 @@ class WelcomeActivity : AppCompatActivity() {
 
         binding.getStartedButton.setOnClickListener {
             val intent = Intent(this, NavigatorActivity::class.java)
-            intent.putExtra("dialogToShow", "register")
             startActivity(intent)
             finish()
         }
@@ -37,6 +35,7 @@ class WelcomeActivity : AppCompatActivity() {
             val intent = Intent(this, HolderLoginRegisterActivity::class.java)
             intent.putExtra("dialogToShow", "login")
             startActivity(intent)
+            finish()
         }
     }
 }

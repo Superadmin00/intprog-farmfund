@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Window
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -41,6 +42,12 @@ class WithdrawFundsActivity : AppCompatActivity() {
         val projectNameTextView = findViewById<TextView>(R.id.projTitleWithdraw)
         projectNameTextView.text = project.projTitle
 
+        val backButton = findViewById<ImageButton>(R.id.backButton)
+
+        backButton.setOnClickListener {
+            finish()
+        }
+
         val projectWithdrawableFunds = findViewById<TextView>(R.id.withdrawableFunds)
         projectWithdrawableFunds.text = String.format("%.2f", project.projFundsReceived)
 
@@ -70,13 +77,13 @@ class WithdrawFundsActivity : AppCompatActivity() {
             if (selectedPaymentMethod == null) {
                 Toast.makeText(this, "Please select a payment method.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
-            } else if (project.projStatus == "Finished") {
+            } else if (project.projStatus == "Completed") {
                 val dialog = WithdrawalSuccessDialog(this, project, projectWithdrawableFunds, selectedPaymentMethod)
                 dialog.show()
             } else if (project.projStatus == "Withdrawn") {
                 Toast.makeText(this, "Project funds already withdrawn.", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Project funds can only be withdrawn when the project is finished.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Project funds can only be withdrawn when the project is completed.", Toast.LENGTH_SHORT).show()
             }
         }
     }

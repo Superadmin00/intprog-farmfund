@@ -45,6 +45,10 @@ class ProfilePageFragment : Fragment() {
         storageReference = FirebaseStorage.getInstance().reference
 
         binding.swipeRefreshLayout.isRefreshing = true
+
+        if (auth.currentUser == null) {
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
         loadUserProfile()
 
         binding.swipeRefreshLayout.setOnRefreshListener {
@@ -57,7 +61,12 @@ class ProfilePageFragment : Fragment() {
     private fun loadUserProfile() {
         val user = auth.currentUser
 
-        user?.let { currentUser ->
+        if (user == null) {
+            binding.swipeRefreshLayout.isRefreshing = false
+            return
+        }
+
+        user.let { currentUser ->
             val usersCollection = FirebaseFirestore.getInstance().collection("users")
             val userId = currentUser.uid
             usersCollection.whereEqualTo("userId", userId).get()
@@ -83,6 +92,7 @@ class ProfilePageFragment : Fragment() {
                         binding.profFundPoints.text = "%.2f".format(userFundPoints?.toDouble() ?: 0.00)
                         binding.profNumber.text = userPhoneNumber ?: "(Not set)"
 
+                        binding.swipeRefreshLayout.isRefreshing = false
                         loadProfileImage()
                     }
                     binding.swipeRefreshLayout.isRefreshing = false
@@ -189,9 +199,11 @@ class ProfilePageFragment : Fragment() {
                     .placeholder(R.drawable.img_default_pfp) // Placeholder image while loading
                     .error(R.drawable.img_default_pfp) // Error image if loading fails
                     .into(binding.imagePlaceholder)
+                binding.swipeRefreshLayout.isRefreshing = false
             }.addOnFailureListener { exception ->
                 // Handle any errors
                 Log.e("ImageLoadingError", "Error loading profile image", exception)
+                binding.swipeRefreshLayout.isRefreshing = false
             }
         }
     }
