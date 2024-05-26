@@ -56,7 +56,7 @@ class BrowseProjectsAdapter(
 
             projectItemCard.setOnClickListener {
                 val intent = Intent(itemView.context, ProjectDetailsActivity::class.java)
-                intent.putExtra("project", project)
+                intent.putExtra("projId", project.projId)
                 itemView.context.startActivity(intent)
             }
 

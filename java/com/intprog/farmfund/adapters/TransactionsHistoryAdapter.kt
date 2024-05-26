@@ -114,7 +114,7 @@ class TransactionsHistoryAdapter(var transactions: List<Transaction>) :
                         Toast.makeText(context, "Project not found.", Toast.LENGTH_SHORT).show()
                     } else {
                         val intent = Intent(context, ProjectDetailsActivity::class.java)
-                        intent.putExtra("projId2", projectId)
+                        intent.putExtra("projId", projectId)
                         dialog.dismiss()
                         context.startActivity(intent)
                     }

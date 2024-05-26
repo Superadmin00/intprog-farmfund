@@ -36,9 +36,10 @@ class MyProjectsAdapter(private val projects: List<Project>) : RecyclerView.Adap
         // Set the text color based on project status
         val context = holder.itemView.context
         when (project.projStatus) {
-            "Active" -> holder.projectStatus.setTextColor(ContextCompat.getColor(context, R.color.activeStatus))
+            "Ongoing" -> holder.projectStatus.setTextColor(ContextCompat.getColor(context, R.color.activeStatus))
             "Withdrawn" -> holder.projectStatus.setTextColor(ContextCompat.getColor(context, R.color.withdrawnStatus))
             "Finished" -> holder.projectStatus.setTextColor(ContextCompat.getColor(context, R.color.finishedStatus))
+            "Cancelled" -> holder.projectStatus.setTextColor(ContextCompat.getColor(context, R.color.red))
         }
 
         // Check if there are any image URLs and load the first one

@@ -8,6 +8,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ImageButton
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +23,7 @@ import com.intprog.farmfund.dataclasses.Transaction
 class TransactionHistoryActivity : AppCompatActivity() {
 
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var noTransacFoundText: TextView
     private lateinit var transactionsRecyclerView: RecyclerView
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
@@ -35,6 +37,7 @@ class TransactionHistoryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_transaction_history)
 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout)
+        noTransacFoundText = findViewById(R.id.noTransacFoundText)
         transactionsRecyclerView = findViewById(R.id.transactionsRecyclerView)
         transactionsRecyclerView.layoutManager = LinearLayoutManager(this)
         adapter = TransactionsHistoryAdapter(emptyList())
@@ -64,7 +67,7 @@ class TransactionHistoryActivity : AppCompatActivity() {
     }
 
     private fun setupSorterSpinner() {
-        val transactionTypes = arrayOf("All", "Donation", "Voucher Redemption")
+        val transactionTypes = arrayOf("All", "Donation", "Withdrawal", "Voucher Redemption")
         val adapter = ArrayAdapter(
             this,
             R.layout.spinner_item,
@@ -92,13 +95,20 @@ class TransactionHistoryActivity : AppCompatActivity() {
         if (currentFilter != "All") {
             query = query.whereEqualTo("transactionType", currentFilter)
         }
-
         query.get()
             .addOnSuccessListener { documents ->
                 val transactions = documents.toObjects(Transaction::class.java)
                 adapter.transactions = transactions
                 adapter.notifyDataSetChanged()
                 swipeRefreshLayout.isRefreshing = false
+                // Check if the transactions list is empty
+                if (transactions.isEmpty()) {
+                    // If it is, set the noTransacFoundText TextView to VISIBLE
+                    noTransacFoundText.visibility = View.VISIBLE
+                } else {
+                    // If it's not, set the noTransacFoundText TextView to GONE
+                    noTransacFoundText.visibility = View.GONE
+                }
             }
             .addOnFailureListener { exception ->
                 Log.w(TAG, "Error getting documents: ", exception)
