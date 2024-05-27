@@ -118,9 +118,10 @@ class ProfilePageFragment : Fragment() {
                 startActivity(intent)
             }
 
+            binding.gotoTransacHistoryBTN.visibility = View.GONE
             binding.gotoMyProjectsBTN.visibility = View.GONE //Hide gotoMyProjectsBTN
             binding.gotoLogoutBTN.visibility = View.GONE //Hide the gotoLogoutBTN
-            binding.gotoPayMethodBTN.visibility = View.GONE //Hide the gotoPayMethodBTN
+            //binding.gotoPayMethodBTN.visibility = View.GONE //Hide the gotoPayMethodBTN
 
             // Create new LayoutParams with layout_below set
             val layoutParams = RelativeLayout.LayoutParams(
@@ -139,7 +140,7 @@ class ProfilePageFragment : Fragment() {
             layoutParams.addRule(RelativeLayout.BELOW, R.id.gotoTransacHistoryBTN)
 
             // Set the LayoutParams on the button
-            binding.gotoSettingsBTN.layoutParams = layoutParams
+            //binding.gotoSettingsBTN.layoutParams = layoutParams
 
         } else {
             // If user is authenticated, set the click listener for editProfileBTN to navigate to EditProfileActivity
@@ -160,14 +161,14 @@ class ProfilePageFragment : Fragment() {
             startActivity(intent)
         }
 
-        binding.gotoSettingsBTN.setOnClickListener {
+        /*binding.gotoSettingsBTN.setOnClickListener {
             val intent = Intent(activity, SettingsActivity::class.java)
             startActivity(intent)
-        }
+        }*/
 
-        binding.gotoPayMethodBTN.setOnClickListener {
+        /*binding.gotoPayMethodBTN.setOnClickListener {
             //Code to go to Payment Methods Activity
-        }
+        }*/
 
         binding.gotoLogoutBTN.setOnClickListener {
             val logoutDialog = LayoutInflater.from(context).inflate(R.layout.dialog_logout, null)
