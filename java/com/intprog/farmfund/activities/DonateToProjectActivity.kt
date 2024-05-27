@@ -210,7 +210,7 @@ class DonateToProjectActivity : AppCompatActivity() {
         if (selectedPaymentMethod != null) {
             paymentMethod = selectedPaymentMethod.paymethodName // Get the payment method name or other details
         } else {
-            Toast.makeText(this, "Please select a payment method.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please select the Payment Chaneel where you sent the donation.", Toast.LENGTH_SHORT).show()
             return
         }
 

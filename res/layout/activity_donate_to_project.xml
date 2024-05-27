@@ -227,9 +227,9 @@
                         android:layout_below="@id/customAmountEditText"
                         android:layout_marginTop="16dp"
                         android:fontFamily="@font/poppins_semibold"
-                        android:text="Select Payment Method"
+                        android:text="Send to Any Payment Channel Below"
                         android:textColor="@color/black"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/paymethodRecyclerView"

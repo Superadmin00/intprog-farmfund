@@ -57,6 +57,23 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val sharedPref = requireActivity().getSharedPreferences("loginPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+
+        var savedEmailOrNumber: String? = ""
+        var savedPassword: String? = ""
+
+        val savedSwitchState = sharedPref.getBoolean("switchState", false)
+        if (savedSwitchState) {
+            savedEmailOrNumber = sharedPref.getString("emailOrNumber", "")
+            savedPassword = sharedPref.getString("password", "")
+            binding.emailNumEditText.setText(savedEmailOrNumber)
+            binding.passwordEditText.setText(savedPassword)
+            binding.switch1.isChecked = true
+        } else {
+            binding.switch1.isChecked = false
+        }
+
         auth = FirebaseAuth.getInstance()
 
         // Configure Google Sign-In
@@ -85,9 +102,9 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
             startActivity(intent)
         }
 
-        // Get the email and password from the intent arguments
-        val emailNum = arguments?.getString("email")
-        val passW = arguments?.getString("password")
+        /// Get the email and password from the intent arguments
+        val emailNum = arguments?.getString("email") ?: savedEmailOrNumber
+        val passW = arguments?.getString("password") ?: savedPassword
 
         // Set the text of the TextInputEditTexts to the email and password
         binding.emailNumEditText.setText(emailNum)
@@ -134,6 +151,19 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
                 auth.signInWithEmailAndPassword(emailOrNumber, password)
                     .addOnCompleteListener(requireActivity()) { task ->
                         if (task.isSuccessful) {
+                            if (binding.switch1.isChecked) {
+                                // Save the email, password, and switch state in SharedPreferences
+                                editor.putString("emailOrNumber", emailOrNumber)
+                                editor.putString("password", password)
+                                editor.putBoolean("switchState", true)
+                                editor.commit()
+                            } else {
+                                // Clear the saved email, password, and switch state
+                                editor.remove("emailOrNumber")
+                                editor.remove("password")
+                                editor.remove("switchState")
+                                editor.commit()
+                            }
                             // Close Loading dialog
                             LoadingDialog.dismiss()
                             user = auth.currentUser

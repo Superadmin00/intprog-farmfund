@@ -16,4 +16,8 @@
     <color name="activeStatus">#007BFF</color>
     <color name="withdrawnStatus">#FFA500</color>
     <color name="finishedStatus">#4CAF50</color>
+
+    <color name="dark">#272424</color>
+    <color name="darker">#1D1D1D</color>
+    <color name="purple">#9D39C1</color>
 </resources>
