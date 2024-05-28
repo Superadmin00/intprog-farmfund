@@ -216,8 +216,8 @@
                         android:hint="Enter Amount Manually"
                         android:inputType="numberDecimal"
                         android:padding="16dp"
-                        android:textColor="@color/white"
-                        android:textColorHint="@color/white"
+                        android:textColor="@color/green"
+                        android:textColorHint="@color/green"
                         android:textSize="15sp" />
 
                     <TextView

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.DialogInterface
 import android.content.res.Resources
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -25,11 +23,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import com.intprog.farmfund.activities.ForgotPasswordActivity
 import com.intprog.farmfund.activities.NavigatorActivity
 import com.intprog.farmfund.databinding.BottomsheetLoginBinding
@@ -156,13 +151,13 @@ class LoginBottomSheetDialogFragment : BottomSheetDialogFragment() {
                                 editor.putString("emailOrNumber", emailOrNumber)
                                 editor.putString("password", password)
                                 editor.putBoolean("switchState", true)
-                                editor.commit()
+                                editor.apply()
                             } else {
                                 // Clear the saved email, password, and switch state
                                 editor.remove("emailOrNumber")
                                 editor.remove("password")
                                 editor.remove("switchState")
-                                editor.commit()
+                                editor.apply()
                             }
                             // Close Loading dialog
                             LoadingDialog.dismiss()
