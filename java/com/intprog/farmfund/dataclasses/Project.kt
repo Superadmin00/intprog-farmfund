@@ -1,5 +1,6 @@
 package com.intprog.farmfund.dataclasses
 
+import com.google.firebase.Timestamp
 import java.io.Serializable
 import java.util.*
 
@@ -14,7 +15,8 @@ data class Project(
     val projFundsReceived: Double = 0.0,
     val projDueDate: Date? = null,
     val projStatus: String = "",
-    val imageUrls: List<String> = emptyList()
+    val imageUrls: List<String> = emptyList(),
+    val timestamp: Timestamp? = null // Add this line
 ): Serializable {
     constructor() : this(
         "",
@@ -27,6 +29,7 @@ data class Project(
         0.0,
         null,
         "",
-        emptyList()
+        emptyList(),
+        null
     )
 }
