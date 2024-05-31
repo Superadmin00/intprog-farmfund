@@ -33,7 +33,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_toStartOf="@id/seeMoreText"
+            android:layout_toStartOf="@id/projectDate"
             android:clickable="false"
             android:fontFamily="@font/poppins_bold"
             android:maxWidth="250dp"
@@ -43,7 +43,7 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/seeMoreText"
+            android:id="@+id/projectDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/projectImage1"
@@ -53,10 +53,90 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:clickable="false"
-            android:fontFamily="@font/poppins_regular"
-            android:textColor="@color/darkgrey"
-            android:text="See more... "
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/black"
+            android:text=""
             android:textSize="15sp" />
+
+        <RelativeLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/projectTitle"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="20dp">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:fontFamily="@font/poppins_bold"
+                android:text="Project Progress"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/daysLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="5 days left"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textView2"
+                android:layout_toStartOf="@id/progressNumber"
+                android:max="100"
+                android:progressTint="#24C635" />
+
+            <TextView
+                android:id="@+id/progressNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/daysLeft"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/poppins_bold"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/projectDonations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/progressBar"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/poppins_bold"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/progressBar"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="6dp"
+                android:layout_toEndOf="@id/projectDonations"
+                android:fontFamily="@font/poppins_bold"
+                android:text="raised"
+                android:textAlignment="center"
+                android:textSize="15sp" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <ImageButton
