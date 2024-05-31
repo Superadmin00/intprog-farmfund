@@ -172,9 +172,10 @@ class VoucherAdapter(
                                         }
 
                                     LoadingDialog.dismiss()
+                                    val fundPointsText = "%.2f".format(newFundPoints)
                                     Toast.makeText(
                                         context,
-                                        "Voucher redeemed successfully! New FundPoints: $newFundPoints",
+                                        "Voucher redeemed successfully!\nNew FundPoints: $fundPointsText",
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     fragment.loadUserData()
