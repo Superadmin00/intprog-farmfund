@@ -192,4 +192,9 @@ class ProjectDetailsActivity : AppCompatActivity() {
         }
         startActivity(intent)
     }
+
+    override fun onResume() {
+        super.onResume()
+        fetchProjectDetails(projId)
+    }
 }

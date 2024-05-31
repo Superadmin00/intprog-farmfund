@@ -195,19 +195,24 @@ class ProfilePageFragment : Fragment() {
         userId?.let { uid ->
             val profileImageRef = storageReference.child("profile_images/$uid.jpg")
             profileImageRef.downloadUrl.addOnSuccessListener { uri ->
-                Glide.with(requireContext())
-                    .load(uri)
-                    .placeholder(R.drawable.img_default_pfp) // Placeholder image while loading
-                    .error(R.drawable.img_default_pfp) // Error image if loading fails
-                    .into(binding.imagePlaceholder)
+                if (isAdded && _binding != null) { // Check if the fragment is still attached to an activity and binding is not null
+                    Glide.with(requireContext())
+                        .load(uri)
+                        .placeholder(R.drawable.img_default_pfp) // Placeholder image while loading
+                        .error(R.drawable.img_default_pfp) // Error image if loading fails
+                        .into(binding.imagePlaceholder)
+                }
                 binding.swipeRefreshLayout.isRefreshing = false
             }.addOnFailureListener { exception ->
                 // Handle any errors
                 Log.e("ImageLoadingError", "Error loading profile image", exception)
-                binding.swipeRefreshLayout.isRefreshing = false
+                if (_binding != null) {
+                    binding.swipeRefreshLayout.isRefreshing = false
+                }
             }
         }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

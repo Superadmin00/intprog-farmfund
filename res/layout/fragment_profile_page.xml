@@ -157,7 +157,8 @@
             android:backgroundTint="@color/green"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/ic_arrow"/>
+            android:background="@drawable/ic_arrow"
+            android:clickable="false"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -199,7 +200,8 @@
             android:backgroundTint="@color/green"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/ic_arrow"/>
+            android:background="@drawable/ic_arrow"
+            android:clickable="false"/>
     </RelativeLayout>
 
     <!--<RelativeLayout

@@ -2,7 +2,6 @@ package com.intprog.farmfund.adapters
 
 import android.content.Context
 import android.content.Intent
-import android.icu.text.SimpleDateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.intprog.farmfund.R
 import com.intprog.farmfund.activities.ProjectDetailsActivity
 import com.intprog.farmfund.dataclasses.Project
+import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
