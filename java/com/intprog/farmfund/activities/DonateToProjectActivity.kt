@@ -12,6 +12,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -140,7 +141,7 @@ class DonateToProjectActivity : AppCompatActivity() {
         return maxOf(amountFromCustom, amountFromCheckBox)
     }
 
-    private fun showSuccessDialog() {
+    private fun showSuccessDialog(donationAmount: Double) {
         val dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_donation_successful)
         dialog.setCancelable(false)
@@ -148,6 +149,11 @@ class DonateToProjectActivity : AppCompatActivity() {
             dialog.dismiss()
             finish()
         }
+
+        // Format donationAmount with 2 decimal places
+        val formattedAmount = String.format("%.2f", donationAmount)
+
+        dialog.findViewById<TextView>(R.id.textView2).text = "Your donation of PHP $formattedAmount was successful."
         dialog.show()
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
@@ -282,7 +288,7 @@ class DonateToProjectActivity : AppCompatActivity() {
                                 }
                         }
                         LoadingDialog.dismiss()
-                        showSuccessDialog()
+                        showSuccessDialog(donationAmount)
                     }
             } else {
                 Toast.makeText(this, "Donation exceeds funding goal", Toast.LENGTH_SHORT).show()

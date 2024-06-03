@@ -98,7 +98,7 @@
                 android:layout_below="@id/textView2"
                 android:layout_toStartOf="@id/progressNumber"
                 android:max="100"
-                android:progressTint="@color/lightgreen" />
+                android:progressTint="@color/green" />
 
             <TextView
                 android:id="@+id/progressNumber"
