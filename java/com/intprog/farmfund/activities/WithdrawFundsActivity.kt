@@ -2,6 +2,7 @@ package com.intprog.farmfund.activities
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -33,20 +34,61 @@ class WithdrawFundsActivity : AppCompatActivity() {
     private lateinit var paymentMethods: List<PaymentMethod>
     private lateinit var adapter: PaymentMethodAdapter
 
+    private lateinit var db: FirebaseFirestore
+    private lateinit var projId: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_withdraw_funds)
 
-        project = intent.getSerializableExtra("project") as Project
+        db = FirebaseFirestore.getInstance()
 
-        val projectNameTextView = findViewById<TextView>(R.id.projTitleWithdraw)
-        projectNameTextView.text = project.projTitle
+        projId = intent.getStringExtra("projId").toString()
+        fetchProjectDetails(projId)
 
         val backButton = findViewById<ImageButton>(R.id.backButton)
-
         backButton.setOnClickListener {
             finish()
         }
+
+        bankRecyclerView = findViewById(R.id.withdrawBankRecyclerView)
+        bankRecyclerView.layoutManager = LinearLayoutManager(this)
+
+        // Fetch payment methods and set up the adapter
+        fetchPaymentMethods()
+
+        val withdrawButton = findViewById<Button>(R.id.withdrawButton)
+        withdrawButton.setOnClickListener {
+            val selectedPaymentMethod = adapter.retrieveSelectedPaymentMethod()
+            if (selectedPaymentMethod == null) {
+                Toast.makeText(this, "Please select a payment method.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            } else if (project.projStatus == "Completed") {
+                val dialog = WithdrawalSuccessDialog(this, project, findViewById(R.id.withdrawableFunds), selectedPaymentMethod)
+                dialog.show()
+            } else if (project.projStatus == "Withdrawn") {
+                Toast.makeText(this, "Project funds already withdrawn.", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Project funds can only be withdrawn when the project is completed.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun fetchProjectDetails(projId: String) {
+        db.collection("projects").document(projId)
+            .get()
+            .addOnSuccessListener { document ->
+                project = document.toObject(Project::class.java) ?: return@addOnSuccessListener
+                updateUIWithProjectDetails()
+            }
+            .addOnFailureListener { exception ->
+                Log.w(ContentValues.TAG, "Error getting documents: ", exception)
+            }
+    }
+
+    private fun updateUIWithProjectDetails() {
+        val projectNameTextView = findViewById<TextView>(R.id.projTitleWithdraw)
+        projectNameTextView.text = project.projTitle
 
         val projectWithdrawableFunds = findViewById<TextView>(R.id.withdrawableFunds)
         projectWithdrawableFunds.text = String.format("%.2f", project.projFundsReceived)
@@ -63,28 +105,6 @@ class WithdrawFundsActivity : AppCompatActivity() {
                 .into(projectImageView)
         } else {
             projectImageView.setImageResource(R.drawable.ic_launcher_background)
-        }
-
-        bankRecyclerView = findViewById(R.id.withdrawBankRecyclerView)
-        bankRecyclerView.layoutManager = LinearLayoutManager(this)
-
-        // Fetch payment methods and set up the adapter
-        fetchPaymentMethods()
-
-        val withdrawButton = findViewById<Button>(R.id.withdrawButton)
-        withdrawButton.setOnClickListener {
-            val selectedPaymentMethod = adapter.retrieveSelectedPaymentMethod()
-            if (selectedPaymentMethod == null) {
-                Toast.makeText(this, "Please select a payment method.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            } else if (project.projStatus == "Completed") {
-                val dialog = WithdrawalSuccessDialog(this, project, projectWithdrawableFunds, selectedPaymentMethod)
-                dialog.show()
-            } else if (project.projStatus == "Withdrawn") {
-                Toast.makeText(this, "Project funds already withdrawn.", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Project funds can only be withdrawn when the project is completed.", Toast.LENGTH_SHORT).show()
-            }
         }
     }
 
