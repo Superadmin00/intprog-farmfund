@@ -1,6 +1,5 @@
 package com.intprog.farmfund.activities
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -128,7 +127,10 @@ class ProjectDetailsActivity : AppCompatActivity() {
 
         binding.apply {
             if (isProjectOverdue || isFundGoalReached) {
-                projdetailsDynamicBTN.text = if (isProjectOverdue) "Overdue" else "Completed"
+                if (isProjectOverdue) {
+                    projdetailsDynamicBTN.text = "Overdue"
+                    updateProjectStatusToOverdue()
+                } else projdetailsDynamicBTN.text = "Completed"
                 projdetailsDynamicBTN.setOnClickListener { showProjectEndedDialog() }
             } else {
                 if (user == null) {
@@ -147,6 +149,16 @@ class ProjectDetailsActivity : AppCompatActivity() {
         }
     }
 
+    private fun updateProjectStatusToOverdue() {
+        db.collection("projects").document(project.projId)
+            .update("projStatus", "Cancelled")
+            .addOnSuccessListener {
+                Log.d(TAG, "Project status updated to Overdue.")
+            }
+            .addOnFailureListener { e ->
+                Log.w(TAG, "Error updating project status: ", e)
+            }
+    }
 
     private fun showProjectEndedDialog() {
         val projectEndedDialog = LayoutInflater.from(this).inflate(R.layout.dialog_project_ended, null)
@@ -178,7 +190,7 @@ class ProjectDetailsActivity : AppCompatActivity() {
             Toast.makeText(this, "Donation Funds has already been withdrawn.", Toast.LENGTH_SHORT).show()
         } else {
             val intent = Intent(this, WithdrawFundsActivity::class.java).apply {
-                putExtra("project", project)
+                putExtra("projId", project.projId)
                 putExtra("imageUrl", project.imageUrls.firstOrNull())
             }
             startActivity(intent)

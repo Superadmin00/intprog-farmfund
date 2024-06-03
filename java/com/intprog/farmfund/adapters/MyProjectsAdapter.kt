@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.intprog.farmfund.R
-import com.intprog.farmfund.activities.WithdrawFundsActivity
+import com.intprog.farmfund.activities.ProjectDetailsActivity
 import com.intprog.farmfund.dataclasses.Project
 
 class MyProjectsAdapter(private val projects: List<Project>) : RecyclerView.Adapter<MyProjectsAdapter.ProjectViewHolder>() {
@@ -54,8 +54,8 @@ class MyProjectsAdapter(private val projects: List<Project>) : RecyclerView.Adap
         }
 
         holder.projectItemLayout.setOnClickListener {
-            val intent = Intent(context, WithdrawFundsActivity::class.java)
-            intent.putExtra("project", project)
+            val intent = Intent(context, ProjectDetailsActivity::class.java)
+            intent.putExtra("projId", project.projId)
             context.startActivity(intent)
         }
     }
