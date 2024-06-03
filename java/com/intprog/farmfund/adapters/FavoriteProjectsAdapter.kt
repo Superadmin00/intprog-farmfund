@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -17,6 +18,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.intprog.farmfund.R
 import com.intprog.farmfund.activities.ProjectDetailsActivity
 import com.intprog.farmfund.dataclasses.Project
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 interface FavoriteUpdateListener {
     fun onFavoriteUpdated()
@@ -46,9 +50,14 @@ class FavoriteProjectsAdapter(
 
     inner class ProjectViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val projectTitle: TextView = itemView.findViewById(R.id.projectTitle)
+        private val projectDate: TextView = itemView.findViewById(R.id.projectDate)
         private val projectImage: ImageView = itemView.findViewById(R.id.projectImage1)
-        private val addToFavoritesBTN: ImageView = itemView.findViewById(R.id.addToFavoritesBTN)
-        private val projectItemCard: RelativeLayout = itemView.findViewById(R.id.projectItemCard)
+        private val addToFavoritesBTN : ImageView = itemView.findViewById(R.id.addToFavoritesBTN)
+        private val daysLeft : TextView = itemView.findViewById(R.id.daysLeft)
+        private val projectDonations : TextView = itemView.findViewById(R.id.projectDonations)
+        private val projectProgress: ProgressBar = itemView.findViewById(R.id.progressBar)
+        private val progressNumber: TextView = itemView.findViewById(R.id.progressNumber)
+        private val projectItemCard : RelativeLayout = itemView.findViewById(R.id.projectItemCard)
 
         fun bind(project: Project) {
             projectTitle.text = project.projTitle
@@ -58,6 +67,18 @@ class FavoriteProjectsAdapter(
                     .load(project.imageUrls[0])
                     .into(projectImage)
             }
+
+            project.timestamp?.let {
+                val date = it.toDate()
+                val sdf = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+                val formattedDate = sdf.format(date)
+                projectDate.text = formattedDate
+            }
+
+            daysLeft.text = calculateDaysLeft(project.projDueDate)
+            progressNumber.text = "${calculateProgress(project.projFundsReceived, project.projFundGoal)}%"
+            projectProgress.progress = calculateProgress(project.projFundsReceived, project.projFundGoal)
+            projectDonations.text = String.format("₱%.2f", project.projFundsReceived)
 
             projectItemCard.setOnClickListener {
                 val intent = Intent(itemView.context, ProjectDetailsActivity::class.java)
@@ -107,6 +128,15 @@ class FavoriteProjectsAdapter(
                 addToFavoritesBTN.visibility = View.GONE
             }
         }
+    }
+
+    private fun calculateDaysLeft(dueDate: Date?): String {
+        val totalDays = ((dueDate?.time?.minus(System.currentTimeMillis()))?.div(1000 * 60 * 60 * 24))?.toInt()
+        return if ((totalDays ?: 0) > 0) "$totalDays Days Left" else "0 Days Left"
+    }
+
+    private fun calculateProgress(fundsReceived: Double, fundGoal: Double): Int {
+        return ((fundsReceived / fundGoal) * 100).toInt()
     }
 
     private fun updateFavorites(userId: String, projectId: String, add: Boolean) {
