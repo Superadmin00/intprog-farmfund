@@ -75,8 +75,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="Project Progress"
                 android:textAlignment="center"
-                android:textColor="@color/darkgrey"
-                android:textSize="13sp" />
+                android:textColor="@color/darkgrey"/>
 
             <TextView
                 android:id="@+id/daysLeft"
@@ -88,7 +87,8 @@
                 android:text="5 days left"
                 android:textAlignment="center"
                 android:textColor="@color/darkgrey"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
+
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -98,7 +98,7 @@
                 android:layout_below="@id/textView2"
                 android:layout_toStartOf="@id/progressNumber"
                 android:max="100"
-                android:progressTint="#24C635" />
+                android:progressTint="@color/lightgreen" />
 
             <TextView
                 android:id="@+id/progressNumber"
@@ -137,7 +137,6 @@
                 android:textSize="14sp" />
         </RelativeLayout>
     </RelativeLayout>
-
     <ImageButton
         android:id="@+id/addToFavoritesBTN"
         android:layout_width="35dp"
@@ -147,5 +146,4 @@
         android:background="@color/transparent"
         android:scaleType="fitXY"
         android:src="@drawable/ic_heart_unfilled" />
-
 </com.google.android.material.card.MaterialCardView>
