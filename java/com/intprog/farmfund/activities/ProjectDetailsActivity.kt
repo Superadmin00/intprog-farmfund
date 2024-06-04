@@ -90,10 +90,13 @@ class ProjectDetailsActivity : AppCompatActivity() {
             projectMilestone.text = project.projMilestone
             donorNumber.text = "${project.projDonorsCount} donated"
             daysLeft.text = calculateDaysLeft(project.projDueDate)
-            progressNumber.text = "${calculateProgress(project.projFundsReceived, project.projFundGoal)}%"
-            progressBar.progress = calculateProgress(project.projFundsReceived, project.projFundGoal)
+            progressNumber.text =
+                "${calculateProgress(project.projFundsReceived, project.projFundGoal)}%"
+            progressBar.progress =
+                calculateProgress(project.projFundsReceived, project.projFundGoal)
             projectDonations.text = String.format("₱%.2f", project.projFundsReceived)
-            projectImagesPager.adapter = ProjectImagesPagerAdapter(this@ProjectDetailsActivity, project.imageUrls)
+            projectImagesPager.adapter =
+                ProjectImagesPagerAdapter(this@ProjectDetailsActivity, project.imageUrls)
 
             val midInitial = if (user.midName!!.isNotEmpty()) "${user.midName?.first()}." else ""
             binding.projectAuthorName.text = "${user.firstName} $midInitial ${user.lastName}"
@@ -110,7 +113,8 @@ class ProjectDetailsActivity : AppCompatActivity() {
     }
 
     private fun calculateDaysLeft(dueDate: Date?): String {
-        val totalDays = ((dueDate?.time?.minus(System.currentTimeMillis()))?.div(1000 * 60 * 60 * 24))?.toInt()
+        val totalDays =
+            ((dueDate?.time?.minus(System.currentTimeMillis()))?.div(1000 * 60 * 60 * 24))?.toInt()
         return if ((totalDays ?: 0) > 0) "$totalDays Days Left" else "0 Days Left"
     }
 
@@ -126,23 +130,38 @@ class ProjectDetailsActivity : AppCompatActivity() {
         val userOwnsProject = project.userId == user?.uid
 
         binding.apply {
+
             if (isProjectOverdue || isFundGoalReached) {
                 if (isProjectOverdue) {
                     projdetailsDynamicBTN.text = "Overdue"
                     updateProjectStatusToOverdue()
-                } else projdetailsDynamicBTN.text = "Completed"
-                projdetailsDynamicBTN.setOnClickListener { showProjectEndedDialog() }
-            } else {
-                if (user == null) {
-                    projdetailsDynamicBTN.setOnClickListener { showLoginNoticeDialog() }
                 } else {
-                    if (userOwnsProject) {
-                        updateProjBTN.visibility = View.GONE
-                        spaceBetween.visibility = View.GONE
-                        projdetailsDynamicBTN.text = "Withdraw"
-                        projdetailsDynamicBTN.setOnClickListener { handleWithdrawFunds() }
+                    projdetailsDynamicBTN.text = "Completed"
+                }
+            }
+
+            //showProjectEndedDialog()
+            if (user == null) {
+                projdetailsDynamicBTN.setOnClickListener {
+                    showLoginNoticeDialog()
+                }
+            } else {
+                if (userOwnsProject) {
+                    updateProjBTN.visibility = View.GONE
+                    spaceBetween.visibility = View.GONE
+                    projdetailsDynamicBTN.text = "Withdraw"
+                    projdetailsDynamicBTN.setOnClickListener {
+                        handleWithdrawFunds()
+                    }
+                } else {
+                    if (isProjectOverdue || isFundGoalReached) {
+                        projdetailsDynamicBTN.setOnClickListener {
+                            showProjectEndedDialog()
+                        }
                     } else {
-                        projdetailsDynamicBTN.setOnClickListener { handleDonation() }
+                        projdetailsDynamicBTN.setOnClickListener {
+                            handleDonation()
+                        }
                     }
                 }
             }
@@ -161,7 +180,8 @@ class ProjectDetailsActivity : AppCompatActivity() {
     }
 
     private fun showProjectEndedDialog() {
-        val projectEndedDialog = LayoutInflater.from(this).inflate(R.layout.dialog_project_ended, null)
+        val projectEndedDialog =
+            LayoutInflater.from(this).inflate(R.layout.dialog_project_ended, null)
         val builder = AlertDialog.Builder(this).setView(projectEndedDialog)
         val alertDialog = builder.show()
         alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -172,7 +192,8 @@ class ProjectDetailsActivity : AppCompatActivity() {
     }
 
     private fun showLoginNoticeDialog() {
-        val loginNoticeDialog = LayoutInflater.from(this).inflate(R.layout.dialog_login_notice, null)
+        val loginNoticeDialog =
+            LayoutInflater.from(this).inflate(R.layout.dialog_login_notice, null)
         val builder = AlertDialog.Builder(this).setView(loginNoticeDialog)
         val alertDialog = builder.show()
         alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -187,7 +208,8 @@ class ProjectDetailsActivity : AppCompatActivity() {
 
     private fun handleWithdrawFunds() {
         if (project.projStatus == "Withdrawn") {
-            Toast.makeText(this, "Donation Funds has already been withdrawn.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Donation Funds has already been withdrawn.", Toast.LENGTH_SHORT)
+                .show()
         } else {
             val intent = Intent(this, WithdrawFundsActivity::class.java).apply {
                 putExtra("projId", project.projId)
